@@ -1,0 +1,11 @@
+name,description,price,category,sizes,stock,image_filename
+"Ralph Lauren Classic Polo",Classic cotton polo shirt in iconic Ralph Lauren style,1499,Men,"XS,S,M,L,XL,XXL",100,ralph_lauren_polo.jpg
+"Ralph Lauren Oxford Button-Down Shirt",Premium Oxford cloth button-down shirt perfect for casual or business wear,2499,Men,"S,M,L,XL,XXL",80,ralph_lauren_oxford.jpg
+"Ralph Lauren Crew Neck Sweater",Fine knit merino wool crew neck sweater with embroidered logo,3299,Men,"S,M,L,XL",60,ralph_lauren_sweater.jpg
+"Ralph Lauren Chino Pants",Classic slim-fit chino pants in multiple colors,2199,Men,"28,30,32,34,36,38,40",120,ralph_lauren_chino.jpg
+"Ralph Lauren V-Neck T-Shirt",Soft cotton v-neck t-shirt perfect for everyday wear,899,Men,"XS,S,M,L,XL,XXL",150,ralph_lauren_vneck.jpg
+"Ralph Lauren Denim Jeans",Premium denim jeans with perfect fit and comfort,2799,Men,"28,30,32,34,36,38,40",90,ralph_lauren_jeans.jpg
+"Ralph Lauren Windbreaker Jacket",Lightweight waterproof windbreaker perfect for any season,3999,Men,"S,M,L,XL,XXL",50,ralph_lauren_windbreaker.jpg
+"Ralph Lauren Fleece Hoodie",Comfortable fleece hoodie with signature embroidery,2499,Men,"S,M,L,XL,XXL",75,ralph_lauren_hoodie.jpg
+"Ralph Lauren Cargo Shorts",Casual cargo shorts with multiple pockets for outdoor activities,1799,Men,"28,30,32,34,36,38",85,ralph_lauren_cargo.jpg
+"Ralph Lauren Thermal Long Sleeve",Warm thermal long sleeve shirt for cold weather,1399,Men,"S,M,L,XL,XXL",110,ralph_lauren_thermal.jpg
