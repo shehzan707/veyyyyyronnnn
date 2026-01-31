@@ -64,7 +64,26 @@ class BulkImportController extends Controller
                 if (empty(array_filter($row))) continue;
                 
                 try {
-                    $categoryName = trim($row[3] ?? '');
+                    // Validate row has all required fields
+                    if (count($row) < 6) {
+                        $errors[] = "Row skipped: Not enough columns. Expected 6, got " . count($row);
+                        continue;
+                    }
+
+                    // Trim all fields
+                    $name = trim($row[0] ?? '');
+                    $price = trim($row[1] ?? '');
+                    $categoryName = trim($row[2] ?? '');
+                    $sizes = trim($row[3] ?? '');
+                    $stock = trim($row[4] ?? '');
+                    $imageFile = trim($row[5] ?? '');
+
+                    // Validate required fields
+                    if (empty($name) || empty($price) || empty($sizes) || empty($stock)) {
+                        $errors[] = "Row skipped: Missing required fields - Name: {$name}";
+                        continue;
+                    }
+
                     $categoryId = null;
                     
                     // Auto-create category if doesn't exist and get its ID
@@ -77,37 +96,37 @@ class BulkImportController extends Controller
                         $categoryId = $category ? $category->id : null;
                     }
                     
-                    // Handle image
+                    // Handle image - make it optional
                     $imagePath = null;
-                    if (!empty($row[6])) {
-                        $imagePath = $this->processImage($row[6], $imported);
-                        if (!$imagePath) {
-                            $errors[] = "Image not found: {$row[6]}";
-                        }
+                    if (!empty($imageFile)) {
+                        $imagePath = $this->processImage($imageFile, $imported);
                     }
+
+                    // Default VEYRON description
+                    $defaultDescription = "VEYRON is not merely a brand—it is a declaration of authority in modern luxury, a name that embodies precision, restraint, and uncompromising excellence. Conceived at the intersection of contemporary fashion and timeless sophistication, Veyron represents a world where every detail is intentional and every design decision is driven by purpose. The brand speaks to individuals who value subtle dominance over loud expression—those who understand that true luxury does not seek attention, it commands it. Veyron's identity is built on refinement, confidence, and an unwavering commitment to elevating everyday essentials into statements of distinction.\n\nAt the core of VeyRON lies an obsession with craftsmanship and material integrity. Each product is the result of meticulous design engineering, where premium fabrics, advanced textiles, and superior finishes converge to create pieces that are both visually commanding and functionally superior. From the weight of a garment to the precision of its stitching, nothing is left to chance. Veyron's approach emphasizes durability without sacrificing elegance—ensuring that every item maintains its structure, texture, and presence over time. This is luxury designed not just to be worn, but to endure.\n\nVEYRON's design philosophy is defined by architectural minimalism and modern masculinity. Clean silhouettes, balanced proportions, and disciplined color palettes form the backbone of its aesthetic language. Rather than following transient trends, Veyron curates a timeless visual code—one that evolves intelligently while remaining rooted in its core values. Each collection is composed to deliver versatility, allowing pieces to transition seamlessly from formal environments to elevated casual settings. The result is a wardrobe that reflects confidence, control, and refined taste in every context.";
                     
                     // Create product using model
                     $product = Product::create([
-                        'name' => $row[0],
-                        'description' => $row[1] ?? '',
-                        'price' => (float)$row[2],
+                        'name' => $name,
+                        'description' => $defaultDescription,
+                        'price' => (float)$price,
                         'category_id' => $categoryId,
                         'category' => $categoryName,
                         'image' => $imagePath,
-                        'sizes' => $row[4] ?? '',
-                        'stock' => (int)($row[5] ?? 0),
+                        'sizes' => $sizes,
+                        'stock' => (int)$stock,
                     ]);
                     
                     // Create size variants
-                    $sizes = array_map('trim', explode(',', $row[4] ?? ''));
-                    $stock = (int)($row[5] ?? 0);
+                    $sizeArray = array_map('trim', explode(',', $sizes));
+                    $stockValue = (int)$stock;
                     
-                    foreach ($sizes as $size) {
+                    foreach ($sizeArray as $size) {
                         if (!empty($size)) {
                             Size::create([
                                 'product_id' => $product->id,
                                 'size' => $size,
-                                'stock' => $stock,
+                                'stock' => $stockValue,
                                 'is_available' => true,
                             ]);
                         }
@@ -116,7 +135,7 @@ class BulkImportController extends Controller
                     $imported++;
                     
                 } catch (\Exception $e) {
-                    $errors[] = "Row error: " . $e->getMessage();
+                    $errors[] = "Product error: " . $e->getMessage();
                 }
             }
             
@@ -126,8 +145,8 @@ class BulkImportController extends Controller
             if ($categoriesCreated > 0) {
                 $message .= " Created {$categoriesCreated} new categories.";
             }
-            if (!empty($errors) && count($errors) < 5) {
-                $message .= " Errors: " . implode(', ', $errors);
+            if (!empty($errors)) {
+                $message .= " ⚠️ Issues: " . implode(" | ", array_slice($errors, 0, 10));
             }
             
             return back()->with('success', $message);

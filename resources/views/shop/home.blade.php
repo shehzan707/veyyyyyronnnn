@@ -477,74 +477,73 @@ body{
     </div>
 </div>
 
-
-
-<!-- SHOES -->
+<!-- GLASSES / EYEWEAR -->
 <div class="poster-category-section">
     <div class="category-header">
-        <h2 class="category-title">Elevated Accessories</h2>
-        <p class="category-subtitle">Innovation meets elegance</p>
+        <h2 class="category-title">Signature Eyewear</h2>
+        <p class="category-subtitle">Precision optics. Iconic design.</p>
     </div>
 
     <div class="poster-section">
 
-        <a href="/shop/footwear" class="poster-card">
+        <a href="/shop/glasses" class="poster-card">
             <div class="poster-wrapper">
-                <img src="{{ asset('images/nk.jpg') }}" class="main-img">
-                <img src="{{ asset('images/nk1.jpg') }}" class="hover-img">
+                <img src="{{ asset('images/ve.jpg') }}" class="main-img">
+                <img src="{{ asset('images/ve1.jpg') }}" class="hover-img">
                 <div class="poster-overlay"><span class="overlay-text">Explore Collection</span></div>
                 <div class="veyron-watermark">VEYRON</div>
             </div>
             <div class="poster-brand">
-                <h3 class="brand-name">Nike</h3>
+                <h3 class="brand-name">VERSAGE</h3>
                 <div class="brand-decoration"></div>
-                <p class="brand-tagline">Engineered Performance</p>
+                <p class="brand-tagline">Bold frame mordern Authority</p>
             </div>
         </a>
 
-        <a href="/shop/footwear" class="poster-card">
+        <a href="/shop/glasses" class="poster-card">
             <div class="poster-wrapper">
-                <img src="{{ asset('images/p.jpg') }}" class="main-img">
-                <img src="{{ asset('images/p1.jpg') }}" class="hover-img">
+                <img src="{{ asset('images/dg.jpg') }}" class="main-img">
+                <img src="{{ asset('images/dg1.jpg') }}" class="hover-img">
                 <div class="poster-overlay"><span class="overlay-text">Explore Collection</span></div>
                 <div class="veyron-watermark">VEYRON</div>
             </div>
             <div class="poster-brand">
-                <h3 class="brand-name">Puma</h3>
+                <h3 class="brand-name">DOLCE & GABBANA</h3>
                 <div class="brand-decoration"></div>
-                <p class="brand-tagline">Sport Meets Street</p>
+                <p class="brand-tagline">Engineered For Performance Vision</p>
             </div>
         </a>
 
-        <a href="/shop/footwear" class="poster-card">
+        <a href="/shop/glasses" class="poster-card">
             <div class="poster-wrapper">
-                <img src="{{ asset('images/adi.jpg') }}" class="main-img">
-                <img src="{{ asset('images/adi1.jpg') }}" class="hover-img">
+                <img src="{{ asset('images/gc.jpg') }}" class="main-img">
+                <img src="{{ asset('images/gc1.jpg') }}" class="hover-img">
                 <div class="poster-overlay"><span class="overlay-text">Explore Collection</span></div>
                 <div class="veyron-watermark">VEYRON</div>
             </div>
             <div class="poster-brand">
-                <h3 class="brand-name">Adidas</h3>
+                <h3 class="brand-name">GUCCI</h3>
                 <div class="brand-decoration"></div>
-                <p class="brand-tagline">Three Stripes Legacy</p>
+                <p class="brand-tagline">Luxury Framed In Elegance</p>
             </div>
         </a>
 
-        <a href="/shop/footwear" class="poster-card">
+        <a href="/shop/glasses" class="poster-card">
             <div class="poster-wrapper">
-                <img src="{{ asset('images/f1.jpg') }}" class="main-img">
-                <img src="{{ asset('images/f.jpg') }}" class="hover-img">
+                <img src="{{ asset('images/rb.jpg') }}" class="main-img">
+                <img src="{{ asset('images/rb1.jpg') }}" class="hover-img">
                 <div class="poster-overlay"><span class="overlay-text">Explore Collection</span></div>
                 <div class="veyron-watermark">VEYRON</div>
             </div>
             <div class="poster-brand">
-                <h3 class="brand-name">Formal Shoes</h3>
+                <h3 class="brand-name">RAY-BUN</h3>
                 <div class="brand-decoration"></div>
-                <p class="brand-tagline">Timeless Craft</p>
+                <p class="brand-tagline">Iconic Vision Since 1937</p>
             </div>
         </a>
 
     </div>
+</div>
 
 
 

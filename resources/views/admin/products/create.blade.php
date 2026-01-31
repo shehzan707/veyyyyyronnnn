@@ -119,7 +119,12 @@ h2 { color: #fff; }
 
         <div class="form-group">
             <label>Description</label>
-            <textarea name="description" rows="5" style="resize: vertical;">{{ old('description') }}</textarea>
+            <textarea name="description" rows="5" style="resize: vertical;">{{ old('description', 'VEYRON is not merely a brand—it is a declaration of authority in modern luxury, a name that embodies precision, restraint, and uncompromising excellence. Conceived at the intersection of contemporary fashion and timeless sophistication, Veyron represents a world where every detail is intentional and every design decision is driven by purpose. The brand speaks to individuals who value subtle dominance over loud expression—those who understand that true luxury does not seek attention, it commands it. Veyron\'s identity is built on refinement, confidence, and an unwavering commitment to elevating everyday essentials into statements of distinction.
+
+At the core of VeyRON lies an obsession with craftsmanship and material integrity. Each product is the result of meticulous design engineering, where premium fabrics, advanced textiles, and superior finishes converge to create pieces that are both visually commanding and functionally superior. From the weight of a garment to the precision of its stitching, nothing is left to chance. Veyron\'s approach emphasizes durability without sacrificing elegance—ensuring that every item maintains its structure, texture, and presence over time. This is luxury designed not just to be worn, but to endure.
+
+VEYRON\'s design philosophy is defined by architectural minimalism and modern masculinity. Clean silhouettes, balanced proportions, and disciplined color palettes form the backbone of its aesthetic language. Rather than following transient trends, Veyron curates a timeless visual code—one that evolves intelligently while remaining rooted in its core values. Each collection is composed to deliver versatility, allowing pieces to transition seamlessly from formal environments to elevated casual settings. The result is a wardrobe that reflects confidence, control, and refined taste in every context.') }}</textarea>
+            <small style="color: #94a3b8; display: block; margin-top: 6px;">Default VEYRON brand description is pre-filled. Edit if needed.</small>
         </div>
 
         <div style="display: flex; gap: 10px;">

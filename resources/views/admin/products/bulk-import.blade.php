@@ -218,8 +218,8 @@
             
             <div class="code-box">
                 <strong>CSV Format:</strong><br>
-                name,description,price,category,sizes,stock,image_filename<br><br>
-                "T-Shirt","Cotton tshirt",499,Men,"S,M,L,XL",50,tshirt.jpg
+                name,price,category,sizes,stock,image_filename<br><br>
+                "T-Shirt",499,Men,"S,M,L,XL",50,tshirt.jpg
             </div>
 
             <form method="POST" action="{{ route('admin.bulk.import.products') }}" enctype="multipart/form-data">
