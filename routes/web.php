@@ -9,6 +9,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BulkImportController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
@@ -29,6 +30,11 @@ Route::get('/footwear', [HomeController::class, 'homeFootwear'])->name('home.foo
 // Products
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+// Gallery - Display all product images from bulk folder
+Route::get('/gallery', [GalleryController::class, 'allImages'])->name('gallery.all');
+Route::get('/gallery/{category}', [GalleryController::class, 'imagesByCategory'])->name('gallery.category');
+Route::get('/api/gallery/images', [GalleryController::class, 'getImagesJson'])->name('gallery.api.images');
 
 // Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
