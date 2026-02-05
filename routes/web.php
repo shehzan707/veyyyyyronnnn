@@ -67,6 +67,58 @@ Route::get('/account/orders/{id}', [AccountController::class, 'orderView'])->nam
 // Coupon
 Route::post('/coupon/validate', [\App\Http\Controllers\CouponController::class, 'validateCoupon'])->name('coupon.validate');
 
+// API Routes
+Route::get('/api/categories', function() {
+    $categories = \App\Models\Category::with('products')
+        ->select('id', 'name')
+        ->get()
+        ->map(function($cat) {
+            return [
+                'id' => $cat->id,
+                'name' => $cat->name,
+                'product_count' => $cat->products->count()
+            ];
+        });
+    return response()->json($categories);
+})->name('api.categories');
+
+// Footwear categories with parent hierarchy
+Route::get('/api/footwear-categories', function() {
+    $footwearParent = \App\Models\Category::where('name', 'Footwear')
+        ->with(['children' => function($query) {
+            $query->with('children'); // Get grandchildren (Men/Women categories)
+        }])
+        ->first();
+    
+    if (!$footwearParent) {
+        return response()->json([]);
+    }
+    
+    $result = [];
+    
+    // For each parent (Men, Women)
+    foreach ($footwearParent->children as $parent) {
+        $parentData = [
+            'id' => $parent->id,
+            'name' => $parent->name,
+            'children' => []
+        ];
+        
+        // Get all children of this parent
+        foreach ($parent->children as $child) {
+            $parentData['children'][] = [
+                'id' => $child->id,
+                'name' => $child->name,
+                'product_count' => $child->products->count()
+            ];
+        }
+        
+        $result[] = $parentData;
+    }
+    
+    return response()->json($result);
+})->name('api.footwear.categories');
+
 // Bulk Import Routes
 Route::prefix('bulk-import')->group(function () {
     Route::get('/', [BulkImportController::class, 'index'])->name('bulk.import.index');
@@ -81,7 +133,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     
     // Analytics
     Route::get('/analytics', [AdminAnalyticsController::class, 'dashboard'])->name('analytics');
-    Route::get('/api/analytics', [AdminAnalyticsController::class, 'getAnalyticsData'])->name('analytics.data');
+    Route::get('/analytics/data', [AdminAnalyticsController::class, 'getAnalyticsData'])->name('analytics.data');
+    Route::get('/api/analytics', [AdminAnalyticsController::class, 'getAnalyticsData'])->name('api.analytics');
     
     // Products
     Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
@@ -108,6 +161,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/categories/{id}/edit', [AdminCategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/{id}', [AdminCategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{id}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::post('/categories/bulk-delete', [AdminCategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
     
     // Banners
     Route::get('/banners', [AdminBannerController::class, 'index'])->name('banners.index');

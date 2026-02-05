@@ -92,13 +92,26 @@ h2 { color: #fff; }
         <div class="form-group @error('sizes') error @enderror">
             <label>Available Sizes *</label>
             <div class="size-selection">
-                @foreach(['XS', 'S', 'M', 'L', 'XL', 'XXL'] as $size)
-                    <label>
-                        <input type="checkbox" name="sizes[]" value="{{ $size }}" 
-                            {{ in_array($size, old('sizes', ['S', 'M', 'L', 'XL'])) ? 'checked' : '' }}>
-                        {{ $size }}
-                    </label>
-                @endforeach
+                <fieldset style="border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+                    <legend style="color: #cbd5e1; padding: 0 8px; font-size: 0.9rem;">Apparel Sizes</legend>
+                    @foreach(['XS', 'S', 'M', 'L', 'XL', 'XXL'] as $size)
+                        <label>
+                            <input type="checkbox" name="sizes[]" value="{{ $size }}" 
+                                {{ in_array($size, old('sizes', ['S', 'M', 'L', 'XL'])) ? 'checked' : '' }}>
+                            {{ $size }}
+                        </label>
+                    @endforeach
+                </fieldset>
+                <fieldset style="border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 6px;">
+                    <legend style="color: #cbd5e1; padding: 0 8px; font-size: 0.9rem;">Shoe Sizes</legend>
+                    @foreach(['6', '7', '8', '9', '10'] as $size)
+                        <label>
+                            <input type="checkbox" name="sizes[]" value="{{ $size }}" 
+                                {{ in_array($size, old('sizes', [])) ? 'checked' : '' }}>
+                            {{ $size }}
+                        </label>
+                    @endforeach
+                </fieldset>
             </div>
             @error('sizes')<span class="error-message">{{ $message }}</span>@enderror
         </div>

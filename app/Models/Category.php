@@ -12,6 +12,7 @@ class Category extends Model
         'name',
         'slug',
         'parent_id', // REQUIRED for sub-category system
+        'sort_order',
     ];
 
     /**

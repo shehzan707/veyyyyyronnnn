@@ -68,34 +68,66 @@ class CartController extends Controller
         $quantity = $request->input('quantity', 1);
         $size = $request->input('size', 'M');
         
-        // Get the stock for this specific size
-        $sizeVariant = $product->sizeVariants()->where('size', $size)->first();
-        
-        if (!$sizeVariant || $sizeVariant->stock <= 0) {
-            return response()->json([
-                'success' => false,
-                'message' => "Sorry! {$size} size is currently out of stock.",
-            ], 400);
-        }
-        
-        if ($quantity > $sizeVariant->stock) {
-            return response()->json([
-                'success' => false,
-                'message' => "Sorry! {$product->name} in size {$size} only has {$sizeVariant->stock} items available. You tried to add {$quantity} items.",
-            ], 400);
+        // For accessories (one-size items), skip size validation
+        if ($size !== 'one-size') {
+            // Get the stock for this specific size
+            $sizeVariant = $product->sizeVariants()->where('size', $size)->first();
+            
+            if (!$sizeVariant || $sizeVariant->stock <= 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Sorry! {$size} size is currently out of stock.",
+                ], 400);
+            }
+            
+            if ($quantity > $sizeVariant->stock) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Sorry! {$product->name} in size {$size} only has {$sizeVariant->stock} items available. You tried to add {$quantity} items.",
+                ], 400);
+            }
+        } else {
+            // For one-size items, check total stock
+            $totalStock = $product->getTotalStock();
+            if ($totalStock <= 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Sorry! {$product->name} is currently out of stock.",
+                ], 400);
+            }
+            
+            if ($quantity > $totalStock) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Sorry! Only {$totalStock} items of {$product->name} are available. You tried to add {$quantity} items.",
+                ], 400);
+            }
         }
         
         $cartKey = $product->id . '_' . $size;
 
         if (isset($cart[$cartKey])) {
             $newQuantity = $cart[$cartKey]['quantity'] + $quantity;
-            if ($newQuantity > $sizeVariant->stock) {
-                $currentQty = $cart[$cartKey]['quantity'];
-                $remainingStock = $sizeVariant->stock - $currentQty;
-                return response()->json([
-                    'success' => false,
-                    'message' => "You already have {$currentQty} of this item in your cart. Only {$remainingStock} more can be added.",
-                ], 400);
+            if ($size !== 'one-size') {
+                $sizeVariant = $product->sizeVariants()->where('size', $size)->first();
+                if ($newQuantity > $sizeVariant->stock) {
+                    $currentQty = $cart[$cartKey]['quantity'];
+                    $remainingStock = $sizeVariant->stock - $currentQty;
+                    return response()->json([
+                        'success' => false,
+                        'message' => "You already have {$currentQty} of this item in your cart. Only {$remainingStock} more can be added.",
+                    ], 400);
+                }
+            } else {
+                $totalStock = $product->getTotalStock();
+                if ($newQuantity > $totalStock) {
+                    $currentQty = $cart[$cartKey]['quantity'];
+                    $remainingStock = $totalStock - $currentQty;
+                    return response()->json([
+                        'success' => false,
+                        'message' => "You already have {$currentQty} of this item in your cart. Only {$remainingStock} more can be added.",
+                    ], 400);
+                }
             }
             $cart[$cartKey]['quantity'] = $newQuantity;
         } else {

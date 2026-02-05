@@ -246,7 +246,121 @@ html, body {
     background: linear-gradient(135deg, #ef4444, #dc2626);
 }
 
-/* Responsive */
+/* Light Theme Overrides for Analytics */
+body.theme-light .analytics-container {
+    background: #ffffff !important;
+    color: #000000;
+}
+
+body.theme-light .analytics-header h1 {
+    color: #000000;
+    text-shadow: none;
+}
+
+body.theme-light .filter-btn,
+body.theme-light .export-btn {
+    background: #808080 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+body.theme-light .filter-btn:hover,
+body.theme-light .export-btn:hover {
+    background: #808080 !important;
+    transform: none;
+}
+
+body.theme-light .kpi-card {
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+    color: #000000;
+}
+
+body.theme-light .kpi-card::before {
+    background: #808080 !important;
+}
+
+body.theme-light .kpi-label {
+    color: #666666;
+}
+
+body.theme-light .kpi-value {
+    color: #000000;
+}
+
+body.theme-light .kpi-growth {
+    color: #10b981;
+}
+
+body.theme-light .kpi-growth.negative {
+    color: #ef4444;
+}
+
+body.theme-light .chart-card {
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+    color: #000000;
+}
+
+body.theme-light .chart-card h3 {
+    color: #000000 !important;
+}
+
+body.theme-light .chart-title {
+    color: #000000;
+}
+
+/* Dark Theme Overrides */
+body.theme-dark .analytics-container {
+    background: #2a2a2a !important;
+    color: #ffffff;
+}
+
+body.theme-dark .analytics-header h1 {
+    color: #ffffff;
+}
+
+body.theme-dark .filter-btn,
+body.theme-dark .export-btn {
+    background: #808080 !important;
+    color: #ffffff !important;
+    box-shadow: none;
+}
+
+body.theme-dark .filter-btn:hover,
+body.theme-dark .export-btn:hover {
+    background: #808080 !important;
+    transform: none;
+}
+
+body.theme-dark .kpi-card {
+    background: #323232 !important;
+    border: 1px solid #444444 !important;
+    color: #ffffff;
+}
+
+body.theme-dark .kpi-card::before {
+    background: #808080 !important;
+}
+
+body.theme-dark .kpi-label {
+    color: #ffffff;
+}
+
+body.theme-dark .kpi-value {
+    color: #ffffff;
+}
+
+body.theme-dark .chart-card {
+    background: #323232 !important;
+    border: 1px solid #444444 !important;
+    color: #ffffff;
+}
+
+body.theme-dark .chart-card h3 {
+    color: #ffffff !important;
+}
+
 @media (max-width: 1200px) {
     .charts-grid {
         grid-template-columns: 1fr;
@@ -512,152 +626,233 @@ const chartOptions = {
     }
 };
 
-// Daily Sales Chart
-new Chart(document.getElementById('dailySalesChart'), {
-    type: 'line',
-    data: {
-        labels: analyticsData.dailySales.today.map(d => d.hour),
-        datasets: [
-            {
-                label: 'Today',
-                data: analyticsData.dailySales.today.map(d => d.revenue),
+// Initialize all charts on page load
+initializeCharts();
+
+// Apply Filters with AJAX to update charts
+let dailySalesChartInstance, topProductsChartInstance, topCategoriesChartInstance, monthlySalesChartInstance, yearlySalesChartInstance, revenueVsOrdersChartInstance, customerAnalyticsChartInstance;
+
+function applyFilters() {
+    const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+    
+    console.log('Applying filters - From:', dateFrom, 'To:', dateTo);
+    
+    if (!dateFrom || !dateTo) {
+        alert('Please select both start and end dates');
+        return;
+    }
+    
+    if (new Date(dateFrom) > new Date(dateTo)) {
+        alert('Start date cannot be after end date');
+        return;
+    }
+    
+    // Show loading state
+    document.querySelector('.analytics-container').style.opacity = '0.6';
+    document.querySelector('.analytics-container').style.pointerEvents = 'none';
+    
+    const url = `/admin/analytics/data?date_from=${dateFrom}&date_to=${dateTo}`;
+    console.log('Fetching from URL:', url);
+    
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`HTTP error! status: ${response.status} - ${text}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Received data:', data);
+            if (data.error) {
+                throw new Error(data.message || 'Unknown error occurred');
+            }
+            
+            // Update KPIs
+            document.getElementById('totalRevenue').textContent = data.kpis.totalRevenue.toFixed(2);
+            
+            // Update all chart data
+            analyticsData.topProducts = data.topProducts;
+            analyticsData.topCategories = data.topCategories;
+            analyticsData.dailySales = data.dailySales;
+            analyticsData.monthlySales = data.monthlySales;
+            analyticsData.yearlySales = data.yearlySales;
+            analyticsData.revenueVsOrders = data.revenueVsOrders;
+            analyticsData.customerAnalytics = data.customerAnalytics;
+            
+            // Destroy old charts
+            if (dailySalesChartInstance) dailySalesChartInstance.destroy();
+            if (topProductsChartInstance) topProductsChartInstance.destroy();
+            if (topCategoriesChartInstance) topCategoriesChartInstance.destroy();
+            if (monthlySalesChartInstance) monthlySalesChartInstance.destroy();
+            if (yearlySalesChartInstance) yearlySalesChartInstance.destroy();
+            if (revenueVsOrdersChartInstance) revenueVsOrdersChartInstance.destroy();
+            if (customerAnalyticsChartInstance) customerAnalyticsChartInstance.destroy();
+            
+            // Recreate charts with new data
+            initializeCharts();
+            
+            // Hide loading state
+            document.querySelector('.analytics-container').style.opacity = '1';
+            document.querySelector('.analytics-container').style.pointerEvents = 'auto';
+            console.log('Analytics updated successfully');
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            document.querySelector('.analytics-container').style.opacity = '1';
+            document.querySelector('.analytics-container').style.pointerEvents = 'auto';
+            alert('Error loading analytics data: ' + error.message + '\n\nCheck browser console (F12) for more details.');
+        });
+}
+
+function initializeCharts() {
+    // Daily Sales Chart
+    dailySalesChartInstance = new Chart(document.getElementById('dailySalesChart'), {
+        type: 'line',
+        data: {
+            labels: analyticsData.dailySales.today.map(d => d.hour),
+            datasets: [
+                {
+                    label: 'Today',
+                    data: analyticsData.dailySales.today.map(d => d.revenue),
+                    borderColor: colors.primary,
+                    backgroundColor: colors.primaryLight,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Yesterday',
+                    data: analyticsData.dailySales.yesterday.map(d => d.revenue),
+                    borderColor: colors.secondary,
+                    backgroundColor: colors.secondaryLight,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: { ...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: v => '₹' + v } } } }
+    });
+
+    // Top Products Chart
+    topProductsChartInstance = new Chart(document.getElementById('topProductsChart'), {
+        type: 'bar',
+        data: {
+            labels: analyticsData.topProducts.map(p => p.name.substring(0, 15)),
+            datasets: [{
+                label: 'Revenue (₹)',
+                data: analyticsData.topProducts.map(p => p.revenue),
+                backgroundColor: [colors.primary, colors.secondary, colors.warning, colors.success, colors.danger, colors.primary, colors.secondary, colors.warning],
+                borderRadius: 8
+            }]
+        },
+        options: { ...chartOptions, indexAxis: 'y' }
+    });
+
+    // Top Categories Chart
+    topCategoriesChartInstance = new Chart(document.getElementById('topCategoriesChart'), {
+        type: 'doughnut',
+        data: {
+            labels: analyticsData.topCategories.map(c => c.name),
+            datasets: [{
+                data: analyticsData.topCategories.map(c => c.revenue),
+                backgroundColor: [colors.primary, colors.secondary, colors.warning, colors.success, colors.danger],
+                borderColor: 'rgba(15, 23, 42, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: { ...chartOptions, plugins: { ...chartOptions.plugins, legend: { ...chartOptions.plugins.legend, position: 'bottom' } } }
+    });
+
+    // Monthly Sales Chart
+    monthlySalesChartInstance = new Chart(document.getElementById('monthlySalesChart'), {
+        type: 'area',
+        data: {
+            labels: analyticsData.monthlySales.map(m => m.date),
+            datasets: [{
+                label: 'Daily Sales (₹)',
+                data: analyticsData.monthlySales.map(m => m.revenue),
                 borderColor: colors.primary,
                 backgroundColor: colors.primaryLight,
                 borderWidth: 2,
                 fill: true,
                 tension: 0.4
-            },
-            {
-                label: 'Yesterday',
-                data: analyticsData.dailySales.yesterday.map(d => d.revenue),
-                borderColor: colors.secondary,
-                backgroundColor: colors.secondaryLight,
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4
-            }
-        ]
-    },
-    options: { ...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: v => '₹' + v } } } }
-});
+            }]
+        },
+        options: chartOptions
+    });
 
-// Top Products Chart
-new Chart(document.getElementById('topProductsChart'), {
-    type: 'bar',
-    data: {
-        labels: analyticsData.topProducts.map(p => p.name.substring(0, 15)),
-        datasets: [{
-            label: 'Revenue (₹)',
-            data: analyticsData.topProducts.map(p => p.revenue),
-            backgroundColor: [colors.primary, colors.secondary, colors.warning, colors.success, colors.danger, colors.primary, colors.secondary, colors.warning],
-            borderRadius: 8
-        }]
-    },
-    options: { ...chartOptions, indexAxis: 'y' }
-});
-
-// Top Categories Chart
-new Chart(document.getElementById('topCategoriesChart'), {
-    type: 'doughnut',
-    data: {
-        labels: analyticsData.topCategories.map(c => c.name),
-        datasets: [{
-            data: analyticsData.topCategories.map(c => c.revenue),
-            backgroundColor: [colors.primary, colors.secondary, colors.warning, colors.success, colors.danger],
-            borderColor: 'rgba(15, 23, 42, 1)',
-            borderWidth: 2
-        }]
-    },
-    options: { ...chartOptions, plugins: { ...chartOptions.plugins, legend: { ...chartOptions.plugins.legend, position: 'bottom' } } }
-});
-
-// Monthly Sales Chart
-new Chart(document.getElementById('monthlySalesChart'), {
-    type: 'area',
-    data: {
-        labels: analyticsData.monthlySales.map(m => m.date),
-        datasets: [{
-            label: 'Daily Sales (₹)',
-            data: analyticsData.monthlySales.map(m => m.revenue),
-            borderColor: colors.primary,
-            backgroundColor: colors.primaryLight,
-            borderWidth: 2,
-            fill: true,
-            tension: 0.4
-        }]
-    },
-    options: chartOptions
-});
-
-// Yearly Sales Chart
-new Chart(document.getElementById('yearlySalesChart'), {
-    type: 'bar',
-    data: {
-        labels: analyticsData.yearlySales.map(y => y.month),
-        datasets: [{
-            label: 'Monthly Revenue (₹)',
-            data: analyticsData.yearlySales.map(y => y.revenue),
-            backgroundColor: colors.primary,
-            borderRadius: 8
-        }]
-    },
-    options: chartOptions
-});
-
-// Revenue vs Orders Chart
-new Chart(document.getElementById('revenueVsOrdersChart'), {
-    type: 'bar',
-    data: {
-        labels: analyticsData.revenueVsOrders.map(r => r.date),
-        datasets: [
-            {
-                label: 'Revenue (₹)',
-                data: analyticsData.revenueVsOrders.map(r => r.revenue),
+    // Yearly Sales Chart
+    yearlySalesChartInstance = new Chart(document.getElementById('yearlySalesChart'), {
+        type: 'bar',
+        data: {
+            labels: analyticsData.yearlySales.map(y => y.month),
+            datasets: [{
+                label: 'Monthly Revenue (₹)',
+                data: analyticsData.yearlySales.map(y => y.revenue),
                 backgroundColor: colors.primary,
-                borderRadius: 8,
-                yAxisID: 'y'
-            },
-            {
-                label: 'Orders',
-                data: analyticsData.revenueVsOrders.map(r => r.orders),
-                backgroundColor: colors.secondary,
-                borderRadius: 8,
-                yAxisID: 'y1'
+                borderRadius: 8
+            }]
+        },
+        options: chartOptions
+    });
+
+    // Revenue vs Orders Chart
+    revenueVsOrdersChartInstance = new Chart(document.getElementById('revenueVsOrdersChart'), {
+        type: 'bar',
+        data: {
+            labels: analyticsData.revenueVsOrders.map(r => r.date),
+            datasets: [
+                {
+                    label: 'Revenue (₹)',
+                    data: analyticsData.revenueVsOrders.map(r => r.revenue),
+                    backgroundColor: colors.primary,
+                    borderRadius: 8,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Orders',
+                    data: analyticsData.revenueVsOrders.map(r => r.orders),
+                    backgroundColor: colors.secondary,
+                    borderRadius: 8,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            ...chartOptions,
+            scales: {
+                y: { ...chartOptions.scales.y, position: 'left' },
+                y1: { ...chartOptions.scales.y, position: 'right', grid: { display: false } }
             }
-        ]
-    },
-    options: {
-        ...chartOptions,
-        scales: {
-            y: { ...chartOptions.scales.y, position: 'left' },
-            y1: { ...chartOptions.scales.y, position: 'right', grid: { display: false } }
         }
-    }
-});
+    });
 
-// Customer Analytics Chart
-new Chart(document.getElementById('customerAnalyticsChart'), {
-    type: 'pie',
-    data: {
-        labels: ['Returning Customers', 'New Customers'],
-        datasets: [{
-            data: [analyticsData.customerAnalytics.returning, analyticsData.customerAnalytics.new],
-            backgroundColor: [colors.primary, colors.secondary],
-            borderColor: 'rgba(15, 23, 42, 1)',
-            borderWidth: 2
-        }]
-    },
-    options: { ...chartOptions, plugins: { ...chartOptions.plugins, legend: { ...chartOptions.plugins.legend, position: 'bottom' } } }
-});
-
-// Apply Filters
-function applyFilters() {
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-    
-    if (dateFrom && dateTo) {
-        window.location.href = `/admin/analytics?date_from=${dateFrom}&date_to=${dateTo}`;
-    }
+    // Customer Analytics Chart
+    customerAnalyticsChartInstance = new Chart(document.getElementById('customerAnalyticsChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Returning Customers', 'New Customers'],
+            datasets: [{
+                data: [analyticsData.customerAnalytics.returning, analyticsData.customerAnalytics.new],
+                backgroundColor: [colors.primary, colors.secondary],
+                borderColor: 'rgba(15, 23, 42, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: { ...chartOptions, plugins: { ...chartOptions.plugins, legend: { ...chartOptions.plugins.legend, position: 'bottom' } } }
+    });
 }
 
 // Export to PDF

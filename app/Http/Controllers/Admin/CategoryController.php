@@ -89,4 +89,35 @@ class CategoryController extends Controller
             ->route('admin.categories.index')
             ->with('success', 'Category deleted successfully!');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $request->validate([
+            'category_ids' => 'required|json',
+        ]);
+
+        $categoryIds = json_decode($request->category_ids, true);
+
+        if (empty($categoryIds)) {
+            return redirect()
+                ->route('admin.categories.index')
+                ->withErrors('Please select at least one category to delete.');
+        }
+
+        $deletedCount = 0;
+
+        foreach ($categoryIds as $id) {
+            $category = Category::find($id);
+            if ($category) {
+                // Delete child categories first
+                $category->children()->delete();
+                $category->delete();
+                $deletedCount++;
+            }
+        }
+
+        return redirect()
+            ->route('admin.categories.index')
+            ->with('success', "✅ Deleted {$deletedCount} categor" . ($deletedCount === 1 ? 'y' : 'ies') . ' successfully!');
+    }
 }

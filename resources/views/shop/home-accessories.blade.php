@@ -4,103 +4,317 @@
 
 @push('styles')
 <style>
-    body { font-family: 'Poppins', sans-serif; margin:0; padding:0; background:#f4f4f4; }
+:root{
+    --black:#080808;
+    --dark:#121212;
+    --mid:#7a7a7a;
+    --light:#ededed;
+    --white:#ffffff;
+}
 
-    .home-container { max-width:1200px; margin:2rem auto; padding:0 1rem; display:flex; flex-direction:column; gap:2rem; }
+/* RESET */
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:'Poppins',system-ui,sans-serif;
+    background:var(--white);
+    color:var(--black);
+}
 
-    .category-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #222;
-        margin: 2rem 0 1rem 0;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        text-align: center;
-    }
+/* FULL BLEED CONTAINER */
+.home-container{
+    max-width:100%;
+    margin:0;
+    padding:2px;
+}
 
-    .category-subtitle {
-        text-align: center;
-        color: #666;
-        font-size: 1rem;
-        margin-bottom: 2rem;
-        font-weight: 300;
-    }
+/* GROUP */
+.subcategory-group{
+    margin:6rem 0 8rem;
+    padding:0 2.2rem;
+}
 
-    /* Poster Section */
-    .poster-section {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 1.5rem;
-        margin-top: 2rem;
-    }
+/* TITLES */
+.subcategory-group-title{
+    font-size:3.2rem;
+    font-weight:900;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    margin-bottom:4.8rem;
+    position:relative;
+    color:#000;
+}
 
-    .poster-card {
-        background: #fff;
-        border-radius: 16px;
-        overflow: hidden;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-        text-decoration: none;
-        color: inherit;
-    }
-    .poster-card:hover { transform: translateY(-5px); }
+/* GHOST BRAND */
+.subcategory-group-title::before{
+    content:'VEYRON';
+    position:absolute;
+    top:-2.4rem;
+    left:0;
+    font-size:7.2rem;
+    font-weight:900;
+    letter-spacing:10px;
+    color:rgba(0,0,0,0.12); /* increased opacity */
+    pointer-events:none;
+}
 
-    .poster-wrapper { position: relative; }
-    .poster-wrapper img {
-        width: 100%;
-        height: 350px;
-        object-fit: cover;
-        display: block;
-        border-bottom: 1px solid #eee;
-    }
+/* HARD UNDERLINE */
+.subcategory-group-title::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-18px;
+    width:90px;
+    height:3px;
+    background:#000;
+}
 
-    .veyron-watermark {
-        position: absolute;
-        top: 12px;
-        right: 15px;
-        font-size: 22px;
-        font-weight: bold;
-        color: rgba(255,255,255,0.7);
-        text-shadow: 0 0 6px rgba(0,0,0,0.4);
-        opacity: 0.9;
-    }
+/* GRID */
+.subcategory-cards-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:3.4rem;
+}
 
-    .poster-text {
-        padding: 10px 5px 18px;
-        font-size: 0.95rem;
-        color: #333;
-        line-height: 1.5;
-    }
+/* CARD – EDGY */
+.subcategory-card{
+    position:relative;
+    height:540px;
+    background:#000;
+    border-radius:6px; /* sharp, edgy */
+    overflow:hidden;
+    text-decoration:none;
+    color:#fff;
+    transform-style:preserve-3d;
+    transition:
+        transform .9s cubic-bezier(.23,1,.32,1),
+        box-shadow .9s cubic-bezier(.23,1,.32,1);
+    box-shadow:0 30px 60px rgba(0,0,0,.35);
+}
 
-    @media (max-width: 768px) {
-        .home-container { margin: 1rem auto; padding: 0 0.5rem; }
-        .category-title { font-size: 1.8rem; }
-        .poster-section { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
-        .poster-wrapper img { height: 250px; }
-    }
+.subcategory-card:hover{
+    transform:translateY(-26px) rotateX(7deg);
+    box-shadow:0 90px 140px rgba(0,0,0,.55);
+}
+
+/* IMAGE */
+.subcategory-card-image{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.subcategory-card-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transform:scale(1.08);
+    transition:transform 1.2s cubic-bezier(.23,1,.32,1),
+               filter .8s ease;
+}
+
+.subcategory-card:hover img{
+    transform:scale(1.28) translateY(-22px);
+    filter:grayscale(.05) contrast(1.1);
+}
+
+/* INDUSTRIAL MASK */
+.subcategory-card::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,.92),
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.95)
+        );
+    opacity:.85;
+    transition:opacity .6s ease;
+}
+
+.subcategory-card:hover::after{
+    opacity:1;
+}
+
+/* CONTENT */
+.subcategory-card-content{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    padding:3.2rem 2.6rem;
+    transform:translateY(46px);
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
+    z-index:2;
+}
+
+.subcategory-card:hover .subcategory-card-content{
+    transform:translateY(0);
+}
+
+/* NAME */
+.subcategory-card-name{
+    font-size:1.9rem;
+    font-weight:900;
+    letter-spacing:1.6px;
+    margin:0 0 .8rem;
+    display:none;
+}
+
+/* TAGLINE */
+.subcategory-card-tagline{
+    font-size:.95rem;
+    color:#d4d4d4;
+    letter-spacing:.8px;
+    line-height:1.6;
+    text-transform:uppercase;
+}
+
+/* HARD LINE ACCENT */
+.subcategory-card-content::before{
+    content:'';
+    position:absolute;
+    top:-22px;
+    left:2.6rem;
+    width:72px;
+    height:3px;
+    background:#fff;
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
+}
+
+.subcategory-card:hover .subcategory-card-content::before{
+    transform:scaleX(1);
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .subcategory-group-title{font-size:2.4rem}
+    .subcategory-group-title::before{font-size:5.2rem}
+    .subcategory-card{height:440px}
+}
+
+@media(max-width:600px){
+    .subcategory-group{padding:0 1.4rem}
+    .subcategory-cards-grid{gap:2.2rem}
+}
 </style>
 @endpush
 
 @section('content')
 <!-- Premium Banner Carousel -->
-@include('components.banner-carousel', ['banners' => $banners])
+@include('components.banner-carousel', ['banners' => $banners, 'filterUrl' => 'http://127.0.0.1:8000/products?gender=accessories'])
 
+<!-- Subcategory Cards Section -->
 <div class="home-container">
-    <h1 class="category-title">Accessories</h1>
-    <p class="category-subtitle">Complete your look with our premium accessories collection</p>
+    <div class="subcategory-section">
+        
+        <!-- ACCESSORIES GROUP -->
+        <div class="subcategory-group">
+            <h2 class="subcategory-group-title">Finishing Grace</h2>
+            <div class="subcategory-cards-grid">
+                <a href="{{ route('products.index', ['category' => 'wallets']) }}" class="subcategory-card">
+                    <div class="subcategory-card-image empty">
+                        <img src="{{ asset('images/wallet.jpg') }}" alt="Wallets">
+                    </div>
+                    <div class="subcategory-card-content">
+                        <h3 class="subcategory-card-name">Wallets</h3>
+                        <p class="subcategory-card-tagline">Premium leather crafted with timeless elegance and sophistication</p>
+                    </div>
+                </a>
 
-    <!-- Featured Products Section -->
-    <div class="poster-section">
-        @foreach($posters as $poster)
-            <a href="{{ $poster['link'] }}" class="poster-card">
-                <div class="poster-wrapper">
-                    <img src="{{ asset($poster['file']) }}" alt="Poster">
-                    <div class="veyron-watermark">VEYRON</div>
-                </div>
-                <div class="poster-text">{{ $poster['line1'] }}<br>{{ $poster['line2'] }}</div>
-            </a>
-        @endforeach
+                <a href="{{ route('products.index', ['category' => 'belts']) }}" class="subcategory-card">
+                    <div class="subcategory-card-image empty">
+                        <img src="{{ asset('images/belt.jpg') }}" alt="Belts">
+                    </div>
+                    <div class="subcategory-card-content">
+                        <h3 class="subcategory-card-name">Belts</h3>
+                        <p class="subcategory-card-tagline">Refined styling defines your silhouette with perfect precision fit</p>
+                    </div>
+                </a>
+
+                <a href="{{ route('products.index', ['category' => 'Leather Strap']) }}" class="subcategory-card">
+                    <div class="subcategory-card-image empty">
+                        <img src="{{ asset('images/watchesleatherstrap.jpg') }}" alt="Watches - Leather Strap">
+                    </div>
+                    <div class="subcategory-card-content">
+                        <h3 class="subcategory-card-name">Watches - Leather Strap</h3>
+                        <p class="subcategory-card-tagline">Where artisanal time-keeping meets refined classical wrist elegance</p>
+                    </div>
+                </a>
+
+                  <a href="{{ route('products.index', ['category' => 'Chain Strap']) }}" class="subcategory-card">
+                    <div class="subcategory-card-image empty">
+                        <img src="{{ asset('images/watcheschainstrap.jpg') }}" alt="Watches - Chain Strap">
+                    </div>
+                    <div class="subcategory-card-content">
+                        <h3 class="subcategory-card-name">Watches - Chain Strap</h3>
+                        <p class="subcategory-card-tagline">Timeless elegance fused with luxury precision on your wrist</p>
+                    </div>
+                </a>
+
+                <a href="{{ route('products.index', ['category' => 'sunglasses']) }}" class="subcategory-card">
+                    <div class="subcategory-card-image empty">
+                        <img src="{{ asset('images/sunglasses.jpg') }}" alt="Sunglasses">
+                    </div>
+                    <div class="subcategory-card-content">
+                        <h3 class="subcategory-card-name">Sunglasses</h3>
+                        <p class="subcategory-card-tagline">UV protection meets stylish sophisticated shades for every occasion</p>
+                    </div>
+                </a>
+
+                <a href="{{ route('products.index', ['category' => 'Caps']) }}" class="subcategory-card">
+                    <div class="subcategory-card-image empty">
+                        <img src="{{ asset('images/capandhat.jpg') }}" alt="Caps & Hats">
+                    </div>
+                    <div class="subcategory-card-content">
+                        <h3 class="subcategory-card-name">Caps & Hats</h3>
+                        <p class="subcategory-card-tagline">Casual sporty sophistication with retro vintage inspired design flair</p>
+                    </div>
+                </a>
+
+                
+
+                <a href="{{ route('products.index', ['category' => 'rings']) }}" class="subcategory-card">
+                    <div class="subcategory-card-image empty">
+                        <img src="{{ asset('images/ring.jpg') }}" alt="Rings">
+                    </div>
+                    <div class="subcategory-card-content">
+                        <h3 class="subcategory-card-name">Rings</h3>
+                        <p class="subcategory-card-tagline">Statement pieces of elegant luminous shine and timeless grace</p>
+                    </div>
+                </a>
+
+               
+
+                <a href="{{ route('products.index', ['category' => 'backpacks']) }}" class="subcategory-card">
+                    <div class="subcategory-card-image empty">
+                        <img src="{{ asset('images/bagpack.jpg') }}" alt="Backpacks">
+                    </div>
+                    <div class="subcategory-card-content">
+                        <h3 class="subcategory-card-name">Backpacks</h3>
+                        <p class="subcategory-card-tagline">Meticulously crafted for motion and engineered to last forever</p>
+                    </div>
+                </a>
+
+                <a href="{{ route('products.index', ['category' => 'handbags']) }}" class="subcategory-card">
+                    <div class="subcategory-card-image empty">
+                        <img src="{{ asset('images/handbag.jpg') }}" alt="Handbags">
+                    </div>
+                    <div class="subcategory-card-content">
+                        <h3 class="subcategory-card-name">Handbags</h3>
+                        <p class="subcategory-card-tagline">Functional refined carry designed as your essential luxury piece</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
     </div>
+</div>
+</div>
+
+
 </div>
 @endsection

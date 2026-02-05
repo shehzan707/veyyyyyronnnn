@@ -48,16 +48,40 @@ class HomeController extends Controller
     }
 
     /**
-     * Get posters for Footwear section
+     * Get posters for Men's Footwear section
+     */
+    private function getMenFootwearPosters()
+    {
+        return [
+            ["file" => "professionalpolish.jpg", "line1" => "Professional Polish", "line2" => "Formal shoes for refined sophistication", "link" => route('products.index', ['category' => 'formal-shoes', 'gender' => 'men'])],
+            ["file" => "everydayelegance.jpg", "line1" => "Everyday Elegance", "line2" => "Casual shoes for timeless style", "link" => route('products.index', ['category' => 'casual-shoes', 'gender' => 'men'])],
+            ["file" => "urbancomfort.jpg", "line1" => "Urban Comfort", "line2" => "Trendy sneakers for modern life", "link" => route('products.index', ['category' => 'sneakers', 'gender' => 'men'])],
+            ["file" => "athleticexcellence.jpg", "line1" => "Athletic Excellence", "line2" => "Performance shoes for active lifestyles", "link" => route('products.index', ['category' => 'sports-shoes', 'gender' => 'men'])],
+        ];
+    }
+
+    /**
+     * Get posters for Women's Footwear section
+     */
+    private function getWomenFootwearPosters()
+    {
+        return [
+            ["file" => "elegantelevation.jpg", "line1" => "Elegant Elevation", "line2" => "Stunning heels for confident strides", "link" => route('products.index', ['category' => 'heels', 'gender' => 'women'])],
+            ["file" => "gracefulsimplicity.jpg", "line1" => "Graceful Simplicity", "line2" => "Comfortable flats with timeless appeal", "link" => route('products.index', ['category' => 'flats', 'gender' => 'women'])],
+            ["file" => "casualcharm.jpg", "line1" => "Casual Charm", "line2" => "Trendy sneakers for everyday style", "link" => route('products.index', ['category' => 'sneakers', 'gender' => 'women'])],
+            ["file" => "summercomfort.jpg", "line1" => "Summer Comfort", "line2" => "Chic sandals for warm season fashion", "link" => route('products.index', ['category' => 'sandals', 'gender' => 'women'])],
+        ];
+    }
+
+    /**
+     * Get posters for Footwear section (combined men and women)
      */
     private function getFootwearPosters()
     {
-        return [
-            ["file" => "sneakers.jpg", "line1" => "Urban comfort", "line2" => "Trendy sneakers for every lifestyle", "link" => route('products.index', ['category' => 'sneakers'])],
-            ["file" => "casual-shoes.jpg", "line1" => "Everyday elegance", "line2" => "Casual shoes that never go out of style", "link" => route('products.index', ['category' => 'casual-shoes'])],
-            ["file" => "formal-shoes.jpg", "line1" => "Refined sophistication", "line2" => "Formal shoes for professional excellence", "link" => route('products.index', ['category' => 'formal-shoes'])],
-            ["file" => "boots.jpg", "line1" => "Bold and confident", "line2" => "Stylish boots for every season", "link" => route('products.index', ['category' => 'boots'])],
-        ];
+        return array_merge(
+            $this->getMenFootwearPosters(),
+            $this->getWomenFootwearPosters()
+        );
     }
 
     /**
@@ -116,8 +140,9 @@ class HomeController extends Controller
     public function homeFootwear()
     {
         $banners = MediaFile::getBySection('footwear');
-        $posters = $this->getFootwearPosters();
+        $menPosters = $this->getMenFootwearPosters();
+        $womenPosters = $this->getWomenFootwearPosters();
 
-        return view('shop.home-footwear', compact('banners', 'posters'));
+        return view('shop.home-footwear', compact('banners', 'menPosters', 'womenPosters'));
     }
 }

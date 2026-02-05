@@ -74,10 +74,14 @@ class BulkImportController extends Controller
                     $name = trim($row[0] ?? '');
                     $price = trim($row[1] ?? '');
                     $categoryName = trim($row[2] ?? '');
-                    $sizes = trim($row[3] ?? '');
+                    $sizesRaw = trim($row[3] ?? '');
                     $stock = trim($row[4] ?? '');
                     $imageFile = trim($row[5] ?? '');
 
+                    // Parse sizes - handle comma-separated values with proper trimming
+                    $sizeArray = array_filter(array_map('trim', explode(',', $sizesRaw)));
+                    $sizes = implode(',', $sizeArray); // Normalized size string
+                    
                     // Validate required fields
                     if (empty($name) || empty($price) || empty($sizes) || empty($stock)) {
                         $errors[] = "Row skipped: Missing required fields - Name: {$name}";
@@ -159,7 +163,7 @@ class BulkImportController extends Controller
 
     /**
      * Import categories from CSV
-     * CSV Format: name,description,is_active
+     * CSV Format: name
      */
     public function importCategories(Request $request)
     {
@@ -195,9 +199,6 @@ class BulkImportController extends Controller
                         DB::table('categories')->insert([
                             'name' => $categoryName,
                             'slug' => Str::slug($categoryName),
-                            'description' => $row[1] ?? '',
-                            'is_active' => $row[2] ?? 1,
-                            'sort_order' => DB::table('categories')->max('sort_order') + 1,
                             'created_at' => now(),
                             'updated_at' => now(),
                         ]);
@@ -289,9 +290,6 @@ class BulkImportController extends Controller
             DB::table('categories')->insert([
                 'name' => $categoryName,
                 'slug' => Str::slug($categoryName),
-                'description' => 'Auto-created from import',
-                'is_active' => true,
-                'sort_order' => DB::table('categories')->max('sort_order') + 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

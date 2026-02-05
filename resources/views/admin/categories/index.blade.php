@@ -65,6 +65,48 @@
     cursor: pointer;
 }
 
+.bulk-actions {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.bulk-actions button {
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.bulk-delete-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    display: none;
+}
+
+.bulk-delete-btn:hover {
+    opacity: 0.9;
+}
+
+.bulk-select-all {
+    display: none;
+}
+
+.bulk-delete-btn.show,
+.bulk-select-all.show {
+    display: block;
+}
+
+.category-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #34d399;
+}
+
 .btn-blue {
     background: linear-gradient(135deg, #34d399, #10b981);
     color: #fff;
@@ -141,6 +183,155 @@
         position: static;
     }
 }
+
+/* Light Theme Overrides */
+body.theme-light .categories-section h2 {
+    color: #000000;
+}
+
+body.theme-light .categories-table {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+body.theme-light .categories-table th {
+    background: #f9f9f9;
+    color: #000000;
+}
+
+body.theme-light .categories-table tbody tr:hover {
+    background: #f0f0f0;
+}
+
+body.theme-light .categories-table td {
+    color: #000000;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+body.theme-light .categories-table code {
+    background: #808080;
+    color: #ffffff;
+}
+
+body.theme-light .btn-blue {
+    background: #808080 !important;
+    color: #ffffff !important;
+}
+
+body.theme-light .btn-blue:hover {
+    background: #808080 !important;
+    transform: none;
+}
+
+body.theme-light .btn-red {
+    background: #808080 !important;
+    color: #ffffff !important;
+}
+
+body.theme-light .btn-red:hover {
+    background: #808080 !important;
+    transform: none;
+}
+
+body.theme-light .form-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+body.theme-light .form-card h3 {
+    color: #000000;
+}
+
+body.theme-light .form-group label {
+    color: #333333;
+}
+
+body.theme-light .form-group input,
+body.theme-light .form-group select {
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    color: #000000;
+}
+
+body.theme-light .btn-add {
+    background: #808080 !important;
+    color: #ffffff !important;
+    border: none;
+}
+
+body.theme-light .btn-add:hover {
+    background: #808080 !important;
+    transform: none;
+}
+
+body.theme-light .category-checkbox {
+    accent-color: #808080;
+}
+
+body.theme-light .bulk-delete-btn {
+    background: #808080 !important;
+    color: #ffffff !important;
+}
+
+body.theme-light .bulk-delete-btn:hover {
+    background: #808080 !important;
+}
+
+body.theme-light .alert-success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #22c55e;
+}
+
+/* Dark Theme Overrides */
+body.theme-dark .categories-section h2 {
+    color: #ffffff;
+}
+
+body.theme-dark .categories-table {
+    background: #323232;
+    border: 1px solid #444444;
+}
+
+body.theme-dark .categories-table th {
+    background: #3d3d3d;
+    color: #ffffff;
+}
+
+body.theme-dark .categories-table td {
+    color: #ffffff;
+    border-bottom: 1px solid #444444;
+}
+
+body.theme-dark .btn-blue {
+    background: #808080 !important;
+    color: #ffffff !important;
+}
+
+body.theme-dark .btn-blue:hover {
+    background: #808080 !important;
+    transform: none;
+}
+
+body.theme-dark .btn-red {
+    background: #808080 !important;
+    color: #ffffff !important;
+}
+
+body.theme-dark .btn-red:hover {
+    background: #808080 !important;
+    transform: none;
+}
+
+body.theme-dark .btn-add {
+    background: #808080 !important;
+    color: #ffffff !important;
+}
+
+body.theme-dark .btn-add:hover {
+    background: #808080 !important;
+    transform: none;
+}
 </style>
 @endpush
 
@@ -148,7 +339,8 @@
 
 @php
 function renderCategoryRow($category, $level = 0) {
-    echo '<tr>';
+    echo '<tr data-category-id="' . $category->id . '">';
+    echo '<td><input type="checkbox" class="category-checkbox bulk-checkbox" data-category-id="' . $category->id . '" onchange="updateBulkActions()"></td>';
     echo '<td><strong style="padding-left:' . ($level * 25) . 'px;">' . ($level ? '↳ ' : '') . e($category->name) . '</strong></td>';
     echo '<td><code>' . e($category->slug) . '</code></td>';
     echo '<td>
@@ -177,9 +369,22 @@ function renderCategoryRow($category, $level = 0) {
             <div class="alert-success">{{ session('success') }}</div>
         @endif
 
+        <div class="bulk-actions">
+            <input type="checkbox" id="selectAll" class="bulk-select-all" onchange="toggleSelectAll(this)">
+            <label for="selectAll" style="margin: 0; color: #cbd5e1; cursor: pointer;">Select All</label>
+            <form action="{{ route('admin.categories.bulk-delete') }}" method="POST" id="bulkDeleteForm" style="display:inline;">
+                @csrf
+                <input type="hidden" name="category_ids" id="categoryIds" value="">
+                <button type="submit" class="bulk-delete-btn" onclick="return confirm('Delete selected categories and their subcategories? This cannot be undone.')">
+                    Delete Selected
+                </button>
+            </form>
+        </div>
+
         <table class="categories-table">
             <thead>
                 <tr>
+                    <th style="width: 40px;"></th>
                     <th>Category Name</th>
                     <th>Slug</th>
                     <th>Actions</th>
@@ -190,7 +395,7 @@ function renderCategoryRow($category, $level = 0) {
                     @php renderCategoryRow($category); @endphp
                 @empty
                     <tr>
-                        <td colspan="3" style="text-align:center; padding:30px;">No categories found.</td>
+                        <td colspan="4" style="text-align:center; padding:30px;">No categories found.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -226,4 +431,39 @@ function renderCategoryRow($category, $level = 0) {
     </div>
 
 </div>
+
+<script>
+function updateBulkActions() {
+    const checkboxes = document.querySelectorAll('.bulk-checkbox');
+    const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+    const deleteBtn = document.querySelector('.bulk-delete-btn');
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const selectAllLabel = document.querySelector('.bulk-select-all');
+
+    if (selectedCount > 0) {
+        deleteBtn.classList.add('show');
+        selectAllCheckbox.classList.add('show');
+        selectAllLabel.classList.add('show');
+        
+        // Update hidden input with selected IDs
+        const selectedIds = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.dataset.categoryId);
+        document.getElementById('categoryIds').value = JSON.stringify(selectedIds);
+    } else {
+        deleteBtn.classList.remove('show');
+        selectAllCheckbox.classList.remove('show');
+        selectAllLabel.classList.remove('show');
+        selectAllCheckbox.checked = false;
+    }
+}
+
+function toggleSelectAll(checkbox) {
+    const checkboxes = document.querySelectorAll('.bulk-checkbox');
+    checkboxes.forEach(cb => {
+        cb.checked = checkbox.checked;
+    });
+    updateBulkActions();
+}
+</script>
 @endsection

@@ -11,14 +11,25 @@
                              class="banner-media"
                              data-type="image">
                     @elseif($banner->media_type === 'video')
-                        <video class="banner-media" data-type="video" playsinline muted>
+                        <video class="banner-media" 
+                               data-type="video" 
+                               playsinline 
+                               muted 
+                               autoplay 
+                               loop
+                               preload="metadata"
+                               style="width: 100%; height: 100%; object-fit: cover;">
                             <source src="{{ asset($banner->file_path) }}" type="video/mp4">
+                            <source src="{{ asset(str_replace('.mp4', '.webm', $banner->file_path)) }}" type="video/webm">
+                            Your browser does not support the video tag.
                         </video>
                     @endif
                 </div>
                 <!-- Link Overlay -->
                 @if($banner->banner_link)
-                    <a href="{{ $banner->banner_link }}" class="slide-link-overlay" title="View products"></a>
+                    <a href="{{ isset($filterUrl) ? $filterUrl : $banner->banner_link }}" class="slide-link-overlay" title="View products"></a>
+                @else
+                    <a href="{{ isset($filterUrl) ? $filterUrl : route('products.index') }}" class="slide-link-overlay" title="View products"></a>
                 @endif
             </div>
         @empty

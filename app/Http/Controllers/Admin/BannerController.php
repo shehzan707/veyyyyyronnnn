@@ -19,7 +19,7 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,webm,ogg|max:102400',
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,webm,ogg,mov,avi|max:204800', // Increased to 200MB for high-quality videos
             'section' => 'required|in:default,men,women,accessories,footwear',
             'banner_link' => 'nullable|url',
             'display_order' => 'nullable|integer|min:0',
@@ -32,13 +32,24 @@ class BannerController extends Controller
         if (strpos($mimeType, 'image') !== false) {
             $mediaType = 'image';
             $folder = 'banners/images';
+            $path = $file->storeAs($folder, $file->getClientOriginalName(), 'public');
         } else {
+            // For videos: preserve original format and quality
             $mediaType = 'video';
             $folder = 'banners/videos';
+            
+            // Use original name to preserve quality and codec
+            $originalName = $file->getClientOriginalName();
+            $path = $file->storeAs($folder, $originalName, 'public');
+            
+            // Optional: Log video info for debugging
+            \Log::info('Video uploaded', [
+                'name' => $originalName,
+                'size' => $file->getSize(),
+                'mime' => $mimeType,
+                'path' => $path,
+            ]);
         }
-
-        // Store with original filename to preserve quality and format
-        $path = $file->storeAs($folder, $file->getClientOriginalName(), 'public');
 
         // Create banner with all new fields
         MediaFile::create([

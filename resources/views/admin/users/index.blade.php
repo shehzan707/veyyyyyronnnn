@@ -11,6 +11,41 @@
 .btn-delete { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
 .btn-delete:hover { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
 h2 { color: #fff; }
+
+/* Light Theme Overrides */
+body.theme-light .users-table {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+body.theme-light .users-table th {
+    background: #f9f9f9;
+    color: #000000;
+}
+
+body.theme-light .users-table td {
+    color: #000000;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+body.theme-light h2 {
+    color: #000000;
+}
+
+body.theme-dark .users-table {
+    background: #323232;
+    border: 1px solid #444444;
+}
+
+body.theme-dark .users-table th {
+    background: #3d3d3d;
+    color: #ffffff;
+}
+
+body.theme-dark .users-table td {
+    color: #ffffff;
+    border-bottom: 1px solid #444444;
+}
 </style>
 @endpush
 

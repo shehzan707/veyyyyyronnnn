@@ -21,26 +21,42 @@ class AnalyticsController extends Controller
 
     public function getAnalyticsData(Request $request)
     {
-        $data = $this->generateAnalyticsData($request);
-        return response()->json($data);
+        try {
+            $data = $this->generateAnalyticsData($request);
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error loading analytics data',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     private function generateAnalyticsData(Request $request = null)
     {
-        $dateFrom = $request ? Carbon::parse($request->date_from ?? Carbon::now()->subDays(30)) : Carbon::now()->subDays(30);
-        $dateTo = $request ? Carbon::parse($request->date_to ?? Carbon::now()) : Carbon::now();
+        try {
+            if ($request && $request->filled('date_from') && $request->filled('date_to')) {
+                $dateFrom = Carbon::createFromFormat('Y-m-d', $request->date_from)->startOfDay();
+                $dateTo = Carbon::createFromFormat('Y-m-d', $request->date_to)->endOfDay();
+            } else {
+                $dateFrom = Carbon::now()->subDays(30)->startOfDay();
+                $dateTo = Carbon::now()->endOfDay();
+            }
 
-        return [
-            'kpis' => $this->getKPIs($dateFrom, $dateTo),
-            'topProducts' => $this->getTopProducts($dateFrom, $dateTo),
-            'topCategories' => $this->getTopCategories($dateFrom, $dateTo),
-            'dailySales' => $this->getDailySales(),
-            'monthlySales' => $this->getMonthlySales(),
-            'yearlySales' => $this->getYearlySales(),
-            'revenueVsOrders' => $this->getRevenueVsOrders($dateFrom, $dateTo),
-            'customerAnalytics' => $this->getCustomerAnalytics($dateFrom, $dateTo),
-            'lowStockProducts' => $this->getLowStockProducts(),
-        ];
+            return [
+                'kpis' => $this->getKPIs($dateFrom, $dateTo),
+                'topProducts' => $this->getTopProducts($dateFrom, $dateTo),
+                'topCategories' => $this->getTopCategories($dateFrom, $dateTo),
+                'dailySales' => $this->getDailySales(),
+                'monthlySales' => $this->getMonthlySales(),
+                'yearlySales' => $this->getYearlySales(),
+                'revenueVsOrders' => $this->getRevenueVsOrders($dateFrom, $dateTo),
+                'customerAnalytics' => $this->getCustomerAnalytics($dateFrom, $dateTo),
+                'lowStockProducts' => $this->getLowStockProducts(),
+            ];
+        } catch (\Exception $e) {
+            throw new \Exception('Error processing dates: ' . $e->getMessage());
+        }
     }
 
     private function getKPIs($dateFrom, $dateTo)

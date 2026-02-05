@@ -75,4 +75,30 @@ class Product extends Model
         }
         return false;
     }
+
+    /**
+     * Check if product category should have sizes displayed
+     * Accessories don't have sizes
+     */
+    public function shouldShowSizes()
+    {
+        $accessoriesCategories = [
+            'Wallets',
+            'Belts',
+            'Sunglasses',
+            'Caps',
+            'Rings',
+            'Bracelets',
+            'Handbags',
+            'Backpacks',
+            'Leather Strap',
+            'Chain Strap',
+        ];
+        
+        if ($this->categoryModel) {
+            return !in_array($this->categoryModel->name, $accessoriesCategories);
+        }
+        
+        return !in_array($this->category, $accessoriesCategories);
+    }
 }

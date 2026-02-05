@@ -11,32 +11,38 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query();
+        $query = Product::with(['categoryModel' => function($query) {
+            $query->with('parent');
+        }]);
 
-        // Gender/Type filter mapping to categories
+        // Gender/Type filter mapping to specific categories
         if ($request->filled('gender')) {
             $gender = $request->gender;
             $categoryIds = [];
             
             if ($gender === 'men') {
-                // Men's categories: Shirts, Jeans, Tops, T-shirts, etc.
+                // Men's specific categories
                 $categoryIds = Category::whereIn('name', 
-                    ['Shirts', 'Jeans', 'Tops', 'Casual Shoes', 'Jackets', 'T-Shirts', 'Formal Shirts', 'Shorts']
+                    ['Formal Shirts', 'Casual Shirt', 'Jackets', 'T shirt', 'Blazers', 'Suits', 
+                     'Overcoats', 'Sweatshirt', 'Denim', 'Sweatpant', 'Trouser', 'Shorts']
                 )->pluck('id')->toArray();
             } elseif ($gender === 'women') {
-                // Women's categories: Dresses, Sarees, Kurtis, etc.
+                // Women's specific categories
                 $categoryIds = Category::whereIn('name',
-                    ['Dresses', 'Tops', 'Jeans', 'Handbags', 'Sarees', 'Kurtis', 'Leggings']
+                    ['Tops', 'Shirts', 'Dress', 'Sweatshirts', 'Crop tops', 'Trousers', 
+                     'Jeans', 'Long Skirts', 'Sweatbottoms', 'Half Skirts']
                 )->pluck('id')->toArray();
             } elseif ($gender === 'accessories') {
-                // Accessories: Watches, Sunglasses, Belts, etc.
+                // Accessories specific categories
                 $categoryIds = Category::whereIn('name',
-                    ['Watches', 'Sunglasses', 'Belts', 'Scarves', 'Hats', 'Handbags', 'Jewelry']
+                    ['Wallets', 'Belts', 'Sunglasses', 'Caps', 'Rings', 'Bracelets', 
+                     'Handbags', 'Backpacks', 'Leather Strap', 'Chain Strap']
                 )->pluck('id')->toArray();
             } elseif ($gender === 'footwear') {
-                // Footwear: Shoes, Sandals, Boots, etc.
+                // Footwear specific categories
                 $categoryIds = Category::whereIn('name',
-                    ['Casual Shoes', 'Sports Shoes', 'Formal Shoes', 'Sandals', 'Heels', 'Boots', 'Flip Flops']
+                    ['Casual Shoes', 'Sneakers', 'Formal Shoes', 'Slides', 'Heels', 
+                     'casual boots', 'Sneaker', 'Sandles']
                 )->pluck('id')->toArray();
             }
             
@@ -64,9 +70,16 @@ class ProductController extends Controller
             }
         }
 
-        // Search filter
+        // Search filter - match whole words, not substrings
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $searchTerm = $request->search;
+            // Use word boundary matching to avoid "men" matching "women"
+            $query->where(function($q) use ($searchTerm) {
+                // Match as separate word or exact phrase
+                $q->where('name', 'like', $searchTerm . '%')  // Start of name
+                  ->orWhere('name', 'like', '% ' . $searchTerm . '%')  // After space
+                  ->orWhere('name', '=', $searchTerm);  // Exact match
+            });
         }
 
         // Price filters
@@ -87,7 +100,9 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with(['categoryModel' => function($query) {
+            $query->with('parent');
+        }])->findOrFail($id);
         return view('shop.product-detail', compact('product'));
     }
 }

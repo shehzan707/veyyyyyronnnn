@@ -256,15 +256,7 @@ body{
 @endpush
 
 @section('content')
-<!-- FULLSCREEN VIDEO -->
-<div class="fullscreen-video-container" id="videoContainer">
-    <video id="startVideo" autoplay muted playsinline style="display:block;" preload="auto">
-        <source src="{{ asset('images/start.mp4') }}" type="video/mp4">
-        <source src="{{ asset('images/start.m4p') }}" type="video/mp4">
-    </video>
-</div>
-
-@include('components.banner-carousel',['banners'=>$banners])
+@include('components.banner-carousel',['banners'=>$banners, 'filterUrl' => route('products.index')])
 
 <div class="home-container">
 
@@ -278,7 +270,7 @@ body{
 <div class="poster-section">
 
 <!-- RALPH LAUREN -->
-<a href="/shop/men" class="poster-card">
+<a href="{{ route('products.index', ['search' => 'Ralph Lauren']) }}" class="poster-card">
 <div class="poster-wrapper">
 <img src="{{ asset('images/ralph_lauren.jpg') }}" class="main-img" alt="">
 <img src="{{ asset('images/ralph_lauren1.jpg') }}" class="hover-img" alt="">
@@ -293,7 +285,7 @@ body{
 </a>
 
 <!-- pp -->
-<a href="/shop/men" class="poster-card">
+<a href="{{ route('products.index', ['search' => 'Philippe passainle']) }}" class="poster-card">
 <div class="poster-wrapper">
 <img src="{{ asset('images/pp.jpg') }}" class="main-img">
 <img src="{{ asset('images/pp1.jpg') }}" class="hover-img">
@@ -308,7 +300,7 @@ body{
 </a>
 
 <!-- sm -->
-<a href="/shop/men" class="poster-card">
+<a href="{{ route('products.index', ['search' => 'Serapian Mileno']) }}" class="poster-card">
 <div class="poster-wrapper">
 <img src="{{ asset('images/sm.jpg') }}" class="main-img">
 <img src="{{ asset('images/sm1.jpg') }}" class="hover-img">
@@ -323,7 +315,7 @@ body{
 </a>
 
 <!-- dd -->
-<a href="/shop/men" class="poster-card">
+<a href="{{ route('products.index', ['search' => 'Dunhil']) }}" class="poster-card">
 <div class="poster-wrapper">
 <img src="{{ asset('images/dn.jpg') }}" class="main-img">
 <img src="{{ asset('images/dn1.jpg') }}" class="hover-img">
@@ -349,7 +341,7 @@ body{
 
     <div class="poster-section">
 
-        <a href="/shop/women" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'VOGUE']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/v1.jpeg') }}" class="main-img">
                 <img src="{{ asset('images/v.jpeg') }}" class="hover-img">
@@ -363,7 +355,7 @@ body{
             </div>
         </a>
 
-        <a href="/shop/women" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'PRADA']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/pa.jpg') }}" class="main-img">
                 <img src="{{ asset('images/pa1.jpeg') }}" class="hover-img">
@@ -377,7 +369,7 @@ body{
             </div>
         </a>
 
-        <a href="/shop/women" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'CHANEL']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/b.jpeg') }}" class="main-img">
                 <img src="{{ asset('images/b1.jpg') }}" class="hover-img">
@@ -391,7 +383,7 @@ body{
             </div>
         </a>
 
-        <a href="/shop/women" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'BALENCIAGA']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/bb.jpeg') }}" class="main-img">
                 <img src="{{ asset('images/bb1.jpeg') }}" class="hover-img">
@@ -418,7 +410,7 @@ body{
 
     <div class="poster-section">
 
-        <a href="/shop/footwear" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'Nike']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/nk.jpg') }}" class="main-img">
                 <img src="{{ asset('images/nk1.jpg') }}" class="hover-img">
@@ -432,7 +424,7 @@ body{
             </div>
         </a>
 
-        <a href="/shop/footwear" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'Puma']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/p.jpg') }}" class="main-img">
                 <img src="{{ asset('images/p1.jpg') }}" class="hover-img">
@@ -446,7 +438,7 @@ body{
             </div>
         </a>
 
-        <a href="/shop/footwear" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'Adidas']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/adi.jpg') }}" class="main-img">
                 <img src="{{ asset('images/adi1.jpg') }}" class="hover-img">
@@ -460,7 +452,7 @@ body{
             </div>
         </a>
 
-        <a href="/shop/footwear" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'Formal Shoes']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/f1.jpg') }}" class="main-img">
                 <img src="{{ asset('images/f.jpg') }}" class="hover-img">
@@ -486,7 +478,7 @@ body{
 
     <div class="poster-section">
 
-        <a href="/shop/glasses" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'VERSAGE']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/ve.jpg') }}" class="main-img">
                 <img src="{{ asset('images/ve1.jpg') }}" class="hover-img">
@@ -500,7 +492,7 @@ body{
             </div>
         </a>
 
-        <a href="/shop/glasses" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'DOLCE & GABBANA']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/dg.jpg') }}" class="main-img">
                 <img src="{{ asset('images/dg1.jpg') }}" class="hover-img">
@@ -514,7 +506,7 @@ body{
             </div>
         </a>
 
-        <a href="/shop/glasses" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'GUCCI']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/gc.jpg') }}" class="main-img">
                 <img src="{{ asset('images/gc1.jpg') }}" class="hover-img">
@@ -528,7 +520,7 @@ body{
             </div>
         </a>
 
-        <a href="/shop/glasses" class="poster-card">
+        <a href="{{ route('products.index', ['search' => 'RAY-BUN']) }}" class="poster-card">
             <div class="poster-wrapper">
                 <img src="{{ asset('images/rb.jpg') }}" class="main-img">
                 <img src="{{ asset('images/rb1.jpg') }}" class="hover-img">
@@ -536,7 +528,7 @@ body{
                 <div class="veyron-watermark">VEYRON</div>
             </div>
             <div class="poster-brand">
-                <h3 class="brand-name">RAY-BUN</h3>
+                <h3 class="brand-name">RAY-BAN</h3>
                 <div class="brand-decoration"></div>
                 <p class="brand-tagline">Iconic Vision Since 1937</p>
             </div>
@@ -554,56 +546,4 @@ body{
 </div>
 @endsection
 
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded',function(){
-    const videoContainer=document.getElementById('videoContainer');
-    const startVideo=document.getElementById('startVideo');
-    const videoPlayedKey='veyron_video_played_session';
-
-    // Check if video has already been played this session
-    if(sessionStorage.getItem(videoPlayedKey)){
-        videoContainer.style.display='none';
-        return;
-    }
-
-    // Show the video container
-    videoContainer.style.display='block';
-
-    // Try to play video
-    const playPromise=startVideo.play();
-    if(playPromise!==undefined){
-        playPromise.then(function(){
-            console.log('Video playing');
-        }).catch(function(error){
-            console.log('Autoplay prevented, trying on user interaction');
-            document.addEventListener('click',function(){
-                startVideo.play();
-            },{once:true});
-        });
-    }
-
-    // Handle video end
-    startVideo.addEventListener('ended',function(){
-        hideVideo();
-    });
-
-    // Hide video after 5 seconds if it doesn't play
-    setTimeout(function(){
-        if(startVideo.currentTime===0&&!startVideo.paused){
-            return;
-        }
-    },5000);
-
-    // Function to hide video with smooth animation
-    function hideVideo(){
-        videoContainer.style.transition='opacity 0.3s ease-out';
-        videoContainer.style.opacity='0';
-        setTimeout(function(){
-            videoContainer.style.display='none';
-            sessionStorage.setItem(videoPlayedKey,'true');
-        },300);
-    }
-});
-</script>
 @endpush

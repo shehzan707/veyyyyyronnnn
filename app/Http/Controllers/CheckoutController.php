@@ -197,7 +197,7 @@ class CheckoutController extends Controller
 
         // Validate stock
         foreach ($cart as $item) {
-            if (!empty($item['size'])) {
+            if (!empty($item['size']) && $item['size'] !== 'one-size') {
                 $sizeRecord = Size::where('product_id', $item['id'])
                     ->where('size', $item['size'])
                     ->first();
@@ -206,6 +206,17 @@ class CheckoutController extends Controller
                     return redirect()->route('cart.index')->with(
                         'error',
                         "Sorry, {$item['name']} in size {$item['size']} has insufficient stock."
+                    );
+                }
+            } elseif ($item['size'] === 'one-size') {
+                // For accessories, check total stock
+                $product = \App\Models\Product::find($item['id']);
+                $totalStock = $product->getTotalStock();
+                
+                if ($totalStock < $item['quantity']) {
+                    return redirect()->route('cart.index')->with(
+                        'error',
+                        "Sorry, {$item['name']} has insufficient stock."
                     );
                 }
             }
@@ -293,7 +304,7 @@ class CheckoutController extends Controller
                 ]);
 
                 // Decrease stock for the specific size
-                if (!empty($item['size'])) {
+                if (!empty($item['size']) && $item['size'] !== 'one-size') {
                     $sizeRecord = Size::where('product_id', $item['id'])
                         ->where('size', $item['size'])
                         ->lockForUpdate()
@@ -303,6 +314,16 @@ class CheckoutController extends Controller
                         $sizeRecord->stock -= $item['quantity'];
                         
                         // Update is_available status
+                        $sizeRecord->is_available = $sizeRecord->stock > 0 ? 1 : 0;
+                        $sizeRecord->save();
+                    }
+                } elseif ($item['size'] === 'one-size') {
+                    // For accessories, deduct from first available size record
+                    $product = \App\Models\Product::find($item['id']);
+                    $sizeRecord = $product->sizeVariants()->lockForUpdate()->first();
+                    
+                    if ($sizeRecord) {
+                        $sizeRecord->stock -= $item['quantity'];
                         $sizeRecord->is_available = $sizeRecord->stock > 0 ? 1 : 0;
                         $sizeRecord->save();
                     }

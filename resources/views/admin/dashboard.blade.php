@@ -37,10 +37,26 @@
     color: #e2e8f0;
 }
 
+.theme-light .stat-card .value {
+    color: #000000;
+}
+
 .stat-card .label {
     color: #cbd5e1;
     font-size: 0.95rem;
     margin-top: 5px;
+}
+
+.theme-light .stat-card .label {
+    color: #333333;
+}
+
+.theme-dark .stat-card .value {
+    color: #ffffff;
+}
+
+.theme-dark .stat-card .label {
+    color: #ffffff;
 }
 
 .stat-orders .icon { color: #3b82f6; }

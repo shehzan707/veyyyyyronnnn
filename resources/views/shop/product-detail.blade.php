@@ -240,31 +240,36 @@
             @csrf
             <input type="hidden" value="{{ $product->id }}" id="productId">
 
-            @php
-                $sizes = json_decode($product->sizes,true);
-                if(!is_array($sizes)){
-                    $sizes = array_map('trim', explode(',', $product->sizes));
-                }
-                // Get stock information for each size
-                $stockData = [];
-                foreach($sizes as $size) {
-                    $sizeVariant = $product->sizeVariants()->where('size', $size)->first();
-                    $stockData[$size] = $sizeVariant ? $sizeVariant->stock : 0;
-                }
-            @endphp
+            @if($product->shouldShowSizes())
+                @php
+                    $sizes = json_decode($product->sizes,true);
+                    if(!is_array($sizes)){
+                        $sizes = array_map('trim', explode(',', $product->sizes));
+                    }
+                    // Get stock information for each size
+                    $stockData = [];
+                    foreach($sizes as $size) {
+                        $sizeVariant = $product->sizeVariants()->where('size', $size)->first();
+                        $stockData[$size] = $sizeVariant ? $sizeVariant->stock : 0;
+                    }
+                @endphp
 
-            <label><strong>Select Size</strong></label>
-            <br>
-            <div class="size-selector">
-                @foreach($sizes as $size)
-                    <div class="size-option {{ $stockData[$size] == 0 ? 'disabled' : '' }}" data-size="{{ $size }}" data-stock="{{ $stockData[$size] }}" {{ $stockData[$size] == 0 ? 'data-disabled="true"' : '' }}>
-                        {{ $size }} 
-                        <span style="font-size:0.85rem; color:#888;"></span>
-                    </div>
-                @endforeach
-            </div>
-            <div class="size-error"></div>
-            <div id="stockWarning" style="color:#dc3545; font-size:0.9rem; display:none; margin-top:10px; font-weight:600;"></div>
+                <label><strong>Select Size</strong></label>
+                <br>
+                <div class="size-selector">
+                    @foreach($sizes as $size)
+                        <div class="size-option {{ $stockData[$size] == 0 ? 'disabled' : '' }}" data-size="{{ $size }}" data-stock="{{ $stockData[$size] }}" {{ $stockData[$size] == 0 ? 'data-disabled="true"' : '' }}>
+                            {{ $size }} 
+                            <span style="font-size:0.85rem; color:#888;"></span>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="size-error"></div>
+                <div id="stockWarning" style="color:#dc3545; font-size:0.9rem; display:none; margin-top:10px; font-weight:600;"></div>
+            @else
+                {{-- Hide size selector for accessories --}}
+                <input type="hidden" id="sizeSelected" value="one-size" data-size="one-size">
+            @endif
 
             <div class="quantity-selector">
     <span style="font-weight:600;">Quantity</span>
@@ -376,9 +381,14 @@ function changeQty(val){
 document.getElementById('addToCartForm').addEventListener('submit',function(e){
     e.preventDefault();
 
-    if(!selectedSize){
+    // Check if this product should have size selection
+    const sizeInput = document.getElementById('sizeSelected');
+    const hasSizes = document.querySelectorAll('.size-option').length > 0;
+
+    if(hasSizes && !selectedSize){
         document.querySelector('.size-error').style.display='block';
         document.querySelector('.size-error').innerHTML = 'Please select a size';
+        const sizeOptions = document.querySelectorAll('.size-option');
         sizeOptions.forEach(s=>{
             s.classList.add('jiggle');
             setTimeout(()=>s.classList.remove('jiggle'),400);
@@ -386,18 +396,22 @@ document.getElementById('addToCartForm').addEventListener('submit',function(e){
         return;
     }
 
+    // For accessories without sizes, use the hidden input value
+    const finalSize = hasSizes ? selectedSize : (sizeInput ? sizeInput.value : 'one-size');
+    const finalStock = hasSizes ? selectedStock : 999; // Accessories assume available stock
+
     // Final validation before submit
     const quantity = parseInt(document.getElementById('qtyInput').value);
     
-    if (selectedStock <= 0) {
+    if (hasSizes && finalStock <= 0) {
         quantityWarning.style.display = 'block';
         quantityWarning.innerHTML = `❌ This size is currently out of stock`;
         return;
     }
     
-    if (quantity > selectedStock) {
+    if (quantity > finalStock) {
         quantityWarning.style.display = 'block';
-        quantityWarning.innerHTML = `⚠️ ${selectedSize} size only has ${selectedStock} items in stock. Please select ${selectedStock} or less.`;
+        quantityWarning.innerHTML = `⚠️ Only ${finalStock} items in stock. Please select ${finalStock} or less.`;
         return;
     }
 
@@ -412,7 +426,7 @@ document.getElementById('addToCartForm').addEventListener('submit',function(e){
         },
         body:JSON.stringify({
             quantity:document.getElementById('qtyInput').value,
-            size:selectedSize
+            size:finalSize
         })
     }).then(res => {
         if (!res.ok) {

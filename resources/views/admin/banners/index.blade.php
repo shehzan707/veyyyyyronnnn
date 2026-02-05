@@ -305,6 +305,197 @@ input:checked + .toggle-slider:before {
     .banners-container { grid-template-columns: 1fr; }
     .form-card { position: static; }
 }
+
+/* Light Theme Overrides for Banners */
+body.theme-light .banners-section h2 {
+    color: #000000;
+}
+
+body.theme-light .filter-btn {
+    background: #ffffff !important;
+    border: 1px solid #cccccc !important;
+    color: #333333 !important;
+}
+
+body.theme-light .filter-btn:hover,
+body.theme-light .filter-btn.active {
+    background: #f0f0f0 !important;
+    border-color: #808080 !important;
+    color: #000000 !important;
+}
+
+body.theme-light .banner-card {
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+}
+
+body.theme-light .banner-card:hover {
+    background: #f9f9f9 !important;
+    border-color: #cccccc !important;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+body.theme-light .banner-type {
+    background: transparent;
+    color: #666666;
+}
+
+body.theme-light .banner-type.image {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+body.theme-light .banner-type.video {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+body.theme-light .banner-section-badge {
+    background: rgba(168, 85, 247, 0.1);
+    color: #a855f7;
+}
+
+body.theme-light .banner-name {
+    color: #000000;
+}
+
+body.theme-light .banner-details {
+    color: #666666;
+}
+
+body.theme-light .banner-link-preview {
+    color: #0066cc;
+}
+
+body.theme-light .form-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+body.theme-light .form-card h3 {
+    color: #000000;
+}
+
+body.theme-light .form-group label {
+    color: #333333;
+}
+
+body.theme-light .form-group input,
+body.theme-light .form-group select,
+body.theme-light .form-group textarea {
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    color: #000000;
+}
+
+body.theme-light .form-group input:focus,
+body.theme-light .form-group select:focus,
+body.theme-light .form-group textarea:focus {
+    border-color: #808080;
+    background: #f9f9f9;
+    box-shadow: 0 0 8px rgba(128, 128, 128, 0.2);
+}
+
+body.theme-light .file-input-label {
+    border: 2px dashed #cccccc;
+    background: #f9f9f9;
+    color: #333333;
+}
+
+body.theme-light .file-input-label:hover {
+    border-color: #808080;
+    background: #f0f0f0;
+}
+
+body.theme-light .btn-submit {
+    background: #808080 !important;
+    color: #ffffff !important;
+}
+
+body.theme-light .btn-submit:hover {
+    background: #808080 !important;
+    transform: none;
+}
+
+body.theme-light .empty-state {
+    border: 2px dashed #cccccc;
+    color: #666666;
+    background: transparent;
+}
+
+/* Dark Theme Overrides */
+body.theme-dark .banners-section h2 {
+    color: #ffffff;
+}
+
+body.theme-dark .filter-btn {
+    background: #808080 !important;
+    border: 1px solid #808080 !important;
+    color: #ffffff !important;
+}
+
+body.theme-dark .filter-btn:hover,
+body.theme-dark .filter-btn.active {
+    background: #808080 !important;
+    border-color: #808080 !important;
+    color: #ffffff !important;
+    transform: none;
+}
+
+body.theme-dark .banner-card {
+    background: #323232 !important;
+    border: 1px solid #444444 !important;
+}
+
+body.theme-dark .banner-card:hover {
+    background: #3d3d3d !important;
+    border-color: #555555 !important;
+    transform: translateX(5px);
+}
+
+body.theme-dark .banner-name {
+    color: #ffffff;
+}
+
+body.theme-dark .banner-details {
+    color: #b0b0b0;
+}
+
+body.theme-dark .banner-link-preview {
+    color: #60a5fa;
+}
+
+body.theme-dark .form-card {
+    background: #323232;
+    border: 1px solid #444444;
+}
+
+body.theme-dark .form-card h3 {
+    color: #ffffff;
+}
+
+body.theme-dark .form-group label {
+    color: #e0e0e0;
+}
+
+body.theme-dark .form-group input,
+body.theme-dark .form-group select,
+body.theme-dark .form-group textarea {
+    background: #1a1a1a;
+    border: 1px solid #444444;
+    color: #ffffff;
+}
+
+body.theme-dark .btn-submit {
+    background: #808080 !important;
+    color: #ffffff !important;
+}
+
+body.theme-dark .btn-submit:hover {
+    background: #808080 !important;
+    transform: none;
+}
 </style>
 @endpush
 
