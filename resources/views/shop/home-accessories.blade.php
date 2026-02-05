@@ -9,13 +9,14 @@
     .home-container { max-width:1200px; margin:2rem auto; padding:0 1rem; display:flex; flex-direction:column; gap:2rem; }
 
     .category-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #222;
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: #A9A9A9;
         margin: 2rem 0 1rem 0;
         text-transform: uppercase;
-        letter-spacing: 2px;
+        letter-spacing: 3px;
         text-align: center;
+        font-family: 'Georgia', 'Poster', serif;
     }
 
     .category-subtitle {

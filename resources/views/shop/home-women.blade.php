@@ -4,103 +4,265 @@
 
 @push('styles')
 <style>
-    body { font-family: 'Poppins', sans-serif; margin:0; padding:0; background:#f4f4f4; }
+:root{
+    --black:#080808;
+    --dark:#121212;
+    --mid:#7a7a7a;
+    --light:#ededed;
+    --white:#ffffff;
+}
 
-    .home-container { max-width:1200px; margin:2rem auto; padding:0 1rem; display:flex; flex-direction:column; gap:2rem; }
+/* RESET */
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:'Poppins',system-ui,sans-serif;
+    background:var(--white);
+    color:var(--black);
+}
 
-    .category-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #222;
-        margin: 2rem 0 1rem 0;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        text-align: center;
-    }
+/* FULL BLEED CONTAINER */
+.home-container{
+    max-width:100%;
+    margin:0;
+    padding:2px;
+}
 
-    .category-subtitle {
-        text-align: center;
-        color: #666;
-        font-size: 1rem;
-        margin-bottom: 2rem;
-        font-weight: 300;
-    }
+/* GROUP */
+.subcategory-group{
+    margin:6rem 0 8rem;
+    padding:0 2.2rem;
+}
 
-    /* Poster Section */
-    .poster-section {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 1.5rem;
-        margin-top: 2rem;
-    }
+/* TITLES */
+.subcategory-group-title{
+    font-size:3.2rem;
+    font-weight:900;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    margin-bottom:4.8rem;
+    position:relative;
+    color:#000;
+}
 
-    .poster-card {
-        background: #fff;
-        border-radius: 16px;
-        overflow: hidden;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-        text-decoration: none;
-        color: inherit;
-    }
-    .poster-card:hover { transform: translateY(-5px); }
+/* GHOST BRAND */
+.subcategory-group-title::before{
+    content:'VEYRON';
+    position:absolute;
+    top:-2.4rem;
+    left:0;
+    font-size:7.2rem;
+    font-weight:900;
+    letter-spacing:10px;
+    color:rgba(0,0,0,0.12);
+    pointer-events:none;
+}
 
-    .poster-wrapper { position: relative; }
-    .poster-wrapper img {
-        width: 100%;
-        height: 350px;
-        object-fit: cover;
-        display: block;
-        border-bottom: 1px solid #eee;
-    }
+/* HARD UNDERLINE */
+.subcategory-group-title::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-18px;
+    width:90px;
+    height:3px;
+    background:#000;
+}
 
-    .veyron-watermark {
-        position: absolute;
-        top: 12px;
-        right: 15px;
-        font-size: 22px;
-        font-weight: bold;
-        color: rgba(255,255,255,0.7);
-        text-shadow: 0 0 6px rgba(0,0,0,0.4);
-        opacity: 0.9;
-    }
+/* GRID */
+.subcategory-cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:3.4rem;
+}
 
-    .poster-text {
-        padding: 10px 5px 18px;
-        font-size: 0.95rem;
-        color: #333;
-        line-height: 1.5;
-    }
+/* CARD – EDGY */
+.subcategory-card{
+    position:relative;
+    height:540px;
+    background:#000;
+    border-radius:6px;
+    overflow:hidden;
+    text-decoration:none;
+    color:#fff;
+    transform-style:preserve-3d;
+    transition:
+        transform .9s cubic-bezier(.23,1,.32,1),
+        box-shadow .9s cubic-bezier(.23,1,.32,1);
+    box-shadow:0 30px 60px rgba(0,0,0,.35);
+}
 
-    @media (max-width: 768px) {
-        .home-container { margin: 1rem auto; padding: 0 0.5rem; }
-        .category-title { font-size: 1.8rem; }
-        .poster-section { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
-        .poster-wrapper img { height: 250px; }
-    }
+.subcategory-card:hover{
+    transform:translateY(-26px) rotateX(7deg);
+    box-shadow:0 90px 140px rgba(0,0,0,.55);
+}
+
+/* IMAGE */
+.subcategory-card-image{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.subcategory-card-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transform:scale(1.08);
+    transition:transform 1.2s cubic-bezier(.23,1,.32,1),
+               filter .8s ease;
+}
+
+.subcategory-card:hover img{
+    transform:scale(1.28) translateY(-22px);
+    filter:grayscale(.05) contrast(1.1);
+}
+
+/* MASK */
+.subcategory-card::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,.92),
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.95)
+        );
+    opacity:.85;
+    transition:opacity .6s ease;
+}
+
+.subcategory-card:hover::after{
+    opacity:1;
+}
+
+/* CONTENT */
+.subcategory-card-content{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    padding:3.2rem 2.6rem;
+    transform:translateY(46px);
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
+    z-index:2;
+}
+
+.subcategory-card:hover .subcategory-card-content{
+    transform:translateY(0);
+}
+
+/* NAME */
+.subcategory-card-name{
+    font-size:1.9rem;
+    font-weight:900;
+    letter-spacing:1.6px;
+    margin:0 0 .8rem;
+}
+
+/* TAGLINE */
+.subcategory-card-tagline{
+    font-size:.95rem;
+    color:#d4d4d4;
+    letter-spacing:.8px;
+    line-height:1.6;
+    text-transform:uppercase;
+}
+
+/* ACCENT LINE */
+.subcategory-card-content::before{
+    content:'';
+    position:absolute;
+    top:-22px;
+    left:2.6rem;
+    width:72px;
+    height:3px;
+    background:#fff;
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
+}
+
+.subcategory-card:hover .subcategory-card-content::before{
+    transform:scaleX(1);
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .subcategory-group-title{font-size:2.4rem}
+    .subcategory-group-title::before{font-size:5.2rem}
+    .subcategory-card{height:440px}
+}
+
+@media(max-width:600px){
+    .subcategory-group{padding:0 1.4rem}
+    .subcategory-cards-grid{gap:2.2rem}
+}
 </style>
 @endpush
 
 @section('content')
-<!-- Premium Banner Carousel -->
-@include('components.banner-carousel', ['banners' => $banners])
+
+@include('components.banner-carousel', [
+    'banners' => $banners,
+    'filterUrl' => 'http://127.0.0.1:8000/products?gender=women'
+])
 
 <div class="home-container">
-    <h1 class="category-title">Women's Collection</h1>
-    <p class="category-subtitle">Discover our elegant women's fashion essentials</p>
-
-    <!-- Featured Products Section -->
-    <div class="poster-section">
-        @foreach($posters as $poster)
-            <a href="{{ $poster['link'] }}" class="poster-card">
-                <div class="poster-wrapper">
-                    <img src="{{ asset($poster['file']) }}" alt="Poster">
-                    <div class="veyron-watermark">VEYRON</div>
-                </div>
-                <div class="poster-text">{{ $poster['line1'] }}<br>{{ $poster['line2'] }}</div>
-            </a>
-        @endforeach
+    <div style="text-align: center; margin-bottom: 3rem;">
+        <h1 style="font-size: 3.5rem; font-weight: 900; color: #DB7093; margin: 2rem 0 1rem 0; text-transform: uppercase; letter-spacing: 3px; font-family: 'Georgia', 'Poster', serif;">Curated Womenswear</h1>
     </div>
+
+    <!-- TOPWEAR -->
+    <div class="subcategory-group">
+        <h2 class="subcategory-group-title">Defined Femininity</h2>
+        <div class="subcategory-cards-grid">
+
+            @foreach([
+                ['tops','Tops','Modern lines. Soft authority.','tops.jpg'],
+                ['Crop tops','Crop T-Shirts','Minimal cut. Maximum impact.','croptop.jpeg'],
+                ['shirts','Shirts','Structure with elegance','shirts.jpg'],
+                ['sweatshirts','Sweaters','Warm layers. Sharp presence.','sweater.jpg'],
+            ] as [$cat,$name,$tag,$img])
+            <a href="{{ route('products.index',['category'=>$cat,'gender'=>'women']) }}" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/'.$img) }}" alt="{{ $name }}">
+                </div>
+                <div class="subcategory-card-content">
+                    <h3 class="subcategory-card-name">{{ $name }}</h3>
+                    <p class="subcategory-card-tagline">{{ $tag }}</p>
+                </div>
+            </a>
+            @endforeach
+
+        </div>
+    </div>
+
+    <!-- BOTTOMWEAR -->
+    <div class="subcategory-group">
+        <h2 class="subcategory-group-title">Sculpted Movement</h2>
+        <div class="subcategory-cards-grid">
+
+            @foreach([
+                ['jeans','Jeans','Timeless fit. Modern edge.','jeans.jpg'],
+                ['SweatPants','Sweat Pants','Comfort, disciplined','swt.jpg'],
+                ['Half Skirts','Half Skirts','Precision with grace','skirt.jpg'],
+                ['Long skirts','Long Skirts','Fluid motion. Clean form.','lskirt.jpg'],
+            ] as [$cat,$name,$tag,$img])
+            <a href="{{ route('products.index',['category'=>$cat,'gender'=>'women']) }}" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/'.$img) }}" alt="{{ $name }}">
+                </div>
+                <div class="subcategory-card-content">
+                    <h3 class="subcategory-card-name">{{ $name }}</h3>
+                    <p class="subcategory-card-tagline">{{ $tag }}</p>
+                </div>
+            </a>
+            @endforeach
+
+        </div>
+    </div>
+
 </div>
 @endsection

@@ -9,13 +9,14 @@
     .home-container { max-width:1200px; margin:2rem auto; padding:0 1rem; display:flex; flex-direction:column; gap:2rem; }
 
     .category-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #222;
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: #87CEEB;
         margin: 2rem 0 1rem 0;
         text-transform: uppercase;
-        letter-spacing: 2px;
+        letter-spacing: 3px;
         text-align: center;
+        font-family: 'Georgia', 'Poster', serif;
     }
 
     .category-subtitle {
@@ -87,7 +88,7 @@
 @include('components.banner-carousel', ['banners' => $banners])
 
 <div class="home-container">
-    <h1 class="category-title">Men's Collection</h1>
+    <h1 class="category-title">Curated Menswear</h1>
     <p class="category-subtitle">Explore our premium selection of men's fashion</p>
 
     <!-- Featured Products Section -->
