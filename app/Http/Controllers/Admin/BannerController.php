@@ -19,7 +19,7 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,webm,ogg|max:102400',
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,webm,ogg,mov,avi|max:204800',
             'section' => 'required|in:default,men,women,accessories,footwear',
             'banner_link' => 'nullable|url',
             'display_order' => 'nullable|integer|min:0',

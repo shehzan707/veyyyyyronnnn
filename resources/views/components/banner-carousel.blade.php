@@ -11,8 +11,10 @@
                              class="banner-media"
                              data-type="image">
                     @elseif($banner->media_type === 'video')
-                        <video class="banner-media" data-type="video" playsinline muted>
+                        <video class="banner-media" data-type="video" playsinline muted autoplay loop preload="metadata">
                             <source src="{{ asset($banner->file_path) }}" type="video/mp4">
+                            <source src="{{ asset(str_replace('.mp4', '.webm', $banner->file_path)) }}" type="video/webm">
+                            Your browser does not support HTML5 video.
                         </video>
                     @endif
                 </div>
