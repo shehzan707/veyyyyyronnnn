@@ -158,7 +158,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Men's Footwear</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['gender' => 'footwear', 'categories' => ['Casual Shoes']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Casual Shoes']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/footwear/mens-casual-1.jpg') }}" alt="Men's Casual Shoes" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -166,7 +166,7 @@ body{
                 <div class="subcategory-card-text">Casual Sneakers Perfect for Everyday Comfort and Effortless Style</div>
                 <div class="subcategory-card-name">Men's Casual Shoes</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'footwear', 'categories' => ['Sports Shoes']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Sports Shoes']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/footwear/mens-sports-1.jpg') }}" alt="Men's Sports Shoes" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -174,7 +174,7 @@ body{
                 <div class="subcategory-card-text">Athletic Footwear Engineered for Performance and Active Lifestyles</div>
                 <div class="subcategory-card-name">Men's Sports Shoes</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'footwear', 'categories' => ['Formal Shoes']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Formal Shoes']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/footwear/mens-formal-1.jpg') }}" alt="Men's Formal Shoes" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -189,7 +189,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Women's Footwear</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['gender' => 'footwear', 'categories' => ['Casual Shoes']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Casual Shoes']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/footwear/womens-casual-1.jpg') }}" alt="Women's Casual Shoes" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -197,7 +197,7 @@ body{
                 <div class="subcategory-card-text">Casual Beauties Combine Comfort with Contemporary Chic Elegance</div>
                 <div class="subcategory-card-name">Women's Casual Shoes</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'footwear', 'categories' => ['Heels']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Heels']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/footwear/womens-heels-1.jpg') }}" alt="Women's Heels" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -205,7 +205,7 @@ body{
                 <div class="subcategory-card-text">Elegant Heels Elevate Your Style with Refined Feminine Sophistication</div>
                 <div class="subcategory-card-name">Women's Heels</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'footwear', 'categories' => ['Boots']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Boots']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/footwear/womens-boots-1.jpg') }}" alt="Women's Boots" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>

@@ -158,7 +158,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Wallets</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['categories' => ['Wallets']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Wallets']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/wallets-1.jpg') }}" alt="Wallets" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -166,7 +166,7 @@ body{
                 <div class="subcategory-card-text">Premium Leather Crafted with Timeless Elegance and Sophistication</div>
                 <div class="subcategory-card-name">Wallets</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Wallets']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Wallets']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/wallets-2.jpg') }}" alt="Wallets" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -174,7 +174,7 @@ body{
                 <div class="subcategory-card-text">Exquisite Designs Define Luxury Wallets Perfect for Every Occasion</div>
                 <div class="subcategory-card-name">Wallets</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Wallets']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Wallets']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/wallets-3.jpg') }}" alt="Wallets" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -189,7 +189,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Belts</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['categories' => ['Belts']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Belts']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/belts-1.jpg') }}" alt="Belts" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -197,7 +197,7 @@ body{
                 <div class="subcategory-card-text">Refined Styling Defines Your Silhouette with Perfect Precision Fit</div>
                 <div class="subcategory-card-name">Belts</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Belts']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Belts']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/belts-2.jpg') }}" alt="Belts" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -205,7 +205,7 @@ body{
                 <div class="subcategory-card-text">Elevated Accessories Complement Your Wardrobe with Timeless Class</div>
                 <div class="subcategory-card-name">Belts</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Belts']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Belts']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/belts-3.jpg') }}" alt="Belts" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -220,7 +220,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Watches</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['categories' => ['Watches']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Watches']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/watches-leather-1.jpg') }}" alt="Watches" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -228,7 +228,7 @@ body{
                 <div class="subcategory-card-text">Leather Strap Watches Combine Timeless Design with Modern Precision</div>
                 <div class="subcategory-card-name">Watches - Leather Strap</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Watches']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Watches']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/watches-chain-1.jpg') }}" alt="Watches" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -236,7 +236,7 @@ body{
                 <div class="subcategory-card-text">Chain Strap Watches Exude Luxury and Contemporary Sophisticated Style</div>
                 <div class="subcategory-card-name">Watches - Chain Strap</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Watches']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Watches']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/watches-2.jpg') }}" alt="Watches" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -251,7 +251,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Sunglasses</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['categories' => ['Sunglasses']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Sunglasses']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/sunglasses-1.jpg') }}" alt="Sunglasses" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -259,7 +259,7 @@ body{
                 <div class="subcategory-card-text">Iconic Sunglasses Define Your Style with Timeless UV Protection</div>
                 <div class="subcategory-card-name">Sunglasses</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Sunglasses']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Sunglasses']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/sunglasses-2.jpg') }}" alt="Sunglasses" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -267,7 +267,7 @@ body{
                 <div class="subcategory-card-text">Designer Eyewear Combines Fashion with Premium Quality Craftsmanship</div>
                 <div class="subcategory-card-name">Sunglasses</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Sunglasses']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Sunglasses']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/sunglasses-3.jpg') }}" alt="Sunglasses" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -282,7 +282,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Caps</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['categories' => ['Caps']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Caps']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/caps-1.jpg') }}" alt="Caps" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -290,7 +290,7 @@ body{
                 <div class="subcategory-card-text">Classic Caps Add Casual Flair to Your Everyday Fashion Ensemble</div>
                 <div class="subcategory-card-name">Caps</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Caps']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Caps']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/caps-2.jpg') }}" alt="Caps" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -298,7 +298,7 @@ body{
                 <div class="subcategory-card-text">Stylish Accessories Perfect for Sports or Casual Weekend Wear</div>
                 <div class="subcategory-card-name">Caps</div>
             </a>
-            <a href="{{ route('products', ['categories' => ['Caps']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['categories' => ['Caps']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/accessories/caps-3.jpg') }}" alt="Caps" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>

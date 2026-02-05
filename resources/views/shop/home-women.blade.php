@@ -158,7 +158,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Topwear</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['gender' => 'women', 'categories' => ['Tops']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Tops']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/women/topwear-1.jpg') }}" alt="Women's Tops" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -166,7 +166,7 @@ body{
                 <div class="subcategory-card-text">Refined Elegance with Understated Sophistication Here Today</div>
                 <div class="subcategory-card-name">Topwear</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'women', 'categories' => ['T-Shirts']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['T-Shirts']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/women/topwear-crop-1.jpg') }}" alt="Women's Crop T-Shirts" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -174,7 +174,7 @@ body{
                 <div class="subcategory-card-text">Contemporary Design Meets Timeless Classical Grace</div>
                 <div class="subcategory-card-name">Crop T-Shirts</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'women', 'categories' => ['Tops']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Tops']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/women/topwear-casual-1.jpg') }}" alt="Women's Casual Tops" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -189,7 +189,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Bottomwear</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['gender' => 'women', 'categories' => ['Jeans']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Jeans']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/women/bottomwear-jeans-1.jpg') }}" alt="Women's Jeans" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -197,7 +197,7 @@ body{
                 <div class="subcategory-card-text">Legendary Denim Refined with Timeless Elegant Essence</div>
                 <div class="subcategory-card-name">Jeans</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'women', 'categories' => ['Leggings']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Leggings']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/women/bottomwear-leggings-1.jpg') }}" alt="Women's Leggings" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -205,7 +205,7 @@ body{
                 <div class="subcategory-card-text">Comfortable Elegance Designed for Active Contemporary Life</div>
                 <div class="subcategory-card-name">Leggings</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'women', 'categories' => ['Skirts']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Skirts']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/women/bottomwear-skirts-1.jpg') }}" alt="Women's Skirts" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -220,7 +220,7 @@ body{
     <div class="subcategory-group">
         <h2 class="subcategory-group-title">Dresses</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products', ['gender' => 'women', 'categories' => ['Dresses']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Dresses']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/women/dresses-casual-1.jpg') }}" alt="Women's Casual Dresses" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -228,7 +228,7 @@ body{
                 <div class="subcategory-card-text">Casual Elegance Brings Timeless Beauty to Day Wear</div>
                 <div class="subcategory-card-name">Casual Dresses</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'women', 'categories' => ['Dresses']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Dresses']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/women/dresses-formal-1.jpg') }}" alt="Women's Formal Dresses" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
@@ -236,7 +236,7 @@ body{
                 <div class="subcategory-card-text">Formal Sophistication Defines Timeless Elegant Luxury</div>
                 <div class="subcategory-card-name">Formal Dresses</div>
             </a>
-            <a href="{{ route('products', ['gender' => 'women', 'categories' => ['Dresses']]) }}" class="subcategory-card">
+            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Dresses']]) }}" class="subcategory-card">
                 <div class="subcategory-card-image-wrapper">
                     <img src="{{ asset('images/women/dresses-party-1.jpg') }}" alt="Women's Party Dresses" class="subcategory-card-image">
                     <div class="subcategory-card-overlay"></div>
