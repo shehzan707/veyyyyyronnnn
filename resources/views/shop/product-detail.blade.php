@@ -251,18 +251,35 @@
                     $sizeVariant = $product->sizeVariants()->where('size', $size)->first();
                     $stockData[$size] = $sizeVariant ? $sizeVariant->stock : 0;
                 }
+                // Check if size is "B" (one size only)
+                $isSingleSizeB = count($sizes) === 1 && $sizes[0] === 'B';
             @endphp
 
-            <label><strong>Select Size</strong></label>
-            <br>
-            <div class="size-selector">
-                @foreach($sizes as $size)
-                    <div class="size-option {{ $stockData[$size] == 0 ? 'disabled' : '' }}" data-size="{{ $size }}" data-stock="{{ $stockData[$size] }}" {{ $stockData[$size] == 0 ? 'data-disabled="true"' : '' }}>
-                        {{ $size }} 
-                        <span style="font-size:0.85rem; color:#888;"></span>
-                    </div>
-                @endforeach
-            </div>
+          @if(!$isSingleSizeB)
+    <label><strong>Select Size</strong></label>
+    <br>
+@endif
+
+<div class="size-selector"{{ $isSingleSizeB ? ' style="display:none;"' : '' }}>
+    @foreach($sizes as $size)
+        @php
+            $classStr = $stockData[$size] == 0 ? 'disabled' : '';
+            if($isSingleSizeB) {
+                $classStr .= ' active';
+            }
+        @endphp
+
+        <div class="size-option {{ $classStr }}"
+             data-size="{{ $size }}"
+             data-stock="{{ $stockData[$size] }}"
+             @if($stockData[$size] == 0) data-disabled="true" @endif>
+            {{ $size }}
+        </div>
+    @endforeach
+</div>
+
+            <input type="hidden" id="selectedSize" value="{{ $isSingleSizeB ? 'B' : '' }}">
+
             <div class="size-error"></div>
             <div id="stockWarning" style="color:#dc3545; font-size:0.9rem; display:none; margin-top:10px; font-weight:600;"></div>
 
@@ -307,6 +324,18 @@ const sizeOptions = document.querySelectorAll('.size-option');
 const stockWarning = document.getElementById('stockWarning');
 const quantityWarning = document.getElementById('quantityWarning');
 const qtyInput = document.getElementById('qtyInput');
+
+// Auto-select size "B" if it's the only size
+const singleSizeB = document.getElementById('selectedSize');
+if (singleSizeB && singleSizeB.value === 'B') {
+    const bSizeOption = document.querySelector('[data-size="B"]');
+    if (bSizeOption) {
+        selectedSize = 'B';
+        selectedStock = parseInt(bSizeOption.dataset.stock);
+        // Mark as active (for visual consistency even though it's hidden)
+        bSizeOption.classList.add('active');
+    }
+}
 
 // Handle size selection
 sizeOptions.forEach(el=>{

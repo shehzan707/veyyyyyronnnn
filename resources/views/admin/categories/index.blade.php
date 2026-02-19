@@ -18,40 +18,40 @@
 
 .categories-table {
     width: 100%;
-    background: rgba(255, 255, 255, 0.08);
+    background: #3a3a3a;
     border-radius: 12px;
     overflow: hidden;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .categories-table th,
 .categories-table td {
     padding: 15px;
     text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .categories-table th {
-    background: rgba(52, 211, 153, 0.1);
+    background: #2a2a2a;
     font-weight: 700;
-    color: #cbd5e1;
+    color: #ffffff;
     font-size: 0.9rem;
 }
 
 .categories-table tbody tr:hover {
-    background: rgba(52, 211, 153, 0.1);
+    background: #424242;
 }
 
 .categories-table td {
-    color: #e2e8f0;
+    color: #ffffff;
 }
 
 .categories-table code {
-    background: rgba(52, 211, 153, 0.15);
+    background: #424242;
     padding: 2px 6px;
     border-radius: 3px;
-    color: #86efac;
+    color: #ffffff;
 }
 
 .action-btn {
@@ -61,26 +61,26 @@
     font-size: 0.85rem;
     margin-right: 5px;
     font-weight: 600;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
 }
 
 .btn-blue {
-    background: linear-gradient(135deg, #34d399, #10b981);
+    background: #000000;
     color: #fff;
 }
 
 .btn-red {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    background: #000000;
     color: #fff;
 }
 
 .form-card {
-    background: rgba(255, 255, 255, 0.08);
+    background: #3a3a3a;
     border-radius: 12px;
     padding: 25px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     position: sticky;
     top: 100px;
 }
@@ -99,25 +99,25 @@
     margin-bottom: 6px;
     font-weight: 600;
     font-size: 0.9rem;
-    color: #cbd5e1;
+    color: #ffffff;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
     padding: 10px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #424242;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 6px;
     font-size: 0.9rem;
-    color: #e2e8f0;
+    color: #ffffff;
 }
 
 .btn-add {
-    background: linear-gradient(135deg, #34d399, #10b981);
+    background: #000000;
     color: #fff;
     padding: 10px;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 6px;
     font-weight: 600;
     width: 100%;
@@ -125,9 +125,9 @@
 }
 
 .alert-success {
-    background: rgba(52, 211, 153, 0.2);
-    border: 1px solid rgba(52, 211, 153, 0.4);
-    color: #86efac;
+    background: #1a1a1a;
+    border: 1px solid rgba(168, 230, 168, 0.4);
+    color: #a8e6a8;
     padding: 12px;
     border-radius: 6px;
     margin-bottom: 15px;

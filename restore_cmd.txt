@@ -1,0 +1,7 @@
+DB::table('categories')->insert([
+    ['name' => 'MEN', 'slug' => 'men', 'sort_order' => 1, 'created_at' => now(), 'updated_at' => now(), 'is_active' => true],
+    ['name' => 'WOMEN', 'slug' => 'women', 'sort_order' => 2, 'created_at' => now(), 'updated_at' => now(), 'is_active' => true],
+    ['name' => 'ACCESSORIES', 'slug' => 'accessories', 'sort_order' => 3, 'created_at' => now(), 'updated_at' => now(), 'is_active' => true],
+    ['name' => 'FOOTWEAR', 'slug' => 'footwear', 'sort_order' => 4, 'created_at' => now(), 'updated_at' => now(), 'is_active' => true],
+]);
+echo "✅ Categories restored!\n";

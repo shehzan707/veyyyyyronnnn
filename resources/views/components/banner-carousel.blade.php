@@ -18,10 +18,17 @@
                         </video>
                     @endif
                 </div>
-                <!-- Link Overlay -->
-                @if($banner->banner_link)
-                    <a href="{{ $banner->banner_link }}" class="slide-link-overlay" title="View products"></a>
-                @endif
+                <!-- Link Overlay - With automatic category filtering based on section -->
+                @php
+                    // Generate default link based on section
+                    $defaultLink = url('products');
+                    if (isset($section) && $section && $section !== 'default') {
+                        $defaultLink = url('products') . '?gender=' . $section;
+                    }
+                    // Use banner's custom link if set, otherwise use default based on section
+                    $linkUrl = $banner->banner_link ?? $defaultLink;
+                @endphp
+                <a href="{{ $linkUrl }}" class="slide-link-overlay" title="View products"></a>
             </div>
         @empty
             <div class="carousel-slide active">
@@ -63,7 +70,7 @@
     .veyron-banner-carousel-wrapper {
         position: relative;
         width: 100%;
-        height: 91vh;
+        height: calc(91vh + 130px);
         overflow: hidden;
         background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     }

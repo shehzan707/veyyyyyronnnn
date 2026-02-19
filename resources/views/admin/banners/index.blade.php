@@ -18,9 +18,9 @@
 
 .filter-btn {
     padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #cbd5e1;
+    background: #3a3a3a;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -30,17 +30,17 @@
 
 .filter-btn:hover,
 .filter-btn.active {
-    background: rgba(0, 212, 255, 0.2);
-    border-color: rgba(0, 212, 255, 0.6);
+    background: #424242;
+    border-color: rgba(255, 255, 255, 0.4);
     color: #fff;
 }
 
 .banners-grid { display: grid; gap: 20px; }
 
 .banner-card { 
-    background: rgba(255, 255, 255, 0.08);
+    background: #3a3a3a;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -51,10 +51,10 @@
 }
 
 .banner-card:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(0, 212, 255, 0.3);
+    background: #424242;
+    border-color: rgba(255, 255, 255, 0.4);
     transform: translateX(5px);
-    box-shadow: 0 8px 20px rgba(0, 212, 255, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .banner-thumbnail {

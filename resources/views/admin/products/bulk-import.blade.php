@@ -33,22 +33,22 @@
     }
 
     .bulk-card {
-        background: rgba(255, 255, 255, 0.08);
+        background: #3a3a3a;
         border-radius: 12px;
         padding: 25px;
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         transition: all 0.3s ease;
     }
 
     .bulk-card:hover {
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(99, 102, 241, 0.5);
+        background: #424242;
+        border-color: rgba(255, 255, 255, 0.4);
         transform: translateY(-5px);
     }
 
     .bulk-card h2 {
-        color: #e2e8f0;
+        color: #ffffff;
         font-size: 1.3rem;
         margin-bottom: 15px;
         display: flex;
@@ -57,23 +57,23 @@
     }
 
     .bulk-card p {
-        color: #cbd5e1;
+        color: #ffffff;
         font-size: 0.95rem;
         line-height: 1.6;
         margin-bottom: 15px;
     }
 
     .code-box {
-        background: rgba(0, 0, 0, 0.3);
+        background: #424242;
         padding: 12px;
         border-radius: 6px;
         font-family: 'Courier New', monospace;
         font-size: 0.85rem;
-        color: #86efac;
+        color: #ffffff;
         margin-bottom: 15px;
         max-height: 150px;
         overflow-y: auto;
-        border: 1px solid rgba(134, 239, 172, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .form-group {

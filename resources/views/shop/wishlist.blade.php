@@ -62,7 +62,7 @@ table.wishlist-table td img {
 
 @section('content')
 <div class="container">
-    <h1 style="margin-bottom: 10px;">My Wishlist</h1>
+    <h1 style="margin-bottom: 10px;"></h1>
 
     @if(session('success'))
         <div style="background:#d4edda; color:#155724; padding:12px; border-radius:8px; margin-bottom:20px;">

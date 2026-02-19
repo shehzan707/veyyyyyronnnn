@@ -10,8 +10,12 @@
     --mid:#7a7a7a;
     --light:#ededed;
     --white:#ffffff;
+    --card-width:100%;
+    --card-height:auto;
+    --card-aspect-ratio:1 / 1;
 }
 
+/* RESET */
 *{box-sizing:border-box}
 body{
     margin:0;
@@ -20,17 +24,21 @@ body{
     color:var(--black);
 }
 
+/* FULL BLEED CONTAINER */
 .home-container{
     max-width:100%;
     margin:0;
     padding:2px;
 }
 
+/* GROUP */
 .subcategory-group{
     margin:6rem 0 8rem;
-    padding:0 2.2rem;
+    padding:0 1.8rem;
+    position:relative;
 }
 
+/* TITLES */
 .subcategory-group-title{
     font-size:3.2rem;
     font-weight:900;
@@ -39,8 +47,20 @@ body{
     margin-bottom:4.8rem;
     position:relative;
     color:#000;
+    display:flex;
+    align-items:center;
+    gap:2rem;
+    z-index:1;
 }
 
+.subcategory-group-title::after{
+    flex:1;
+    height:2px;
+    background:#000;
+    content:'';
+}
+
+/* GHOST BRAND */
 .subcategory-group-title::before{
     content:'VEYRON';
     position:absolute;
@@ -53,261 +73,310 @@ body{
     pointer-events:none;
 }
 
-.subcategory-group-title::after{
-    content:'';
-    position:absolute;
-    left:0;
-    bottom:-18px;
-    width:90px;
-    height:3px;
-    background:#000;
-}
+/* HARD UNDERLINE */
 
+/* GRID - 2 columns for accessories */
 .subcategory-cards-grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:3.4rem;
+    grid-template-columns:repeat(2, 1fr);
+    gap:2.4rem;
 }
 
+/* CARD – EDGY */
 .subcategory-card{
-    background:#fff;
-    border:1px solid #e0e0e0;
-    border-radius:0;
+    position:relative;
+    width:var(--card-width);
+    height:var(--card-height);
+    aspect-ratio:var(--card-aspect-ratio);
+    max-width:75%;
+    margin:0 auto;
+    background:#000;
+    border-radius:6px;
     overflow:hidden;
     text-decoration:none;
-    color:inherit;
-    transition:all 0.3s ease;
-    height:540px;
-    display:flex;
-    flex-direction:column;
+    color:#fff;
+    transform-style:preserve-3d;
+    transition:
+        transform .9s cubic-bezier(.23,1,.32,1),
+        box-shadow .9s cubic-bezier(.23,1,.32,1);
+    box-shadow:0 30px 60px rgba(0,0,0,.35);
 }
 
 .subcategory-card:hover{
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
     transform:translateY(-26px) rotateX(7deg);
+    box-shadow:0 90px 140px rgba(0,0,0,.55);
 }
 
-.subcategory-card-image-wrapper{
-    position:relative;
-    overflow:hidden;
-    flex:1;
-}
-
+/* IMAGE */
 .subcategory-card-image{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.subcategory-card-image img{
     width:100%;
     height:100%;
     object-fit:cover;
-    transition:transform 0.4s ease;
-    transform:scale(1.12) translateY(-8px);
+    transform:scale(1.08);
+    transition:transform 1.2s cubic-bezier(.23,1,.32,1),
+               filter .8s ease;
 }
 
-.subcategory-card:hover .subcategory-card-image{
+.subcategory-card:hover img{
     transform:scale(1.28) translateY(-22px);
+    filter:grayscale(.05) contrast(1.1);
 }
 
-.subcategory-card-overlay{
+/* MASK */
+.subcategory-card::after{
+    content:'';
     position:absolute;
-    top:0;
-    left:0;
+    inset:0;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,.92),
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.95)
+        );
+    opacity:.85;
+    transition:opacity .6s ease;
+}
+
+.subcategory-card:hover::after{
+    opacity:1;
+}
+
+/* CONTENT */
+.subcategory-card-content{
+    position:absolute;
+    bottom:0;
     width:100%;
-    height:100%;
-    background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
-    pointer-events:none;
+    padding:3.2rem 2.6rem;
+    transform:translateY(46px);
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
+    z-index:2;
 }
 
-.subcategory-card-text{
-    padding:2rem;
-    font-size:0.95rem;
-    line-height:1.6;
-    color:var(--black);
+.subcategory-card:hover .subcategory-card-content{
+    transform:translateY(0);
 }
 
+/* NAME */
 .subcategory-card-name{
+    font-size:1.9rem;
+    font-weight:900;
+    letter-spacing:1.6px;
+    margin:0 0 .8rem;
+}
+
+/* TAGLINE */
+.subcategory-card-tagline{
+    font-size:1.15rem;
+    color:#d4d4d4;
+    letter-spacing:.8px;
+    line-height:1.8;
+    text-transform:capitalize;
+}
+
+/* ACCENT LINE */
+.subcategory-card-content::before{
+    content:'';
+    position:absolute;
+    top:-22px;
+    left:2.6rem;
+    width:72px;
+    height:3px;
+    background:#fff;
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
     display:none;
 }
 
-@media (max-width:1024px){
-    .subcategory-cards-grid{
-        grid-template-columns:repeat(2,1fr);
-        gap:2rem;
-    }
+/* CARD SIZE MODIFIERS */
+.subcategory-card.small{
+    --card-width:100%;
+    --card-height:auto;
+    --card-aspect-ratio:1.2 / 1;
 }
 
-@media (max-width:768px){
-    .subcategory-group{
-        margin:4rem 0 5rem;
-        padding:0 1rem;
-    }
-    .subcategory-cards-grid{
-        grid-template-columns:1fr;
-        gap:1.5rem;
-    }
-    .subcategory-group-title{
-        font-size:2rem;
-    }
+.subcategory-card.medium{
+    --card-width:100%;
+    --card-height:auto;
+    --card-aspect-ratio:1 / 1;
+}
+
+.subcategory-card.large{
+    --card-width:100%;
+    --card-height:auto;
+    --card-aspect-ratio:0.8 / 1;
+}
+
+.subcategory-card.fixed-300{
+    width:50px;
+    height:50px;
+    aspect-ratio:unset;
+}
+
+.subcategory-card.fixed-350{
+    width:2000px;
+    height:200px;
+    aspect-ratio:unset;
+}
+
+.subcategory-card.fixed-400{
+    width:300px;
+    height:300px;
+    aspect-ratio:unset;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+    .subcategory-group-title{font-size:2.4rem; gap:1.5rem;}
+    .subcategory-group-title::before{font-size:5.2rem}
+    .subcategory-cards-grid{gap:2.0rem;}
+}
+
+@media(max-width:600px){
+    .subcategory-group{padding:0 1.2rem}
+    .subcategory-cards-grid{gap:1.6rem; grid-template-columns:1fr;}
+    .subcategory-group-title{font-size:1.8rem; gap:1rem;}
+    .subcategory-group-title::before{font-size:3.5rem}
 }
 </style>
 @endpush
 
 @section('content')
-<!-- Premium Banner Carousel -->
-@include('components.banner-carousel', ['banners' => $banners])
+
+@include('components.banner-carousel', [
+    'banners' => $banners,
+    'section' => 'accessories'
+])
 
 <div class="home-container">
-    <!-- Wallets Section -->
+
+    <!-- GROUP 1: SUNGLASSES -->
     <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Wallets</h2>
+        <h2 class="subcategory-group-title">STYLE NEEDS</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['categories' => ['Wallets']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/wallets-1.jpg') }}" alt="Wallets" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Sunglasses&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/s01.jpg') }}" alt="Sunglasses">
                 </div>
-                <div class="subcategory-card-text">Premium Leather Crafted with Timeless Elegance and Sophistication</div>
-                <div class="subcategory-card-name">Wallets</div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Elevate your vision with remarkable timeless luxury that redefines contemporary style.</p>
+                </div>
             </a>
-            <a href="{{ route('products.index', ['categories' => ['Wallets']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/wallets-2.jpg') }}" alt="Wallets" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Caps&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/c01.jpg') }}" alt="Sunglasses">
                 </div>
-                <div class="subcategory-card-text">Exquisite Designs Define Luxury Wallets Perfect for Every Occasion</div>
-                <div class="subcategory-card-name">Wallets</div>
-            </a>
-            <a href="{{ route('products.index', ['categories' => ['Wallets']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/wallets-3.jpg') }}" alt="Wallets" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Crown yourself with premium classic luxury style that perfectly reflects timeless elegance always.</p>
                 </div>
-                <div class="subcategory-card-text">Functional Style Meets Premium Materials in Our Wallet Collection</div>
-                <div class="subcategory-card-name">Wallets</div>
             </a>
         </div>
     </div>
 
-    <!-- Belts Section -->
+    <!-- GROUP 2: CAPS -->
     <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Belts</h2>
+        <h2 class="subcategory-group-title">Essential WATCHES</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['categories' => ['Belts']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/belts-1.jpg') }}" alt="Belts" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Leather+Straps&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/wa01.jpg') }}" alt="Caps">
                 </div>
-                <div class="subcategory-card-text">Refined Styling Defines Your Silhouette with Perfect Precision Fit</div>
-                <div class="subcategory-card-name">Belts</div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Refined craftsmanship in leather designed for timeless wrist elegance that defines pure luxury.</p>
+                </div>
             </a>
-            <a href="{{ route('products.index', ['categories' => ['Belts']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/belts-2.jpg') }}" alt="Belts" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Metal+Straps&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/wa02.jpg') }}" alt="Caps">
                 </div>
-                <div class="subcategory-card-text">Elevated Accessories Complement Your Wardrobe with Timeless Class</div>
-                <div class="subcategory-card-name">Belts</div>
-            </a>
-            <a href="{{ route('products.index', ['categories' => ['Belts']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/belts-3.jpg') }}" alt="Belts" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Sophisticated metal precision perfectly meets classic luxury standards embodying timeless.</p>
                 </div>
-                <div class="subcategory-card-text">Designer Belts Transform Any Outfit Into Sophisticated Elegance</div>
-                <div class="subcategory-card-name">Belts</div>
             </a>
         </div>
     </div>
 
-    <!-- Watches Section -->
+    <!-- GROUP 3: WATCHES -->
     <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Watches</h2>
+        <h2 class="subcategory-group-title">CURATED BAGS</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['categories' => ['Watches']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/watches-leather-1.jpg') }}" alt="Watches" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Backpacks&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/b01.jpg') }}" alt="Watches">
                 </div>
-                <div class="subcategory-card-text">Leather Strap Watches Combine Timeless Design with Modern Precision</div>
-                <div class="subcategory-card-name">Watches - Leather Strap</div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Carry pure elegance and luxury crafted with innovative design bringing timeless sophistication.</p>
+                </div>
             </a>
-            <a href="{{ route('products.index', ['categories' => ['Watches']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/watches-chain-1.jpg') }}" alt="Watches" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Handbags&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/b02.jpg') }}" alt="Watches">
                 </div>
-                <div class="subcategory-card-text">Chain Strap Watches Exude Luxury and Contemporary Sophisticated Style</div>
-                <div class="subcategory-card-name">Watches - Chain Strap</div>
-            </a>
-            <a href="{{ route('products.index', ['categories' => ['Watches']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/watches-2.jpg') }}" alt="Watches" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">The ultimate luxury statement piece for refined women who deeply appreciate timeless elegance.</p>
                 </div>
-                <div class="subcategory-card-text">Premium Timepieces Elevate Any Ensemble with Refined Personal Style</div>
-                <div class="subcategory-card-name">Watches</div>
             </a>
         </div>
     </div>
 
-    <!-- Sunglasses Section -->
+    <!-- GROUP 4: LEATHER STRAP -->
     <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Sunglasses</h2>
+        <h2 class="subcategory-group-title">LEATHER GOODS</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['categories' => ['Sunglasses']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/sunglasses-1.jpg') }}" alt="Sunglasses" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Belts&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/be01.jpg') }}" alt="Leather Strap">
                 </div>
-                <div class="subcategory-card-text">Iconic Sunglasses Define Your Style with Timeless UV Protection</div>
-                <div class="subcategory-card-name">Sunglasses</div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Cinch your style with classic luxury leather that perfectly defines timeless elegance refined.</p>
+                </div>
             </a>
-            <a href="{{ route('products.index', ['categories' => ['Sunglasses']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/sunglasses-2.jpg') }}" alt="Sunglasses" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Wallets&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/wal01.jpg') }}" alt="Leather Strap">
                 </div>
-                <div class="subcategory-card-text">Designer Eyewear Combines Fashion with Premium Quality Craftsmanship</div>
-                <div class="subcategory-card-name">Sunglasses</div>
-            </a>
-            <a href="{{ route('products.index', ['categories' => ['Sunglasses']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/sunglasses-3.jpg') }}" alt="Sunglasses" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Perfect blend of luxury and timeless classic elegance representing our commitment.</p>
                 </div>
-                <div class="subcategory-card-text">Trendy Styles Protect Your Eyes While Enhancing Your Appearance</div>
-                <div class="subcategory-card-name">Sunglasses</div>
             </a>
         </div>
     </div>
 
-    <!-- Caps Section -->
+    <!-- GROUP 5: METAL STRAP -->
     <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Caps</h2>
+        <h2 class="subcategory-group-title">ESSENTIALS OF HAND</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['categories' => ['Caps']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/caps-1.jpg') }}" alt="Caps" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Bracelets&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/ba01.jpg') }}" alt="Metal Strap">
                 </div>
-                <div class="subcategory-card-text">Classic Caps Add Casual Flair to Your Everyday Fashion Ensemble</div>
-                <div class="subcategory-card-name">Caps</div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Adorn your wrist with refined luxury and timeless grace that speaks to your sophistication.</p>
+                </div>
             </a>
-            <a href="{{ route('products.index', ['categories' => ['Caps']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/caps-2.jpg') }}" alt="Caps" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <a href="{{ url('products') }}?gender=accessories&categories[]=Rings&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/r01.jpg') }}" alt="Metal Strap">
                 </div>
-                <div class="subcategory-card-text">Stylish Accessories Perfect for Sports or Casual Weekend Wear</div>
-                <div class="subcategory-card-name">Caps</div>
-            </a>
-            <a href="{{ route('products.index', ['categories' => ['Caps']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/accessories/caps-3.jpg') }}" alt="Caps" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Timeless classic perfection for modern luxury refined style celebrating timeless elegance.</p>
                 </div>
-                <div class="subcategory-card-text">Premium Caps Combine Comfort with Contemporary Urban Style</div>
-                <div class="subcategory-card-name">Caps</div>
             </a>
         </div>
     </div>
+
 </div>
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 @endsection

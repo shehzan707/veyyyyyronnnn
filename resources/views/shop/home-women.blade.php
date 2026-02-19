@@ -12,6 +12,7 @@
     --white:#ffffff;
 }
 
+/* RESET */
 *{box-sizing:border-box}
 body{
     margin:0;
@@ -20,17 +21,20 @@ body{
     color:var(--black);
 }
 
+/* FULL BLEED CONTAINER */
 .home-container{
     max-width:100%;
     margin:0;
     padding:2px;
 }
 
+/* GROUP */
 .subcategory-group{
     margin:6rem 0 8rem;
     padding:0 2.2rem;
 }
 
+/* TITLES */
 .subcategory-group-title{
     font-size:3.2rem;
     font-weight:900;
@@ -41,6 +45,7 @@ body{
     color:#000;
 }
 
+/* GHOST BRAND */
 .subcategory-group-title::before{
     content:'VEYRON';
     position:absolute;
@@ -53,6 +58,7 @@ body{
     pointer-events:none;
 }
 
+/* HARD UNDERLINE */
 .subcategory-group-title::after{
     content:'';
     position:absolute;
@@ -63,189 +69,240 @@ body{
     background:#000;
 }
 
+/* GRID */
 .subcategory-cards-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
     gap:3.4rem;
 }
 
+/* CARD – EDGY */
 .subcategory-card{
-    background:#fff;
-    border:1px solid #e0e0e0;
-    border-radius:0;
+    position:relative;
+    height:540px;
+    background:#000;
+    border-radius:6px;
     overflow:hidden;
     text-decoration:none;
-    color:inherit;
-    transition:all 0.3s ease;
-    height:540px;
-    display:flex;
-    flex-direction:column;
+    color:#fff;
+    transform-style:preserve-3d;
+    transition:
+        transform .9s cubic-bezier(.23,1,.32,1),
+        box-shadow .9s cubic-bezier(.23,1,.32,1);
+    box-shadow:0 30px 60px rgba(0,0,0,.35);
 }
 
 .subcategory-card:hover{
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
     transform:translateY(-26px) rotateX(7deg);
+    box-shadow:0 90px 140px rgba(0,0,0,.55);
 }
 
-.subcategory-card-image-wrapper{
-    position:relative;
-    overflow:hidden;
-    flex:1;
-}
-
+/* IMAGE */
 .subcategory-card-image{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.subcategory-card-image img{
     width:100%;
     height:100%;
     object-fit:cover;
-    transition:transform 0.4s ease;
-    transform:scale(1.12) translateY(-8px);
+    transform:scale(1.08);
+    transition:transform 1.2s cubic-bezier(.23,1,.32,1),
+               filter .8s ease;
 }
 
-.subcategory-card:hover .subcategory-card-image{
+.subcategory-card:hover img{
     transform:scale(1.28) translateY(-22px);
+    filter:grayscale(.05) contrast(1.1);
 }
 
-.subcategory-card-overlay{
+/* MASK */
+.subcategory-card::after{
+    content:'';
     position:absolute;
-    top:0;
-    left:0;
+    inset:0;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,.92),
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.95)
+        );
+    opacity:.85;
+    transition:opacity .6s ease;
+}
+
+.subcategory-card:hover::after{
+    opacity:1;
+}
+
+/* CONTENT */
+.subcategory-card-content{
+    position:absolute;
+    bottom:0;
     width:100%;
-    height:100%;
-    background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
-    pointer-events:none;
+    padding:3.2rem 2.6rem;
+    transform:translateY(46px);
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
+    z-index:2;
 }
 
-.subcategory-card-text{
-    padding:2rem;
-    font-size:0.95rem;
-    line-height:1.6;
-    color:var(--black);
+.subcategory-card:hover .subcategory-card-content{
+    transform:translateY(0);
 }
 
+/* NAME */
 .subcategory-card-name{
+    font-size:1.9rem;
+    font-weight:900;
+    letter-spacing:1.6px;
+    margin:0 0 .8rem;
+}
+
+/* TAGLINE */
+.subcategory-card-tagline{
+    font-size:1.15rem;
+    color:#d4d4d4;
+    letter-spacing:.8px;
+    line-height:1.8;
+    text-transform:capitalize;
+}
+
+/* ACCENT LINE */
+.subcategory-card-content::before{
+    content:'';
+    position:absolute;
+    top:-22px;
+    left:2.6rem;
+    width:72px;
+    height:3px;
+    background:#fff;
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
     display:none;
 }
 
-@media (max-width:1024px){
-    .subcategory-cards-grid{
-        grid-template-columns:repeat(2,1fr);
-        gap:2rem;
-    }
+/* RESPONSIVE */
+@media(max-width:900px){
+    .subcategory-group-title{font-size:2.4rem}
+    .subcategory-group-title::before{font-size:5.2rem}
+    .subcategory-card{height:440px}
 }
 
-@media (max-width:768px){
-    .subcategory-group{
-        margin:4rem 0 5rem;
-        padding:0 1rem;
-    }
-    .subcategory-cards-grid{
-        grid-template-columns:1fr;
-        gap:1.5rem;
-    }
-    .subcategory-group-title{
-        font-size:2rem;
-    }
+@media(max-width:600px){
+    .subcategory-group{padding:0 1.4rem}
+    .subcategory-cards-grid{gap:2.2rem}
 }
 </style>
 @endpush
 
 @section('content')
-<!-- Premium Banner Carousel -->
-@include('components.banner-carousel', ['banners' => $banners])
+
+@include('components.banner-carousel', [
+    'banners' => $banners,
+    'section' => 'women'
+])
 
 <div class="home-container">
-    <!-- Topwear Section -->
+
+    <!-- TOPWEAR -->
     <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Topwear</h2>
+        <h2 class="subcategory-group-title">Defined Femininity</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Tops']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/women/topwear-1.jpg') }}" alt="Women's Tops" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <!-- TOPS -->
+            <a href="{{ url('products') }}?gender=women&categories[]=Crop+Tops&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/croptop.jpeg') }}" alt="Tops">
                 </div>
-                <div class="subcategory-card-text">Refined Elegance with Understated Sophistication Here Today</div>
-                <div class="subcategory-card-name">Topwear</div>
-            </a>
-            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['T-Shirts']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/women/topwear-crop-1.jpg') }}" alt="Women's Crop T-Shirts" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Modern sophistication shaped in every cut</p>
                 </div>
-                <div class="subcategory-card-text">Contemporary Design Meets Timeless Classical Grace</div>
-                <div class="subcategory-card-name">Crop T-Shirts</div>
             </a>
-            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Tops']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/women/topwear-casual-1.jpg') }}" alt="Women's Casual Tops" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <!-- CROP TOPS -->
+            <a href="{{ url('products') }}?gender=women&categories[]=Shirts&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/shirt.jpeg') }}" alt="Crop T-Shirts">
                 </div>
-                <div class="subcategory-card-text">Effortless Style Embodied in Premium Comfort Today</div>
-                <div class="subcategory-card-name">Casual Tops</div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Bold and minimal with confident presence</p>
+                </div>
             </a>
+
+            <!-- SHIRTS -->
+            <a href="{{ url('products') }}?gender=women&categories[]=Sweaters&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/sweatshirtt.jpeg') }}" alt="Shirts">
+                </div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Structured elegance in pure feminine form</p>
+                </div>
+            </a>
+
+                <!-- SWEATSHIRTS -->
+                <a href="{{ url('products') }}?gender=women&categories[]=Dresses&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/dress.jpg') }}" alt="Sweaters">
+                </div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Sophisticated warmth meets effortless grace</p>
+                </div>
+            </a>
+
         </div>
     </div>
 
-    <!-- Bottomwear Section -->
+    <!-- BOTTOMWEAR -->
     <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Bottomwear</h2>
+        <h2 class="subcategory-group-title">Sculpted Movement</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Jeans']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/women/bottomwear-jeans-1.jpg') }}" alt="Women's Jeans" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <!-- JEANS -->
+            <a href="{{ url('products') }}?gender=women&categories[]=Jeans&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/jeans.jpeg') }}" alt="Jeans">
                 </div>
-                <div class="subcategory-card-text">Legendary Denim Refined with Timeless Elegant Essence</div>
-                <div class="subcategory-card-name">Jeans</div>
-            </a>
-            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Leggings']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/women/bottomwear-leggings-1.jpg') }}" alt="Women's Leggings" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Timeless cut redefined for modern women</p>
                 </div>
-                <div class="subcategory-card-text">Comfortable Elegance Designed for Active Contemporary Life</div>
-                <div class="subcategory-card-name">Leggings</div>
             </a>
-            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Skirts']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/women/bottomwear-skirts-1.jpg') }}" alt="Women's Skirts" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <!-- SWEAT PANTS -->
+            <a href="{{ url('products') }}?gender=women&categories[]=Sweat+bottoms&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/sweatbottoms.jpg') }}" alt="Sweat Pants">
                 </div>
-                <div class="subcategory-card-text">Elegant Doll Skirt Flow in Timeless Classical Design</div>
-                <div class="subcategory-card-name">Skirts</div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Elevated comfort merged with refined style</p>
+                </div>
             </a>
+
+            <!-- HALF SKIRTS -->
+            <a href="{{ url('products') }}?gender=women&categories[]=Half+Skirts&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/halfskirt.jpg') }}" alt="Half Skirts">
+                </div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Precision tailoring dressed in graceful elegance</p>
+                </div>
+            </a>
+
+            <!-- LONG SKIRTS -->
+            <a href="{{ url('products') }}?gender=women&categories[]=Long+Skirts&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/longskirt.jpg') }}" alt="Long Skirts">
+                </div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Fluid elegance captured in sophisticated motion</p>
+                </div>
+            </a>
+
         </div>
     </div>
 
-    <!-- Dresses Section -->
-    <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Dresses</h2>
-        <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Dresses']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/women/dresses-casual-1.jpg') }}" alt="Women's Casual Dresses" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
-                </div>
-                <div class="subcategory-card-text">Casual Elegance Brings Timeless Beauty to Day Wear</div>
-                <div class="subcategory-card-name">Casual Dresses</div>
-            </a>
-            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Dresses']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/women/dresses-formal-1.jpg') }}" alt="Women's Formal Dresses" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
-                </div>
-                <div class="subcategory-card-text">Formal Sophistication Defines Timeless Elegant Luxury</div>
-                <div class="subcategory-card-name">Formal Dresses</div>
-            </a>
-            <a href="{{ route('products.index', ['gender' => 'women', 'categories' => ['Dresses']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/women/dresses-party-1.jpg') }}" alt="Women's Party Dresses" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
-                </div>
-                <div class="subcategory-card-text">Party Perfect Designs Create Unforgettable Elegant Moments</div>
-                <div class="subcategory-card-name">Party Dresses</div>
-            </a>
-        </div>
-    </div>
 </div>
-
 @endsection

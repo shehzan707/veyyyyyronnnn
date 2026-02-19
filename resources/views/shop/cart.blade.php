@@ -172,28 +172,39 @@
                                         const qtyValue = ctrl.querySelector('.qty-value');
                                         const stockWarning = ctrl.parentElement.querySelector('.stock-warning');
                                         
-                                        decreaseBtn.addEventListener('click', function() {
+                                        decreaseBtn.addEventListener('click', function(e) {
+                                            e.preventDefault();
+                                            if (decreaseBtn.disabled) return; // Prevent multiple clicks
+                                            
                                             const newQty = parseInt(qtyValue.textContent) - 1;
                                             if (newQty >= 1) {
-                                                updateQuantity(cartKey, 'decrease', ctrl, qtyValue);
+                                                decreaseBtn.disabled = true;
+                                                updateQuantity(cartKey, 'decrease', ctrl, qtyValue, decreaseBtn);
                                                 stockWarning.style.display = 'none';
                                             }
                                         });
                                         
-                                        increaseBtn.addEventListener('click', function() {
+                                        increaseBtn.addEventListener('click', function(e) {
+                                            e.preventDefault();
+                                            if (increaseBtn.disabled) return; // Prevent multiple clicks
+                                            
                                             const currentQty = parseInt(qtyValue.textContent);
-                                            if (currentQty >= stock) {
+                                            if (currentQty + 1 > stock) {
                                                 stockWarning.style.display = 'block';
                                                 stockWarning.innerHTML = `⚠️ Only ${stock} available`;
                                                 return;
                                             }
-                                            updateQuantity(cartKey, 'increase', ctrl, qtyValue);
+                                            
+                                            increaseBtn.disabled = true;
+                                            updateQuantity(cartKey, 'increase', ctrl, qtyValue, increaseBtn);
                                             stockWarning.style.display = 'none';
                                         });
                                     });
 
-                                    function updateQuantity(cartKey, action, ctrl, qtyValue) {
+                                    function updateQuantity(cartKey, action, ctrl, qtyValue, button) {
                                         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                                        const stockWarning = ctrl.parentElement.querySelector('.stock-warning');
+                                        
                                         fetch("{{ route('cart.update') }}", {
                                             method: 'POST',
                                             headers: {
@@ -205,6 +216,8 @@
                                         })
                                         .then(res => res.json())
                                         .then(data => {
+                                            button.disabled = false; // Re-enable button
+                                            
                                             if (data.success) {
                                                 if (data.removed) {
                                                     ctrl.closest('.cart-item').remove();
@@ -213,17 +226,62 @@
                                                     }
                                                 } else {
                                                     qtyValue.textContent = data.quantity;
+                                                    stockWarning.style.display = 'none';
                                                 }
                                                 updateOrderSummary(data.summary);
+                                            } else {
+                                                // Show error message if validation fails
+                                                if (stockWarning) {
+                                                    stockWarning.style.display = 'block';
+                                                    stockWarning.innerHTML = data.message || '⚠️ Cannot update quantity';
+                                                }
                                             }
+                                        })
+                                        .catch(err => {
+                                            button.disabled = false; // Re-enable button on error
+                                            console.error('Error:', err);
                                         });
                                     }
 
                                     function updateOrderSummary(summary) {
                                         if (!summary) return location.reload(); // fallback
-                                        document.querySelector('.summary-row span:nth-child(2)').textContent = '₹' + summary.subtotal;
-                                        document.querySelectorAll('.summary-row span')[3].textContent = summary.shipping > 0 ? '₹' + summary.shipping : 'FREE';
-                                        document.querySelector('.summary-row.summary-total span:nth-child(2)').textContent = '₹' + summary.total;
+                                        
+                                        // Update subtotal - Find and update the Total MRP row
+                                        const allRows = document.querySelectorAll('.summary-row');
+                                        if (allRows.length > 0) {
+                                            // First row is Total MRP
+                                            const totalMrpSpans = allRows[0].querySelectorAll('span');
+                                            if (totalMrpSpans.length > 1) {
+                                                totalMrpSpans[1].textContent = '₹' + summary.subtotal;
+                                            }
+                                        }
+                                        
+                                        // Update shipping
+                                        for (let i = 0; i < allRows.length; i++) {
+                                            const text = allRows[i].textContent;
+                                            if (text.includes('Shipping') && !text.includes('Coupon')) {
+                                                const spans = allRows[i].querySelectorAll('span');
+                                                if (spans.length > 1) {
+                                                    spans[spans.length - 1].textContent = summary.shipping > 0 ? '₹' + summary.shipping : 'FREE';
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        
+                                        // Update coupon discount row if it exists
+                                        const discountRow = document.getElementById('coupon-discount-row');
+                                        if (discountRow && summary.discount) {
+                                            const discountSpans = discountRow.querySelectorAll('span');
+                                            if (discountSpans.length > 1) {
+                                                discountSpans[1].textContent = '- ₹' + summary.discount;
+                                            }
+                                        }
+                                        
+                                        // Update total amount
+                                        const totalAmountValue = document.getElementById('total-amount-value');
+                                        if (totalAmountValue) {
+                                            totalAmountValue.textContent = '₹' + summary.total;
+                                        }
                                     }
                                 });
                                 </script>
@@ -263,14 +321,22 @@
                     $discountLabel = '';
                     $appliedCoupon = null;
                     if(session('applied_coupon')) {
-                        $appliedCoupon = \App\Models\Coupon::where('code', session('applied_coupon'))->first();
-                        if($appliedCoupon) {
-                            if($appliedCoupon->type === 'percent') {
-                                $discount = round($subtotal * ($appliedCoupon->value / 100));
-                                $discountLabel = $appliedCoupon->value . '% off';
-                            } else {
-                                $discount = $appliedCoupon->value;
-                                $discountLabel = '₹' . number_format($appliedCoupon->value, 0) . ' off';
+                        $couponCode = session('applied_coupon');
+                        // Special handling for VEYRON10 coupon
+                        if($couponCode === 'VEYRON10') {
+                            $discount = round($subtotal * 0.1); // 10% discount
+                            $discountLabel = '10% off';
+                            $appliedCoupon = (object)['code' => 'VEYRON10'];
+                        } else {
+                            $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
+                            if($appliedCoupon) {
+                                if($appliedCoupon->type === 'percent') {
+                                    $discount = round($subtotal * ($appliedCoupon->value / 100));
+                                    $discountLabel = $appliedCoupon->value . '% off';
+                                } else {
+                                    $discount = $appliedCoupon->value;
+                                    $discountLabel = '₹' . number_format($appliedCoupon->value, 0) . ' off';
+                                }
                             }
                         }
                     }

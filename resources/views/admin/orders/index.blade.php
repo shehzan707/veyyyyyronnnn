@@ -4,18 +4,18 @@
 
 @push('styles')
 <style>
-.orders-table { width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); }
-.orders-table th, .orders-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-.orders-table th { background: rgba(52, 211, 153, 0.1); font-weight: 600; color: #cbd5e1; }
-.orders-table td { color: #e2e8f0; }
+.orders-table { width: 100%; background: #3a3a3a; border-radius: 12px; overflow: hidden; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+.orders-table th, .orders-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.orders-table th { background: #2a2a2a; font-weight: 600; color: #ffffff; }
+.orders-table td { color: #ffffff; }
 .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
-.status-pending { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-.status-processing { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
-.status-shipped { background: rgba(99, 102, 241, 0.2); color: #c4b5fd; }
-.status-delivered { background: rgba(52, 211, 153, 0.2); color: #86efac; }
-.status-cancelled { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
-.view-btn { color: #34d399; text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
-.view-btn:hover { color: #86efac; text-decoration: underline; }
+.status-pending { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.status-processing { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.status-shipped { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.status-delivered { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.status-cancelled { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.view-btn { color: #ffffff; text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
+.view-btn:hover { color: #e0e0e0; text-decoration: underline; }
 h2 { color: #fff; }
 </style>
 @endpush

@@ -4,12 +4,12 @@
 
 @push('styles')
 <style>
-.users-table { width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); }
-.users-table th, .users-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-.users-table th { background: rgba(52, 211, 153, 0.1); font-weight: 600; color: #cbd5e1; }
-.users-table td { color: #e2e8f0; }
-.btn-delete { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
-.btn-delete:hover { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+.users-table { width: 100%; background: #3a3a3a; border-radius: 12px; overflow: hidden; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+.users-table th, .users-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.users-table th { background: #2a2a2a; font-weight: 600; color: #ffffff; }
+.users-table td { color: #ffffff; }
+.btn-delete { background: #000000; color: #fff; border: 1px solid rgba(255, 255, 255, 0.3); padding: 8px 15px; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
+.btn-delete:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
 h2 { color: #fff; }
 </style>
 @endpush

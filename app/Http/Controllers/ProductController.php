@@ -13,35 +13,33 @@ class ProductController extends Controller
     {
         $query = Product::query();
 
-        // Gender/Type filter mapping to categories
+        // Gender/Type filter - filter by parent category (including all descendants)
         if ($request->filled('gender')) {
             $gender = $request->gender;
-            $categoryIds = [];
             
-            if ($gender === 'men') {
-                // Men's categories: Shirts, Jeans, Tops, T-shirts, etc.
-                $categoryIds = Category::whereIn('name', 
-                    ['Shirts', 'Jeans', 'Tops', 'Casual Shoes', 'Jackets', 'T-Shirts', 'Formal Shirts', 'Shorts']
-                )->pluck('id')->toArray();
-            } elseif ($gender === 'women') {
-                // Women's categories: Dresses, Sarees, Kurtis, etc.
-                $categoryIds = Category::whereIn('name',
-                    ['Dresses', 'Tops', 'Jeans', 'Handbags', 'Sarees', 'Kurtis', 'Leggings']
-                )->pluck('id')->toArray();
-            } elseif ($gender === 'accessories') {
-                // Accessories: Watches, Sunglasses, Belts, etc.
-                $categoryIds = Category::whereIn('name',
-                    ['Watches', 'Sunglasses', 'Belts', 'Scarves', 'Hats', 'Handbags', 'Jewelry']
-                )->pluck('id')->toArray();
-            } elseif ($gender === 'footwear') {
-                // Footwear: Shoes, Sandals, Boots, etc.
-                $categoryIds = Category::whereIn('name',
-                    ['Casual Shoes', 'Sports Shoes', 'Formal Shoes', 'Sandals', 'Heels', 'Boots', 'Flip Flops']
-                )->pluck('id')->toArray();
-            }
+            // Map gender string to parent category name
+            $genderMap = [
+                'men' => 'Men',
+                'women' => 'Women',
+                'accessories' => 'Accessories',
+                'footwear' => 'Footwear'
+            ];
             
-            if (!empty($categoryIds)) {
-                $query->whereIn('category_id', $categoryIds);
+            $parentName = $genderMap[$gender] ?? null;
+            
+            if ($parentName) {
+                // Get parent category
+                $parentCategory = Category::where('name', $parentName)->first();
+                
+                if ($parentCategory) {
+                    // Get ALL descendant categories recursively (not just direct children)
+                    $descendantIds = $this->getAllDescendantCategoryIds($parentCategory->id);
+                    $descendantIds[] = $parentCategory->id; // Include the parent itself
+                    
+                    if (!empty($descendantIds)) {
+                        $query->whereIn('category_id', $descendantIds);
+                    }
+                }
             }
         }
 
@@ -58,9 +56,19 @@ class ProductController extends Controller
 
         // Single category filter (for backward compatibility)
         if ($request->filled('category')) {
-            $category = Category::where('name', $request->category)->first();
+            // Try to find by slug first, then by name for backward compatibility
+            $category = Category::where('slug', $request->category)->first();
+            if (!$category) {
+                $category = Category::where('name', $request->category)->first();
+            }
             if ($category) {
-                $query->where('category_id', $category->id);
+                // Get the category and all its descendants
+                $descendantIds = $this->getAllDescendantCategoryIds($category->id);
+                $descendantIds[] = $category->id;
+                
+                if (!empty($descendantIds)) {
+                    $query->whereIn('category_id', $descendantIds);
+                }
             }
         }
 
@@ -79,18 +87,109 @@ class ProductController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
 
-        $products = $query->orderBy('id', 'desc')->get();
+        $products = $query->with(['categoryModel', 'categoryModel.parent'])->orderBy('id', 'desc')->get();
 
-        // Get categories from database
+        // Return JSON for AJAX requests
+        if (request()->header('X-Requested-With') === 'XMLHttpRequest') {
+            return response()->json([
+                'products' => $products->map(function($product) {
+                    return [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'image' => asset($product->image),
+                        'category' => $product->categoryModel->name ?? $product->category,
+                    ];
+                })
+            ]);
+        }
+
+        // Get all categories with product counts, organized by gender/parent category with hierarchy
+        $categoryGroups = [];
+        $genderMap = [
+            'Men' => 'men',
+            'Women' => 'women',
+            'Accessories' => 'accessories',
+            'Footwear' => 'footwear'
+        ];
+
+        foreach ($genderMap as $parentName => $genderKey) {
+            $parent = Category::where('name', $parentName)->first();
+            if ($parent) {
+                $directChildren = $parent->children()->get();
+                $grouped = [];
+                
+                foreach ($directChildren as $child) {
+                    // For Women category, skip Footwear and Accessories from sidebar display
+                    if ($genderKey === 'women' && in_array($child->name, ['Footwear', 'Accessories'])) {
+                        continue;
+                    }
+                    
+                    // Check if this child has its own children (sub-categories)
+                    $grandchildren = $child->children()->withCount('products')->orderBy('name')->get();
+                    
+                    if ($grandchildren->count() > 0) {
+                        // This is a grouping/header category (like "Apparel", "Bottoms")
+                        $grouped[] = [
+                            'name' => $child->name,
+                            'slug' => $child->slug,
+                            'count' => 0,
+                            'isHeader' => true,
+                            'children' => $grandchildren->map(function($cat) {
+                                return [
+                                    'name' => $cat->name,
+                                    'slug' => $cat->slug,
+                                    'count' => $cat->products_count
+                                ];
+                            })->toArray()
+                        ];
+                    } else {
+                        // Direct filterable category (like "Sneakers", "Casual Shoes")
+                        $childProducts = $child->products()->count();
+                        $grouped[] = [
+                            'name' => $child->name,
+                            'slug' => $child->slug,
+                            'count' => $childProducts,
+                            'isHeader' => false,
+                            'children' => []
+                        ];
+                    }
+                }
+                
+                $categoryGroups[$genderKey] = $grouped;
+            }
+        }
+
+        // Keep for backward compatibility
         $categories = Category::orderBy('name')->get();
 
-        return view('shop.products', compact('products', 'categories'));
+        return view('shop.products', compact('products', 'categories', 'categoryGroups'));
     }
 
     public function show($id)
     {
         $product = Product::findOrFail($id);
         return view('shop.product-detail', compact('product'));
+    }
+
+    /**
+     * Recursively get all descendant category IDs
+     */
+    private function getAllDescendantCategoryIds($parentId)
+    {
+        $ids = [];
+        
+        // Get direct children
+        $children = Category::where('parent_id', $parentId)->pluck('id')->toArray();
+        
+        foreach ($children as $childId) {
+            $ids[] = $childId;
+            // Recursively get descendants of this child
+            $descendants = $this->getAllDescendantCategoryIds($childId);
+            $ids = array_merge($ids, $descendants);
+        }
+        
+        return $ids;
     }
 }
 

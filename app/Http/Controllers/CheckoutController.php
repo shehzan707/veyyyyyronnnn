@@ -222,12 +222,18 @@ class CheckoutController extends Controller
         // Calculate coupon discount if applied
         $discount = 0;
         if(session('applied_coupon')) {
-            $appliedCoupon = \App\Models\Coupon::where('code', session('applied_coupon'))->first();
-            if($appliedCoupon) {
-                if($appliedCoupon->type === 'percent') {
-                    $discount = round($subtotal * ($appliedCoupon->value / 100));
-                } else {
-                    $discount = $appliedCoupon->value;
+            $couponCode = session('applied_coupon');
+            // Special handling for VEYRON10 coupon
+            if($couponCode === 'VEYRON10') {
+                $discount = round($subtotal * 0.1); // 10% discount
+            } else {
+                $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
+                if($appliedCoupon) {
+                    if($appliedCoupon->type === 'percent') {
+                        $discount = round($subtotal * ($appliedCoupon->value / 100));
+                    } else {
+                        $discount = $appliedCoupon->value;
+                    }
                 }
             }
         }

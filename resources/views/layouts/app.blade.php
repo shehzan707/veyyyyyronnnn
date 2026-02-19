@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { padding-top: 80px !important; }
         
         /* Header Styling */
-        .header-wrapper { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+        .header-wrapper { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; z-index: 100 !important; width: 100% !important; }
         
         /* Main Header */
         .main-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; max-width: 1400px; margin: 0 auto; }
@@ -28,7 +29,7 @@
         .nav-item:hover .nav-link::before { width: 100%; }
         
         /* Search Bar */
-        .search-container { flex: 0.80; margin: 0 2px 0 0; }
+        .search-container { flex: 0.50; margin: 0 2px 0 0; }
         .search-wrapper { position: relative; }
         .search-input { width: 100%; padding: 10px 15px; border: 1px solid #ddd; border-radius: 2px; font-size: 13px; outline: none; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); background: #f5f5f5; }
         .search-input:focus { border-color: #666; background: #fff; box-shadow: 0 2px 8px rgba(102,102,102,0.1); transform: scaleY(1.02); }
@@ -51,7 +52,7 @@
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
         
         /* Mega Menu */
-        .mega-menu { position: fixed; top: 60px; left: 0; right: 0; background: #fff; display: none; padding: 40px 60px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 999; max-height: 600px; overflow-y: auto; border-left: 4px solid #666; width: 100%; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
+        .mega-menu { position: fixed; top: 74px; left: 0; right: 0; background: #fff; display: none; padding: 40px 60px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 99; max-height: 600px; overflow-y: auto; border-left: 4px solid #666; width: 100%; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
         .mega-menu.active { display: grid; grid-template-columns: repeat(5, 1fr); gap: 50px; opacity: 1; transform: translateY(0); }
         .mega-menu-column h4 { font-size: 13px; font-weight: 700; color: #666; margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.8px; transition: all 0.3s ease; }
         .mega-menu-column a { display: block; font-size: 13px; color: #333; text-decoration: none; padding: 10px 0; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); line-height: 1.8; position: relative; }
@@ -114,121 +115,90 @@
             
             <!-- Navigation Menu with Mega Menu -->
             <nav class="nav-menu" id="navMenu">
-                <div class="nav-item" data-category="men">
-                    <a href="#" class="nav-link">MEN</a>
-                    <div class="mega-menu" id="menu-men">
-                        <div class="mega-menu-column">
-                            <h4>Topwear</h4>
-                            <a href="{{ route('products.index', ['category' => 'topwear', 'gender' => 'men']) }}">T Shirts</a>
-                            <a href="{{ route('products.index', ['category' => 'casual-shirts', 'gender' => 'men']) }}">Casual Shirts</a>
-                            <a href="{{ route('products.index', ['category' => 'formal-shirts', 'gender' => 'men']) }}">Formal Shirts</a>
-                            <a href="{{ route('products.index', ['category' => 'sweatshirts', 'gender' => 'men']) }}">Sweatshirts</a>
-                            <a href="{{ route('products.index', ['category' => 'jackets', 'gender' => 'men']) }}">Jackets</a>
-                            <a href="{{ route('products.index', ['category' => 'blazers', 'gender' => 'men']) }}">Blazers</a>
-                            <a href="{{ route('products.index', ['category' => 'suits', 'gender' => 'men']) }}">Suits</a>
+                @if(isset($nav_categories))
+                    @foreach($nav_categories as $category)
+                        @php
+                            // Map category names to gender parameter values
+                            $genderMap = [
+                                'Men' => 'men',
+                                'Women' => 'women',
+                                'Accessories' => 'accessories',
+                                'Footwear' => 'footwear'
+                            ];
+                            $genderParam = $genderMap[$category->name] ?? null;
+                            
+                            // Map category names to home route names
+                            $homeRouteMap = [
+                                'Men' => 'home.men',
+                                'Women' => 'home.women',
+                                'Accessories' => 'home.accessories',
+                                'Footwear' => 'home.footwear'
+                            ];
+                            
+                            // Check if current route is a home page
+                            $currentRoute = Route::currentRouteName();
+                            $homeRoutes = ['home', 'home.men', 'home.women', 'home.accessories', 'home.footwear'];
+                            $isOnHomePage = in_array($currentRoute, $homeRoutes);
+                            
+                            // Determine navigation link URL based on current context
+                            if ($isOnHomePage && isset($homeRouteMap[$category->name])) {
+                                $navLink = route($homeRouteMap[$category->name]);
+                            } elseif ($genderParam) {
+                                $navLink = route('products.index', ['gender' => $genderParam]);
+                            } else {
+                                $navLink = '#';
+                            }
+                        @endphp
+                        <div class="nav-item" data-category="{{ strtolower($category->slug) }}">
+                            <a href="{{ $navLink }}" class="nav-link">
+                                @php
+                                    $imageMap = [
+                                        'Men' => 'men.jpeg',
+                                        'Women' => 'women.jpeg',
+                                        'Accessories' => 'acc.jpeg',
+                                        'Footwear' => 'foot.jpeg'
+                                    ];
+                                    $imageName = $imageMap[$category->name] ?? null;
+                                @endphp
+                                @if($imageName)
+                                    <img src="{{ asset('images/' . $imageName) }}" alt="{{ $category->name }}" style="height: 25px; width: auto; object-fit: contain;">
+                                @else
+                                    {{ strtoupper($category->name) }}
+                                @endif
+                            </a>
+                            @if($category->children && count($category->children) > 0)
+                                <div class="mega-menu" id="menu-{{ strtolower($category->slug) }}">
+                                    @foreach($category->children as $index => $child)
+                                        @php
+                                            // Hide Accessories and Footwear from Women header menu
+                                            $hiddenCategoriesForWomen = ['Accessories', 'Footwear'];
+                                            $shouldHide = ($category->name === 'Women' && in_array($child->name, $hiddenCategoriesForWomen));
+                                        @endphp
+                                        @if($index < 5 && !$shouldHide)
+                                            <div class="mega-menu-column">
+                                                <h4>{{ $child->name }}</h4>
+                                                @if($child->children && count($child->children) > 0)
+                                                    @foreach($child->children as $subchild)
+                                                        <a href="{{ route('products.index', ['gender' => $genderParam, 'category' => $subchild->slug]) }}">{{ $subchild->name }}</a>
+                                                    @endforeach
+                                                @else
+                                                    <a href="{{ route('products.index', ['gender' => $genderParam, 'category' => $child->slug]) }}">View All</a>
+                                                @endif
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="mega-menu" id="menu-{{ strtolower($category->slug) }}">
+                                    <div class="mega-menu-column">
+                                        <h4>{{ $category->name }}</h4>
+                                        <a href="{{ route('products.index', ['gender' => $genderParam]) }}">View All</a>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
-                        <div class="mega-menu-column">
-                            <h4>Bottomwear</h4>
-                            <a href="{{ route('products.index', ['category' => 'jeans', 'gender' => 'men']) }}">Jeans</a>
-                            <a href="{{ route('products.index', ['category' => 'trousers', 'gender' => 'men']) }}">Trousers</a>
-                            <a href="{{ route('products.index', ['category' => 'shorts', 'gender' => 'men']) }}">Shorts</a>
-                            <a href="{{ route('products.index', ['category' => 'track-pants', 'gender' => 'men']) }}">Track Pants</a>
-                        </div>
-                        <div class="mega-menu-column">
-                            <h4>Innerwear</h4>
-                            <a href="{{ route('products.index', ['category' => 'briefs', 'gender' => 'men']) }}">Briefs</a>
-                            <a href="{{ route('products.index', ['category' => 'boxers', 'gender' => 'men']) }}">Boxers</a>
-                            <a href="{{ route('products.index', ['category' => 'vests', 'gender' => 'men']) }}">Vests</a>
-                            <a href="{{ route('products.index', ['category' => 'sleepwear', 'gender' => 'men']) }}">Sleepwear</a>
-                        </div>
-                        <div class="mega-menu-column">
-                            <h4>Ethnic Wear</h4>
-                            <a href="{{ route('products.index', ['category' => 'kurtas', 'gender' => 'men']) }}">Kurtas</a>
-                            <a href="{{ route('products.index', ['category' => 'nehru-jackets', 'gender' => 'men']) }}">Nehru Jackets</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="nav-item" data-category="women">
-                    <a href="#" class="nav-link">WOMEN</a>
-                    <div class="mega-menu" id="menu-women">
-                        <div class="mega-menu-column">
-                            <h4>Topwear</h4>
-                            <a href="{{ route('products.index', ['category' => 'tops', 'gender' => 'women']) }}">Tops</a>
-                            <a href="{{ route('products.index', ['category' => 'tshirts', 'gender' => 'women']) }}">T Shirts</a>
-                            <a href="{{ route('products.index', ['category' => 'shirts', 'gender' => 'women']) }}">Shirts</a>
-                            <a href="{{ route('products.index', ['category' => 'sweaters', 'gender' => 'women']) }}">Sweaters</a>
-                        </div>
-                        <div class="mega-menu-column">
-                            <h4>Bottomwear</h4>
-                            <a href="{{ route('products.index', ['category' => 'jeans', 'gender' => 'women']) }}">Jeans</a>
-                            <a href="{{ route('products.index', ['category' => 'trousers', 'gender' => 'women']) }}">Trousers</a>
-                            <a href="{{ route('products.index', ['category' => 'skirts', 'gender' => 'women']) }}">Skirts</a>
-                            <a href="{{ route('products.index', ['category' => 'palazzos', 'gender' => 'women']) }}">Palazzos</a>
-                        </div>
-                        <div class="mega-menu-column">
-                            <h4>Ethnic Wear</h4>
-                            <a href="{{ route('products.index', ['category' => 'kurtis', 'gender' => 'women']) }}">Kurtis</a>
-                            <a href="{{ route('products.index', ['category' => 'kurta-sets', 'gender' => 'women']) }}">Kurta Sets</a>
-                            <a href="{{ route('products.index', ['category' => 'dupattas', 'gender' => 'women']) }}">Dupattas</a>
-                        </div>
-                        <div class="mega-menu-column">
-                            <h4>Loungewear</h4>
-                            <a href="{{ route('products.index', ['category' => 'nightwear', 'gender' => 'women']) }}">Nightwear</a>
-                            <a href="{{ route('products.index', ['category' => 'thermals', 'gender' => 'women']) }}">Thermals</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="nav-item" data-category="accessories">
-                    <a href="#" class="nav-link">ACCESSORIES</a>
-                    <div class="mega-menu" id="menu-accessories">
-                        <div class="mega-menu-column">
-                            <h4>Categories</h4>
-                            <a href="{{ route('products.index', ['category' => 'wallets']) }}">Wallets</a>
-                            <a href="{{ route('products.index', ['category' => 'belts']) }}">Belts</a>
-                            <a href="{{ route('products.index', ['category' => 'watches']) }}">Watches</a>
-                            <a href="{{ route('products.index', ['category' => 'sunglasses']) }}">Sunglasses</a>
-                            <a href="{{ route('products.index', ['category' => 'caps-hats']) }}">Caps and Hats</a>
-                            <a href="{{ route('products.index', ['category' => 'scarves']) }}">Scarves</a>
-                            <a href="{{ route('products.index', ['category' => 'rings']) }}">Rings</a>
-                            <a href="{{ route('products.index', ['category' => 'bracelets']) }}">Bracelets</a>
-                            <a href="{{ route('products.index', ['category' => 'backpacks']) }}">Backpacks</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="nav-item" data-category="footwear">
-                    <a href="#" class="nav-link">FOOTWEAR</a>
-                    <div class="mega-menu" id="menu-footwear">
-                        <div class="mega-menu-column">
-                            <h4>Categories</h4>
-                            <a href="{{ route('products.index', ['category' => 'casual-shoes']) }}">Casual Shoes</a>
-                            <a href="{{ route('products.index', ['category' => 'formal-shoes']) }}">Formal Shoes</a>
-                            <a href="{{ route('products.index', ['category' => 'sneakers']) }}">Sneakers</a>
-                            <a href="{{ route('products.index', ['category' => 'sports-shoes']) }}">Sports Shoes</a>
-                            <a href="{{ route('products.index', ['category' => 'sandals']) }}">Sandals</a>
-                            <a href="{{ route('products.index', ['category' => 'floaters']) }}">Floaters</a>
-                            <a href="{{ route('products.index', ['category' => 'flip-flops']) }}">Flip Flops</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="nav-item" data-category="genz">
-                    <a href="#" class="nav-link">GENZ</a>
-                    <div class="mega-menu" id="menu-genz">
-                        <div class="mega-menu-column">
-                            <h4>Trending</h4>
-                            <a href="{{ route('products.index', ['category' => 'oversized-tshirts']) }}">Oversized T Shirts</a>
-                            <a href="{{ route('products.index', ['category' => 'hoodies']) }}">Streetwear Hoodies</a>
-                            <a href="{{ route('products.index', ['category' => 'cargo-pants']) }}">Cargo Pants</a>
-                            <a href="{{ route('products.index', ['category' => 'baggy-jeans']) }}">Baggy Jeans</a>
-                            <a href="{{ route('products.index', ['category' => 'graphic-tees']) }}">Graphic Tees</a>
-                            <a href="{{ route('products.index', ['category' => 'unisex-fashion']) }}">Unisex Fashion</a>
-                            <a href="{{ route('products.index', ['category' => 'trendy-accessories']) }}">Trendy Accessories</a>
-                        </div>
-                    </div>
-                </div>
+                    @endforeach
+                @endif
             </nav>
             
             <!-- Search Bar -->
@@ -286,71 +256,32 @@
     </header>
     
     <script>
-        // Search functionality data
+        // Search functionality data - generated dynamically from database categories
         const searchData = {
             categories: [
-                // Men's categories
-                { name: 'T Shirts', category: 'MEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "topwear", "gender" => "men"]) }}' },
-                { name: 'Casual Shirts', category: 'MEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "casual-shirts", "gender" => "men"]) }}' },
-                { name: 'Formal Shirts', category: 'MEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "formal-shirts", "gender" => "men"]) }}' },
-                { name: 'Sweatshirts', category: 'MEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "sweatshirts", "gender" => "men"]) }}' },
-                { name: 'Jackets', category: 'MEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "jackets", "gender" => "men"]) }}' },
-                { name: 'Blazers', category: 'MEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "blazers", "gender" => "men"]) }}' },
-                { name: 'Suits', category: 'MEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "suits", "gender" => "men"]) }}' },
-                { name: 'Jeans', category: 'MEN', subcategory: 'Bottomwear', link: '{{ route("products.index", ["category" => "jeans", "gender" => "men"]) }}' },
-                { name: 'Trousers', category: 'MEN', subcategory: 'Bottomwear', link: '{{ route("products.index", ["category" => "trousers", "gender" => "men"]) }}' },
-                { name: 'Shorts', category: 'MEN', subcategory: 'Bottomwear', link: '{{ route("products.index", ["category" => "shorts", "gender" => "men"]) }}' },
-                { name: 'Track Pants', category: 'MEN', subcategory: 'Bottomwear', link: '{{ route("products.index", ["category" => "track-pants", "gender" => "men"]) }}' },
-                { name: 'Briefs', category: 'MEN', subcategory: 'Innerwear', link: '{{ route("products.index", ["category" => "briefs", "gender" => "men"]) }}' },
-                { name: 'Boxers', category: 'MEN', subcategory: 'Innerwear', link: '{{ route("products.index", ["category" => "boxers", "gender" => "men"]) }}' },
-                { name: 'Vests', category: 'MEN', subcategory: 'Innerwear', link: '{{ route("products.index", ["category" => "vests", "gender" => "men"]) }}' },
-                { name: 'Sleepwear', category: 'MEN', subcategory: 'Innerwear', link: '{{ route("products.index", ["category" => "sleepwear", "gender" => "men"]) }}' },
-                { name: 'Kurtas', category: 'MEN', subcategory: 'Ethnic Wear', link: '{{ route("products.index", ["category" => "kurtas", "gender" => "men"]) }}' },
-                { name: 'Nehru Jackets', category: 'MEN', subcategory: 'Ethnic Wear', link: '{{ route("products.index", ["category" => "nehru-jackets", "gender" => "men"]) }}' },
-                
-                // Women's categories
-                { name: 'Tops', category: 'WOMEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "tops", "gender" => "women"]) }}' },
-                { name: 'T Shirts', category: 'WOMEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "tshirts", "gender" => "women"]) }}' },
-                { name: 'Shirts', category: 'WOMEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "shirts", "gender" => "women"]) }}' },
-                { name: 'Sweaters', category: 'WOMEN', subcategory: 'Topwear', link: '{{ route("products.index", ["category" => "sweaters", "gender" => "women"]) }}' },
-                { name: 'Jeans', category: 'WOMEN', subcategory: 'Bottomwear', link: '{{ route("products.index", ["category" => "jeans", "gender" => "women"]) }}' },
-                { name: 'Trousers', category: 'WOMEN', subcategory: 'Bottomwear', link: '{{ route("products.index", ["category" => "trousers", "gender" => "women"]) }}' },
-                { name: 'Skirts', category: 'WOMEN', subcategory: 'Bottomwear', link: '{{ route("products.index", ["category" => "skirts", "gender" => "women"]) }}' },
-                { name: 'Palazzos', category: 'WOMEN', subcategory: 'Bottomwear', link: '{{ route("products.index", ["category" => "palazzos", "gender" => "women"]) }}' },
-                { name: 'Kurtis', category: 'WOMEN', subcategory: 'Ethnic Wear', link: '{{ route("products.index", ["category" => "kurtis", "gender" => "women"]) }}' },
-                { name: 'Kurta Sets', category: 'WOMEN', subcategory: 'Ethnic Wear', link: '{{ route("products.index", ["category" => "kurta-sets", "gender" => "women"]) }}' },
-                { name: 'Dupattas', category: 'WOMEN', subcategory: 'Ethnic Wear', link: '{{ route("products.index", ["category" => "dupattas", "gender" => "women"]) }}' },
-                { name: 'Nightwear', category: 'WOMEN', subcategory: 'Loungewear', link: '{{ route("products.index", ["category" => "nightwear", "gender" => "women"]) }}' },
-                { name: 'Thermals', category: 'WOMEN', subcategory: 'Loungewear', link: '{{ route("products.index", ["category" => "thermals", "gender" => "women"]) }}' },
-                
-                // Accessories
-                { name: 'Wallets', category: 'ACCESSORIES', subcategory: 'Accessories', link: '{{ route("products.index", ["category" => "wallets"]) }}' },
-                { name: 'Belts', category: 'ACCESSORIES', subcategory: 'Accessories', link: '{{ route("products.index", ["category" => "belts"]) }}' },
-                { name: 'Watches', category: 'ACCESSORIES', subcategory: 'Accessories', link: '{{ route("products.index", ["category" => "watches"]) }}' },
-                { name: 'Sunglasses', category: 'ACCESSORIES', subcategory: 'Accessories', link: '{{ route("products.index", ["category" => "sunglasses"]) }}' },
-                { name: 'Caps and Hats', category: 'ACCESSORIES', subcategory: 'Accessories', link: '{{ route("products.index", ["category" => "caps-hats"]) }}' },
-                { name: 'Scarves', category: 'ACCESSORIES', subcategory: 'Accessories', link: '{{ route("products.index", ["category" => "scarves"]) }}' },
-                { name: 'Rings', category: 'ACCESSORIES', subcategory: 'Accessories', link: '{{ route("products.index", ["category" => "rings"]) }}' },
-                { name: 'Bracelets', category: 'ACCESSORIES', subcategory: 'Accessories', link: '{{ route("products.index", ["category" => "bracelets"]) }}' },
-                { name: 'Backpacks', category: 'ACCESSORIES', subcategory: 'Accessories', link: '{{ route("products.index", ["category" => "backpacks"]) }}' },
-                
-                // Footwear
-                { name: 'Casual Shoes', category: 'FOOTWEAR', subcategory: 'Footwear', link: '{{ route("products.index", ["category" => "casual-shoes"]) }}' },
-                { name: 'Formal Shoes', category: 'FOOTWEAR', subcategory: 'Footwear', link: '{{ route("products.index", ["category" => "formal-shoes"]) }}' },
-                { name: 'Sneakers', category: 'FOOTWEAR', subcategory: 'Footwear', link: '{{ route("products.index", ["category" => "sneakers"]) }}' },
-                { name: 'Sports Shoes', category: 'FOOTWEAR', subcategory: 'Footwear', link: '{{ route("products.index", ["category" => "sports-shoes"]) }}' },
-                { name: 'Sandals', category: 'FOOTWEAR', subcategory: 'Footwear', link: '{{ route("products.index", ["category" => "sandals"]) }}' },
-                { name: 'Floaters', category: 'FOOTWEAR', subcategory: 'Footwear', link: '{{ route("products.index", ["category" => "floaters"]) }}' },
-                { name: 'Flip Flops', category: 'FOOTWEAR', subcategory: 'Footwear', link: '{{ route("products.index", ["category" => "flip-flops"]) }}' },
-                
-                // GenZ
-                { name: 'Oversized T Shirts', category: 'GENZ', subcategory: 'Trending', link: '{{ route("products.index", ["category" => "oversized-tshirts"]) }}' },
-                { name: 'Streetwear Hoodies', category: 'GENZ', subcategory: 'Trending', link: '{{ route("products.index", ["category" => "hoodies"]) }}' },
-                { name: 'Cargo Pants', category: 'GENZ', subcategory: 'Trending', link: '{{ route("products.index", ["category" => "cargo-pants"]) }}' },
-                { name: 'Baggy Jeans', category: 'GENZ', subcategory: 'Trending', link: '{{ route("products.index", ["category" => "baggy-jeans"]) }}' },
-                { name: 'Graphic Tees', category: 'GENZ', subcategory: 'Trending', link: '{{ route("products.index", ["category" => "graphic-tees"]) }}' },
-                { name: 'Unisex Fashion', category: 'GENZ', subcategory: 'Trending', link: '{{ route("products.index", ["category" => "unisex-fashion"]) }}' },
-                { name: 'Trendy Accessories', category: 'GENZ', subcategory: 'Trending', link: '{{ route("products.index", ["category" => "trendy-accessories"]) }}' },
+                @if(isset($nav_categories))
+                    @php
+                        $searchItems = [];
+                        foreach($nav_categories as $category) {
+                            if($category->children && count($category->children) > 0) {
+                                foreach($category->children as $child) {
+                                    if($child->children && count($child->children) > 0) {
+                                        foreach($child->children as $subchild) {
+                                            $searchItems[] = ['name' => $subchild->name, 'category' => strtoupper($category->name), 'subcategory' => $child->name, 'slug' => $subchild->slug];
+                                        }
+                                    } else {
+                                        $searchItems[] = ['name' => $child->name, 'category' => strtoupper($category->name), 'subcategory' => $child->name, 'slug' => $child->slug];
+                                    }
+                                }
+                            } else {
+                                $searchItems[] = ['name' => $category->name, 'category' => strtoupper($category->name), 'subcategory' => 'All', 'slug' => $category->slug];
+                            }
+                        }
+                    @endphp
+                    @foreach($searchItems as $item)
+                        { name: '{{ $item['name'] }}', category: '{{ $item['category'] }}', subcategory: '{{ $item['subcategory'] }}', link: '{{ route("products.index", ["category" => $item['slug']]) }}' }{{ !$loop->last ? ',' : '' }}
+                    @endforeach
+                @endif
             ]
         };
         
@@ -371,20 +302,8 @@
                 menu.classList.remove('active');
             });
             
-            // Click handler - redirect to category home page
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const categoryRoutes = {
-                    'men': '{{ route("home.men") }}',
-                    'women': '{{ route("home.women") }}',
-                    'accessories': '{{ route("home.accessories") }}',
-                    'footwear': '{{ route("home.footwear") }}'
-                };
-                
-                if (categoryRoutes[category]) {
-                    window.location.href = categoryRoutes[category];
-                }
-            });
+            // Navigation links will use their href attributes set by Blade logic
+            // No need for JavaScript click handler - let natural link behavior work
         });
         
         // Close mega menu when clicking elsewhere

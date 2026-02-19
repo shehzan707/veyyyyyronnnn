@@ -5,12 +5,12 @@
 @push('styles')
 <style>
 .form-card {
-    background: rgba(255, 255, 255, 0.08);
+    background: #3a3a3a;
     border-radius: 12px;
     padding: 30px;
     max-width: 520px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .form-group {
@@ -21,26 +21,26 @@
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #cbd5e1;
+    color: #ffffff;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #424242;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     font-size: 1rem;
-    color: #e2e8f0;
+    color: #ffffff;
 }
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: rgba(52, 211, 153, 0.5);
+    border-color: rgba(255, 255, 255, 0.4);
     outline: none;
-    box-shadow: 0 0 8px rgba(52, 211, 153, 0.2);
-    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+    background: #424242;
 }
 
 .form-row {
@@ -49,10 +49,10 @@
 }
 
 .btn-submit {
-    background: linear-gradient(135deg, #34d399, #10b981);
+    background: #000000;
     color: #fff;
     padding: 12px 24px;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
@@ -60,16 +60,16 @@
 }
 
 .btn-submit:hover {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: #1a1a1a;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .btn-cancel {
-    background: rgba(255, 255, 255, 0.08);
-    color: #cbd5e1;
+    background: #3a3a3a;
+    color: #ffffff;
     padding: 12px 24px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
@@ -77,7 +77,7 @@
 }
 
 .btn-cancel:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: #424242;
     border-color: rgba(255, 255, 255, 0.3);
 }
 

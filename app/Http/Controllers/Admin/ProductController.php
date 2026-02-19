@@ -48,6 +48,9 @@ class ProductController extends Controller
         }
 
         $category = Category::find($request->category_id);
+        
+        // Prepare normalized sizes string
+        $normalizedSizes = implode(',', $request->sizes);
 
         $product = Product::create([
             'name' => $request->name,
@@ -56,7 +59,7 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
             'category' => $category->name,
             'image' => $imagePath,
-            'sizes' => json_encode($request->sizes),
+            'sizes' => $normalizedSizes,
             'stock' => $request->stock,
         ]);
 
@@ -107,6 +110,10 @@ class ProductController extends Controller
 
         $category = Category::find($request->category_id);
 
+        // Prepare normalized sizes string
+        $selectedSizes = $request->sizes;
+        $normalizedSizes = implode(',', $selectedSizes);
+
         $product->update([
             'name' => $request->name,
             'description' => $request->description,
@@ -114,9 +121,31 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
             'category' => $category->name,
             'image' => $imagePath,
-            'sizes' => json_encode($request->sizes),
+            'sizes' => $normalizedSizes,
             'stock' => $request->stock,
         ]);
+
+        // Update size variants
+        // Remove variants not in the selected sizes
+        $product->sizeVariants()->whereNotIn('size', $selectedSizes)->delete();
+        
+        // Update or create size variants
+        $baseStock = (int)$request->stock;
+        foreach ($selectedSizes as $size) {
+            $sizeVariant = $product->sizeVariants()->where('size', $size)->first();
+            if ($sizeVariant) {
+                // Update existing size variant's stock
+                $sizeVariant->update(['stock' => $baseStock]);
+            } else {
+                // Create new size variant
+                Size::create([
+                    'product_id' => $product->id,
+                    'size' => $size,
+                    'stock' => $baseStock,
+                    'is_available' => true,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product updated successfully!');
@@ -163,6 +192,14 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
+
+        // Check if request is AJAX
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Product deleted successfully!'
+            ]);
+        }
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product deleted successfully!');

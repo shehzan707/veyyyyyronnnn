@@ -8,7 +8,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    background: linear-gradient(135deg, #0f2027 0%, #2c5364 50%, #0f2027 100%) !important;
+    background: #1a1a1a !important;
     min-height: 100vh;
 }
 
@@ -24,7 +24,7 @@ html, body {
 
 .analytics-container {
     padding: 30px;
-    background: linear-gradient(135deg, #0f2027 0%, #2c5364 50%, #0f2027 100%);
+    background: #1a1a1a;
     min-height: calc(100vh - 80px);
     height: auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -128,7 +128,7 @@ html, body {
 
 .kpi-growth {
     font-size: 0.85rem;
-    color: #10b981;
+    color: #3b82f6;
     font-weight: 600;
 }
 
@@ -235,7 +235,7 @@ html, body {
 }
 
 .status-active {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
 }
 
 .status-warning {
@@ -484,12 +484,12 @@ const analyticsData = {
 const colors = {
     primary: 'rgba(59, 130, 246, 0.8)',
     primaryLight: 'rgba(59, 130, 246, 0.2)',
-    secondary: 'rgba(10, 184, 181, 0.8)',
-    secondaryLight: 'rgba(10, 184, 181, 0.2)',
+    secondary: 'rgba(139, 92, 246, 0.8)',
+    secondaryLight: 'rgba(139, 92, 246, 0.2)',
     danger: 'rgba(239, 68, 68, 0.8)',
     dangerLight: 'rgba(239, 68, 68, 0.2)',
     warning: 'rgba(245, 158, 11, 0.8)',
-    success: 'rgba(16, 185, 129, 0.8)',
+    success: 'rgba(59, 130, 246, 0.8)',
 };
 
 const chartOptions = {

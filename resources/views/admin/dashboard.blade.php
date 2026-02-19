@@ -12,17 +12,17 @@
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.08);
+    background: #3a3a3a;
     padding: 25px;
     border-radius: 12px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     text-align: center;
     transition: all 0.3s ease;
 }
 
 .stat-card:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: #424242;
     transform: translateY(-3px);
 }
 
@@ -34,11 +34,11 @@
 .stat-card .value {
     font-size: 2rem;
     font-weight: 700;
-    color: #e2e8f0;
+    color: #ffffff;
 }
 
 .stat-card .label {
-    color: #cbd5e1;
+    color: #ffffff;
     font-size: 0.95rem;
     margin-top: 5px;
 }
@@ -49,11 +49,11 @@
 .stat-users .icon { color: #8b5cf6; }
 
 .recent-orders {
-    background: rgba(255, 255, 255, 0.08);
+    background: #3a3a3a;
     border-radius: 12px;
     padding: 25px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .recent-orders h3 {
@@ -70,18 +70,18 @@
 .orders-table th, .orders-table td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .orders-table th {
     font-weight: 600;
-    color: #cbd5e1;
+    color: #ffffff;
     font-size: 0.9rem;
-    background: rgba(52, 211, 153, 0.1);
+    background: #2a2a2a;
 }
 
 .orders-table td {
-    color: #e2e8f0;
+    color: #ffffff;
 }
 
 .status-badge {
@@ -91,9 +91,9 @@
     font-weight: 600;
 }
 
-.status-pending { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-.status-processing { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
-.status-delivered { background: rgba(52, 211, 153, 0.2); color: #86efac; }
+.status-pending { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.status-processing { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.status-delivered { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
 
 @media (max-width: 1024px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }

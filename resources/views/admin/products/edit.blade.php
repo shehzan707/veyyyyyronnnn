@@ -4,16 +4,16 @@
 
 @push('styles')
 <style>
-.form-card { background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 30px; max-width: 900px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); }
+.form-card { background: #3a3a3a; border-radius: 12px; padding: 30px; max-width: 900px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
 .form-group { margin-bottom: 20px; }
-.form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #cbd5e1; }
-.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; font-size: 1rem; color: #e2e8f0; }
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(52, 211, 153, 0.5); outline: none; background: rgba(255, 255, 255, 0.12); box-shadow: 0 0 8px rgba(52, 211, 153, 0.2); }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #ffffff; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: #424242; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem; color: #ffffff; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(255, 255, 255, 0.4); outline: none; background: #424242; box-shadow: 0 0 8px rgba(255, 255, 255, 0.15); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.btn-submit { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); color: #fff; padding: 14px 30px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
-.btn-submit:hover { background: linear-gradient(135deg, #10b981 0%, #059669 100%); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3); }
-.btn-cancel { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; padding: 14px 30px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; font-size: 1rem; cursor: pointer; margin-left: 10px; text-decoration: none; transition: all 0.3s ease; }
-.btn-cancel:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.3); }
+.btn-submit { background: #000000; color: #fff; padding: 14px 30px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+.btn-submit:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5); }
+.btn-cancel { background: #3a3a3a; color: #ffffff; padding: 14px 30px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 1rem; cursor: pointer; margin-left: 10px; text-decoration: none; transition: all 0.3s ease; }
+.btn-cancel:hover { background: #424242; border-color: rgba(255, 255, 255, 0.3); }
 h2 { color: #fff; }
 
 .size-selection {
@@ -38,25 +38,25 @@ h2 { color: #fff; }
 .error-message { color: #fca5a5; font-size: 0.85rem; margin-top: 4px; }
 .form-group.error input, .form-group.error select { border-color: #fca5a5; background: rgba(239, 68, 68, 0.1); }
 
-.inventory-section { background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.3); border-radius: 8px; padding: 20px; margin: 25px 0; }
-.inventory-section h3 { color: #86efac; margin-top: 0; margin-bottom: 15px; }
+.inventory-section { background: #3a3a3a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 20px; margin: 25px 0; }
+.inventory-section h3 { color: #ffffff; margin-top: 0; margin-bottom: 15px; }
 .inventory-table { width: 100%; border-collapse: collapse; }
-.inventory-table th { background: rgba(52, 211, 153, 0.2); padding: 12px; text-align: left; color: #cbd5e1; font-weight: 600; border-bottom: 2px solid rgba(52, 211, 153, 0.3); }
-.inventory-table td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #e2e8f0; }
-.inventory-table tbody tr:hover { background: rgba(52, 211, 153, 0.1); }
+.inventory-table th { background: #2a2a2a; padding: 12px; text-align: left; color: #ffffff; font-weight: 600; border-bottom: 2px solid rgba(255, 255, 255, 0.2); }
+.inventory-table td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; }
+.inventory-table tbody tr:hover { background: #424242; }
 
 .stock-input { width: 80px !important; padding: 8px !important; }
-.btn-action { padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; border: none; cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
-.btn-update-stock { background: rgba(52, 211, 153, 0.3); color: #86efac; }
-.btn-update-stock:hover { background: rgba(52, 211, 153, 0.5); }
-.btn-toggle { background: rgba(251, 191, 36, 0.3); color: #fcd34d; }
-.btn-toggle:hover { background: rgba(251, 191, 36, 0.5); }
+.btn-action { padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
+.btn-update-stock { background: #000000; color: #ffffff; }
+.btn-update-stock:hover { background: #1a1a1a; }
+.btn-toggle { background: #000000; color: #ffffff; }
+.btn-toggle:hover { background: #1a1a1a; }
 
 .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
-.badge-success { background: rgba(52, 211, 153, 0.2); color: #86efac; }
-.badge-warning { background: rgba(251, 191, 36, 0.2); color: #fcd34d; }
-.badge-danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
-.badge-secondary { background: rgba(100, 116, 139, 0.2); color: #cbd5e1; }
+.badge-success { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.badge-warning { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.badge-danger { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.badge-secondary { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
 
 .product-image-preview { max-width: 200px; height: auto; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); margin: 10px 0; }
 </style>
@@ -114,13 +114,39 @@ h2 { color: #fff; }
         <div class="form-group @error('sizes') error @enderror">
             <label>Available Sizes *</label>
             <div class="size-selection">
-                @foreach(['XS', 'S', 'M', 'L', 'XL', 'XXL'] as $size)
+                @php
+                    $selectedSizes = is_array($product->sizes) 
+                        ? $product->sizes 
+                        : array_filter(explode(',', $product->sizes ?? ''));
+                @endphp
+                <fieldset style="border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+                    <legend style="color: #cbd5e1; padding: 0 8px; font-size: 0.9rem;">Apparel Sizes</legend>
+                    @foreach(['XS', 'S', 'M', 'L', 'XL', 'XXL'] as $size)
+                        <label>
+                            <input type="checkbox" name="sizes[]" value="{{ $size }}" 
+                                {{ in_array(trim($size), array_map('trim', $selectedSizes)) ? 'checked' : '' }}>
+                            {{ $size }}
+                        </label>
+                    @endforeach
+                </fieldset>
+                <fieldset style="border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+                    <legend style="color: #cbd5e1; padding: 0 8px; font-size: 0.9rem;">Footwear Sizes</legend>
+                    @foreach(['6', '7', '8', '9', '10'] as $size)
+                        <label>
+                            <input type="checkbox" name="sizes[]" value="{{ $size }}" 
+                                {{ in_array(trim($size), array_map('trim', $selectedSizes)) ? 'checked' : '' }}>
+                            {{ $size }}
+                        </label>
+                    @endforeach
+                </fieldset>
+                <fieldset style="border: 1px solid rgba(255,255,255,0.15); padding: 12px; border-radius: 6px;">
+                    <legend style="color: #cbd5e1; padding: 0 8px; font-size: 0.9rem;">Basic Size</legend>
                     <label>
-                        <input type="checkbox" name="sizes[]" value="{{ $size }}" 
-                            {{ in_array($size, (is_array($product->sizes) ? $product->sizes : json_decode($product->sizes, true) ?? [])) ? 'checked' : '' }}>
-                        {{ $size }}
+                        <input type="checkbox" name="sizes[]" value="B" 
+                            {{ in_array('B', array_map('trim', $selectedSizes)) ? 'checked' : '' }}>
+                        B (One Size Fits All)
                     </label>
-                @endforeach
+                </fieldset>
             </div>
             @error('sizes')<span class="error-message">{{ $message }}</span>@enderror
         </div>

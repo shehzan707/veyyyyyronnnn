@@ -130,8 +130,32 @@ class CartController extends Controller
         $action = $request->action;
         $removed = false;
         $quantity = 0;
+        
         if ($cartKey && isset($cart[$cartKey])) {
+            // Get product and stock information
+            $product = Product::find($cart[$cartKey]['id']);
+            $size = $cart[$cartKey]['size'] ?? null;
+            $currentQty = $cart[$cartKey]['quantity'];
+            
+            // Get stock for this size
+            $stock = 0;
+            if ($product && $size) {
+                $sizeVariant = $product->sizeVariants()->where('size', $size)->first();
+                $stock = $sizeVariant ? $sizeVariant->stock : 0;
+            }
+            
             if ($action === 'increase') {
+                // Check if increasing would exceed stock
+                if ($currentQty + 1 > $stock) {
+                    if ($request->expectsJson() || $request->isJson() || $request->wantsJson()) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "⚠️ Only {$stock} available for this size",
+                            'removed' => false,
+                        ], 400);
+                    }
+                    return redirect()->route('cart.index')->with('error', "Only {$stock} available for this item");
+                }
                 $cart[$cartKey]['quantity']++;
             } elseif ($action === 'decrease') {
                 $cart[$cartKey]['quantity']--;
@@ -140,20 +164,43 @@ class CartController extends Controller
                     $removed = true;
                 }
             }
+            
             if (!$removed && isset($cart[$cartKey])) {
                 $quantity = $cart[$cartKey]['quantity'];
             }
         }
+        
         session(['cart' => $cart]);
         $cartCount = array_sum(array_column($cart, 'quantity'));
         session(['cart_count' => $cartCount]);
+        
         // Calculate summary
         $subtotal = 0;
         foreach ($cart as $item) {
             $subtotal += $item['price'] * $item['quantity'];
         }
         $shipping = $subtotal > 999 ? 0 : 50;
-        $total = $subtotal + $shipping;
+        
+        // Calculate coupon discount if applied
+        $discount = 0;
+        if(session('applied_coupon')) {
+            $couponCode = session('applied_coupon');
+            // Special handling for VEYRON10 coupon
+            if($couponCode === 'VEYRON10') {
+                $discount = round($subtotal * 0.1); // 10% discount
+            } else {
+                $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
+                if($appliedCoupon) {
+                    if($appliedCoupon->type === 'percent') {
+                        $discount = round($subtotal * ($appliedCoupon->value / 100));
+                    } else {
+                        $discount = $appliedCoupon->value;
+                    }
+                }
+            }
+        }
+        
+        $total = $subtotal + $shipping + 27 - $discount;
         if ($request->expectsJson() || $request->isJson() || $request->wantsJson()) {
             return response()->json([
                 'success' => true,
@@ -162,6 +209,7 @@ class CartController extends Controller
                 'summary' => [
                     'subtotal' => number_format($subtotal, 2),
                     'shipping' => $shipping,
+                    'discount' => number_format($discount, 0),
                     'total' => number_format($total, 2),
                 ],
             ]);

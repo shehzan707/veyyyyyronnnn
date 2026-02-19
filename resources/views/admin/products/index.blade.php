@@ -7,15 +7,16 @@
 .products-container { display: grid; grid-template-columns: 6fr 4fr; gap: 25px; align-items: start; width: 100%; }
 
 /* Products Section */
+.products-section { max-height: calc(100vh - 180px); overflow-y: auto; padding-right: 10px; }
 .products-section h2 { margin-bottom: 20px; color: #fff; }
 
-.products-table { width: 100%; background: rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); }
-.products-table th, .products-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-.products-table th { background: rgba(52, 211, 153, 0.1); font-weight: 700; color: #cbd5e1; font-size: 0.9rem; }
+.products-table { width: 100%; background: #3a3a3a; border-radius: 12px; overflow: hidden; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+.products-table th, .products-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.products-table th { background: #2a2a2a; font-weight: 700; color: #ffffff; font-size: 0.9rem; }
 .products-table tbody tr { transition: all 0.3s ease; }
-.products-table tbody tr:hover { background: rgba(52, 211, 153, 0.1); }
+.products-table tbody tr:hover { background: #424242; }
 .products-table img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); }
-.products-table td { color: #e2e8f0; }
+.products-table td { color: #ffffff; }
 
 .stock-summary {
     display: flex;
@@ -31,40 +32,43 @@
 }
 
 .badge-success {
-    background: rgba(52, 211, 153, 0.2);
-    color: #86efac;
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .badge-warning {
-    background: rgba(251, 191, 36, 0.2);
-    color: #fcd34d;
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .badge-danger {
-    background: rgba(239, 68, 68, 0.2);
-    color: #fca5a5;
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.action-btn { padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; transition: all 0.3s ease; font-weight: 600; border: none; cursor: pointer; display: inline-block; white-space: nowrap; }
-.btn-edit { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); color: #fff; }
-.btn-edit:hover { background: linear-gradient(135deg, #10b981 0%, #059669 100%); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
-.btn-delete { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; }
-.btn-delete:hover { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
+.action-btn { padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; transition: all 0.3s ease; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer; display: inline-block; white-space: nowrap; }
+.btn-edit { background: #000000; color: #fff; }
+.btn-edit:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
+.btn-delete { background: #000000; color: #fff; }
+.btn-delete:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
 
 /* Add Product Form Section */
-.form-card { background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 25px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); position: sticky; top: 100px; }
+.form-card { background: #3a3a3a; border-radius: 12px; padding: 25px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); position: sticky; top: 100px; }
 .form-card h3 { margin-bottom: 20px; color: #fff; font-size: 1.2rem; }
 .form-group { margin-bottom: 16px; }
-.form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: #cbd5e1; }
-.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; font-size: 0.9rem; transition: all 0.3s ease; color: #e2e8f0; }
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(52, 211, 153, 0.5); outline: none; box-shadow: 0 0 8px rgba(52, 211, 153, 0.2); background: rgba(255, 255, 255, 0.12); }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: #ffffff; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; background: #424242; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; font-size: 0.9rem; transition: all 0.3s ease; color: #ffffff; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(255, 255, 255, 0.4); outline: none; box-shadow: 0 0 8px rgba(255, 255, 255, 0.15); background: #424242; }
 .form-group textarea { resize: vertical; }
 
 .btn-submit { 
-    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    background: #000000;
     color: #fff; 
     padding: 12px 20px; 
-    border: none; 
+    border: 1px solid rgba(255, 255, 255, 0.3); 
     border-radius: 6px; 
     font-size: 0.95rem; 
     font-weight: 700;
@@ -75,13 +79,13 @@
     letter-spacing: 0.5px;
 }
 .btn-submit:hover { 
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: #1a1a1a;
     transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 .categories-btn {
-    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    background: #000000;
     color: #fff;
     padding: 10px 16px;
     border-radius: 6px;
@@ -89,14 +93,14 @@
     font-weight: 600;
     display: inline-block;
     transition: all 0.3s ease;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
 }
 
 .categories-btn:hover {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: #1a1a1a;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 @media (max-width: 1024px) {
@@ -152,7 +156,7 @@
                                 @endforeach
                             </div>
                         </td>
-                        <td><span style="background: rgba(52, 211, 153, 0.2); padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; color: #86efac;"><strong>{{ $product->getTotalStock() }}</strong></span></td>
+                        <td><span style="background: #000000; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3);"><strong>{{ $product->getTotalStock() }}</strong></span></td>
                         <td>
                             <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                                 <a href="{{ route('admin.products.edit', $product->id) }}" class="action-btn btn-edit">Edit</a>

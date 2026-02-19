@@ -12,6 +12,7 @@
     --white:#ffffff;
 }
 
+/* RESET */
 *{box-sizing:border-box}
 body{
     margin:0;
@@ -20,17 +21,20 @@ body{
     color:var(--black);
 }
 
+/* FULL BLEED CONTAINER */
 .home-container{
     max-width:100%;
     margin:0;
     padding:2px;
 }
 
+/* GROUP */
 .subcategory-group{
     margin:6rem 0 8rem;
     padding:0 2.2rem;
 }
 
+/* TITLES */
 .subcategory-group-title{
     font-size:3.2rem;
     font-weight:900;
@@ -41,6 +45,7 @@ body{
     color:#000;
 }
 
+/* GHOST BRAND */
 .subcategory-group-title::before{
     content:'VEYRON';
     position:absolute;
@@ -53,6 +58,7 @@ body{
     pointer-events:none;
 }
 
+/* HARD UNDERLINE */
 .subcategory-group-title::after{
     content:'';
     position:absolute;
@@ -63,158 +69,240 @@ body{
     background:#000;
 }
 
+/* GRID */
 .subcategory-cards-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
     gap:3.4rem;
 }
 
+/* CARD – EDGY */
 .subcategory-card{
-    background:#fff;
-    border:1px solid #e0e0e0;
-    border-radius:0;
+    position:relative;
+    height:540px;
+    background:#000;
+    border-radius:6px;
     overflow:hidden;
     text-decoration:none;
-    color:inherit;
-    transition:all 0.3s ease;
-    height:540px;
-    display:flex;
-    flex-direction:column;
+    color:#fff;
+    transform-style:preserve-3d;
+    transition:
+        transform .9s cubic-bezier(.23,1,.32,1),
+        box-shadow .9s cubic-bezier(.23,1,.32,1);
+    box-shadow:0 30px 60px rgba(0,0,0,.35);
 }
 
 .subcategory-card:hover{
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
     transform:translateY(-26px) rotateX(7deg);
+    box-shadow:0 90px 140px rgba(0,0,0,.55);
 }
 
-.subcategory-card-image-wrapper{
-    position:relative;
-    overflow:hidden;
-    flex:1;
-}
-
+/* IMAGE */
 .subcategory-card-image{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.subcategory-card-image img{
     width:100%;
     height:100%;
     object-fit:cover;
-    transition:transform 0.4s ease;
-    transform:scale(1.12) translateY(-8px);
+    transform:scale(1.08);
+    transition:transform 1.2s cubic-bezier(.23,1,.32,1),
+               filter .8s ease;
 }
 
-.subcategory-card:hover .subcategory-card-image{
+.subcategory-card:hover img{
     transform:scale(1.28) translateY(-22px);
+    filter:grayscale(.05) contrast(1.1);
 }
 
-.subcategory-card-overlay{
+/* MASK */
+.subcategory-card::after{
+    content:'';
     position:absolute;
-    top:0;
-    left:0;
+    inset:0;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,.92),
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.95)
+        );
+    opacity:.85;
+    transition:opacity .6s ease;
+}
+
+.subcategory-card:hover::after{
+    opacity:1;
+}
+
+/* CONTENT */
+.subcategory-card-content{
+    position:absolute;
+    bottom:0;
     width:100%;
-    height:100%;
-    background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
-    pointer-events:none;
+    padding:3.2rem 2.6rem;
+    transform:translateY(46px);
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
+    z-index:2;
 }
 
-.subcategory-card-text{
-    padding:2rem;
-    font-size:0.95rem;
-    line-height:1.6;
-    color:var(--black);
+.subcategory-card:hover .subcategory-card-content{
+    transform:translateY(0);
 }
 
+/* NAME */
 .subcategory-card-name{
+    font-size:1.9rem;
+    font-weight:900;
+    letter-spacing:1.6px;
+    margin:0 0 .8rem;
+}
+
+/* TAGLINE */
+.subcategory-card-tagline{
+    font-size:1.15rem;
+    color:#d4d4d4;
+    letter-spacing:.8px;
+    line-height:1.8;
+    text-transform:capitalize;
+}
+
+/* ACCENT LINE */
+.subcategory-card-content::before{
+    content:'';
+    position:absolute;
+    top:-22px;
+    left:2.6rem;
+    width:72px;
+    height:3px;
+    background:#fff;
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .8s cubic-bezier(.23,1,.32,1);
     display:none;
 }
 
-@media (max-width:1024px){
-    .subcategory-cards-grid{
-        grid-template-columns:repeat(2,1fr);
-        gap:2rem;
-    }
+/* RESPONSIVE */
+@media(max-width:900px){
+    .subcategory-group-title{font-size:2.4rem}
+    .subcategory-group-title::before{font-size:5.2rem}
+    .subcategory-card{height:440px}
 }
 
-@media (max-width:768px){
-    .subcategory-group{
-        margin:4rem 0 5rem;
-        padding:0 1rem;
-    }
-    .subcategory-cards-grid{
-        grid-template-columns:1fr;
-        gap:1.5rem;
-    }
-    .subcategory-group-title{
-        font-size:2rem;
-    }
+@media(max-width:600px){
+    .subcategory-group{padding:0 1.4rem}
+    .subcategory-cards-grid{gap:2.2rem}
 }
 </style>
 @endpush
 
 @section('content')
-<!-- Premium Banner Carousel -->
-@include('components.banner-carousel', ['banners' => $banners])
+
+@include('components.banner-carousel', [
+    'banners' => $banners,
+    'section' => 'footwear'
+])
 
 <div class="home-container">
-    <!-- Men's Footwear Section -->
+
+    <!-- MENS FOOTWEAR -->
     <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Men's Footwear</h2>
+        <h2 class="subcategory-group-title">Mens Curated Sneakers</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Casual Shoes']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/footwear/mens-casual-1.jpg') }}" alt="Men's Casual Shoes" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <!-- M01 - CASUAL SHOES -->
+            <a href="{{ url('products') }}?gender=Footwear&categories[]=sneakers&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/m01.jpg') }}" alt="Casual Shoes">
                 </div>
-                <div class="subcategory-card-text">Casual Sneakers Perfect for Everyday Comfort and Effortless Style</div>
-                <div class="subcategory-card-name">Men's Casual Shoes</div>
-            </a>
-            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Sports Shoes']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/footwear/mens-sports-1.jpg') }}" alt="Men's Sports Shoes" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Comfort wrapped in contemporary style</p>
                 </div>
-                <div class="subcategory-card-text">Athletic Footwear Engineered for Performance and Active Lifestyles</div>
-                <div class="subcategory-card-name">Men's Sports Shoes</div>
             </a>
-            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Formal Shoes']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/footwear/mens-formal-1.jpg') }}" alt="Men's Formal Shoes" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <!-- M02 - SPORTS SHOES -->
+            <a href="{{ url('products') }}?gender=Footwear&categories[]=sneakers&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/m02.jpg') }}" alt="Sports Shoes">
                 </div>
-                <div class="subcategory-card-text">Formal Shoes Deliver Timeless Elegance for Professional Occasions</div>
-                <div class="subcategory-card-name">Men's Formal Shoes</div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Performance designed for active movement</p>
+                </div>
             </a>
+
+            <!-- M03 - FORMAL SHOES -->
+            <a href="{{ url('products') }}?gender=Footwear&categories[]=sneakers&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/m03.jpg') }}" alt="Formal Shoes">
+                </div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Elegance grounded in timeless luxury</p>
+                </div>
+            </a>
+
+            <!-- M04 - HEELS -->
+            <a href="{{ url('products') }}?gender=Footwear&categories[]=sneakers&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/m04.jpeg') }}" alt="Heels">
+                </div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Refined height meets sophisticated grace</p>
+                </div>
+            </a>
+
         </div>
     </div>
 
-    <!-- Women's Footwear Section -->
+    <!-- WOMENS FOOTWEAR -->
     <div class="subcategory-group">
-        <h2 class="subcategory-group-title">Women's Footwear</h2>
+        <h2 class="subcategory-group-title">Womens Curated Sneakers</h2>
         <div class="subcategory-cards-grid">
-            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Casual Shoes']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/footwear/womens-casual-1.jpg') }}" alt="Women's Casual Shoes" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <!-- W01 - BOOTS -->
+            <a href="{{ url('products') }}?gender=Footwear&categories[]=sneaker&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/w01.jpeg') }}" alt="Boots">
                 </div>
-                <div class="subcategory-card-text">Casual Beauties Combine Comfort with Contemporary Chic Elegance</div>
-                <div class="subcategory-card-name">Women's Casual Shoes</div>
-            </a>
-            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Heels']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/footwear/womens-heels-1.jpg') }}" alt="Women's Heels" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Structured strength with refined character</p>
                 </div>
-                <div class="subcategory-card-text">Elegant Heels Elevate Your Style with Refined Feminine Sophistication</div>
-                <div class="subcategory-card-name">Women's Heels</div>
             </a>
-            <a href="{{ route('products.index', ['gender' => 'footwear', 'categories' => ['Boots']]) }}" class="subcategory-card">
-                <div class="subcategory-card-image-wrapper">
-                    <img src="{{ asset('images/footwear/womens-boots-1.jpg') }}" alt="Women's Boots" class="subcategory-card-image">
-                    <div class="subcategory-card-overlay"></div>
+
+            <!-- W02 - SANDALS -->
+            <a href="{{ url('products') }}?gender=Footwear&categories[]=sneaker&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/w02.jpg') }}" alt="Sandals">
                 </div>
-                <div class="subcategory-card-text">Premium Boots Define Your Look with Timeless Luxurious Elegance</div>
-                <div class="subcategory-card-name">Women's Boots</div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Casual freedom with effortless elegance</p>
+                </div>
             </a>
+
+            <!-- W03 - BOOTS -->
+            <a href="{{ url('products') }}?gender=Footwear&categories[]=sneaker&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/w03.png') }}" alt="Boots">
+                </div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Structured strength with refined character</p>
+                </div>
+            </a>
+
+            <!-- W04 - SANDALS -->
+            <a href="{{ url('products') }}?gender=Footwear&categories[]=sneaker&min_price=0&max_price=100000" class="subcategory-card">
+                <div class="subcategory-card-image">
+                    <img src="{{ asset('images/w04.jpg') }}" alt="Sandals">
+                </div>
+                <div class="subcategory-card-content">
+                    <p class="subcategory-card-tagline">Casual freedom with effortless elegance</p>
+                </div>
+            </a>
+
         </div>
     </div>
+
 </div>
-
 @endsection

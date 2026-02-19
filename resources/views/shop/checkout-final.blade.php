@@ -335,35 +335,68 @@
 }
 
 .address-type-option {
-    position: relative;
-}
-
-.address-type-option input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-}
-
-.address-type-label {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
     padding: 12px;
-    border: 2px solid #ddd;
+    border: 2px solid #e0e0e0;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.address-type-option:hover {
+    border-color: #bbb;
+}
+
+.address-type-option input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: #FFFFFF;
+    border: 2px solid #2E2E2E;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.address-type-option input[type="checkbox"]:hover {
+    border-color: #000000;
+}
+
+.address-type-option input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(46, 46, 46, 0.2);
+}
+
+.address-type-option input[type="checkbox"]:checked {
+    background-color: #000000;
+    border-color: #000000;
+}
+
+.address-type-option input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
+
+.address-type-label {
+    cursor: pointer;
     font-weight: 600;
-    color: #666;
-}
-
-.address-type-option input[type="radio"]:checked + .address-type-label {
-    border-color: #222;
-    background: #222;
-    color: #fff;
-}
-
-.address-type-label:hover {
-    border-color: #222;
+    color: #333;
+    font-size: 1rem;
 }
 
 /* DELIVERY TIMING */
@@ -422,7 +455,43 @@
     width: 18px;
     height: 18px;
     cursor: pointer;
-    accent-color: #222;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: #FFFFFF;
+    border: 2px solid #2E2E2E;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.checkbox-option input[type="checkbox"]:hover {
+    border-color: #000000;
+}
+
+.checkbox-option input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(46, 46, 46, 0.2);
+}
+
+.checkbox-option input[type="checkbox"]:checked {
+    background-color: #000000;
+    border-color: #000000;
+}
+
+.checkbox-option input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
 }
 
 .checkbox-option label {
@@ -762,12 +831,18 @@
                         @php
                             $discount = 0;
                             if(session('applied_coupon')) {
-                                $appliedCoupon = \App\Models\Coupon::where('code', session('applied_coupon'))->first();
-                                if($appliedCoupon) {
-                                    if($appliedCoupon->type === 'percent') {
-                                        $discount = round($subtotal * ($appliedCoupon->value / 100));
-                                    } else {
-                                        $discount = $appliedCoupon->value;
+                                $couponCode = session('applied_coupon');
+                                // Special handling for VEYRON10 coupon
+                                if($couponCode === 'VEYRON10') {
+                                    $discount = round($subtotal * 0.1); // 10% discount
+                                } else {
+                                    $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
+                                    if($appliedCoupon) {
+                                        if($appliedCoupon->type === 'percent') {
+                                            $discount = round($subtotal * ($appliedCoupon->value / 100));
+                                        } else {
+                                            $discount = $appliedCoupon->value;
+                                        }
                                     }
                                 }
                             }
@@ -918,11 +993,11 @@
                             <h4 class="form-section-title">Address Type</h4>
                             <div class="address-type-group">
                                 <div class="address-type-option">
-                                    <input type="radio" id="home" name="address_type" value="home" checked>
+                                    <input type="checkbox" id="home" name="address_type" value="home" checked>
                                     <label for="home" class="address-type-label">🏠 Home</label>
                                 </div>
                                 <div class="address-type-option">
-                                    <input type="radio" id="office" name="address_type" value="office">
+                                    <input type="checkbox" id="office" name="address_type" value="office">
                                     <label for="office" class="address-type-label">🏢 Office</label>
                                 </div>
                             </div>
@@ -1110,7 +1185,7 @@
                         Continue to Shipping →
                     </button>
                     <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">
-                        Place Order (₹<span id="submitTotal">0</span>)
+                        Place Order
                     </button>
                 </div>
             </div>
@@ -1143,12 +1218,18 @@
                         @php
                             $discount = 0;
                             if(session('applied_coupon')) {
-                                $appliedCoupon = \App\Models\Coupon::where('code', session('applied_coupon'))->first();
-                                if($appliedCoupon) {
-                                    if($appliedCoupon->type === 'percent') {
-                                        $discount = round($subtotal * ($appliedCoupon->value / 100));
-                                    } else {
-                                        $discount = $appliedCoupon->value;
+                                $couponCode = session('applied_coupon');
+                                // Special handling for VEYRON10 coupon
+                                if($couponCode === 'VEYRON10') {
+                                    $discount = round($subtotal * 0.1); // 10% discount
+                                } else {
+                                    $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
+                                    if($appliedCoupon) {
+                                        if($appliedCoupon->type === 'percent') {
+                                            $discount = round($subtotal * ($appliedCoupon->value / 100));
+                                        } else {
+                                            $discount = $appliedCoupon->value;
+                                        }
                                     }
                                 }
                             }
@@ -1342,11 +1423,22 @@ function updatePaymentMethod(method) {
     event.target.closest('.payment-method').classList.add('selected');
 }
 
-// Address type toggle
+// Address type toggle with mutual exclusion
 document.addEventListener('change', function(e) {
     if (e.target.name === 'address_type') {
+        // Ensure only one checkbox is checked at a time
+        const homeCheckbox = document.getElementById('home');
+        const officeCheckbox = document.getElementById('office');
+        
+        if (e.target.id === 'home' && homeCheckbox.checked) {
+            officeCheckbox.checked = false;
+        } else if (e.target.id === 'office' && officeCheckbox.checked) {
+            homeCheckbox.checked = false;
+        }
+        
+        // Show/hide office section based on selection
         const officeSection = document.getElementById('officeSection');
-        if (e.target.value === 'office') {
+        if (officeCheckbox.checked) {
             officeSection.style.display = 'block';
         } else {
             officeSection.style.display = 'none';
@@ -1429,9 +1521,6 @@ document.getElementById('submitBtn')?.addEventListener('click', function(e) {
         goToStep(2);
         return false;
     }
-    
-    const total = subtotal + shipping;
-    document.getElementById('submitTotal').textContent = total.toFixed(2);
     
     // Submit the form
     document.getElementById('checkoutForm').submit();

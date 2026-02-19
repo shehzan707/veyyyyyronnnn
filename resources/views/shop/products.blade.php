@@ -179,7 +179,8 @@
 }
 
 .price-range-inputs input {
-    flex: 1;
+    flex: 0.7;
+    max-width: 110px;
     padding: 10px 12px;
     border: 2px solid #e0e0e0;
     border-radius: 6px;
@@ -297,8 +298,8 @@
 .clear-filter-btn {
     width: 100%;
     padding: 12px 20px;
-    background: #d3d3d3;
-    color: #555;
+    background: #222;
+    color: #f5f5f5;
     border: none;
     border-radius: 6px;
     font-size: 0.9rem;
@@ -311,8 +312,8 @@
 }
 
 .clear-filter-btn:hover {
-    background: #c0c0c0;
-    color: #333;
+    background: #000;
+    color: #fff;
 }
 
 /* Filter Toggle Button */
@@ -328,9 +329,9 @@
     width: 48px;
     height: 48px;
     border-radius: 8px;
-    background: #222;
-    color: #fff;
-    border: none;
+    background: #fff;
+    color: #222;
+    border: none !important;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -341,7 +342,7 @@
 }
 
 .filter-toggle button:hover {
-    background: #000;
+    background: #f5f5f5;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     transform: scale(1.05);
 }
@@ -372,6 +373,66 @@
     margin: 0 auto;
 }
 
+/* Category Title Display */
+.category-curated-title {
+    font-family: 'Georgia', 'Poster', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+    margin-top: 0;
+    text-transform: uppercase;
+}
+
+.category-curated-title.men {
+    color: #27C0FE;
+}
+
+.category-curated-title.women {
+    color: #FF69B4;
+}
+
+.category-curated-title.footwear {
+    color: #20B2AA;
+}
+
+.category-curated-title.accessories {
+    color: #9ba4c2;
+}
+
+/* Product Count Display */
+.product-count-display {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: 500;
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.product-count-display strong {
+    color: #222;
+    font-weight: 700;
+}
+
+/* Sticky Header */
+/* Header is now fixed globally in main layout */
+
+/* Product Count Display */
+.product-count-display {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: 500;
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.product-count-display strong {
+    color: #222;
+    font-weight: 700;
+}
+
 /* Products Grid */
 .products-page .products-grid {
     display: grid;
@@ -382,8 +443,8 @@
 
 /* Product Card */
 .products-page .product-card {
-    background: #fff;
-    border-radius: 8px;
+    background: transparent;
+    border-radius: 0;
     overflow: hidden;
     position: relative;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -392,8 +453,7 @@
 }
 
 .products-page .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+    transform: scale(1.01);
 }
 
 .products-page .product-card a {
@@ -418,7 +478,7 @@
 }
 
 .products-page .product-card:hover img {
-    transform: scale(1.08);
+    /* No hover effect */
 }
 
 /* Hover Overlay */
@@ -426,7 +486,7 @@
     position: absolute;
     inset: 0;
     background: rgba(0,0,0,0.5);
-    display: flex;
+    display: none;
     align-items: flex-end;
     justify-content: center;
     gap: 8px;
@@ -436,7 +496,7 @@
 }
 
 .products-page .product-card:hover .product-overlay {
-    opacity: 1;
+    display: none;
 }
 
 /* Overlay Buttons */
@@ -454,8 +514,7 @@
 }
 
 .products-page .overlay-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    /* Removed hover effect */
 }
 
 .products-page .add-btn {
@@ -467,52 +526,61 @@
 }
 
 .products-page .add-btn:hover {
-    background: #f0f0f0;
+    /* No hover effect */
 }
 .products-page .product-card:hover .wish-btn {
     opacity: 1;
     visibility: visible;
     transform: scale(1);
+    transition: all 0.3s ease;
 }
 
 
 .products-page .wish-btn {
     position: absolute;
-    bottom: 16px;
-    right: 16px;
-    background: #222;
-    color: #fff;
-    width: 44px;
-    height: 44px;
+    top: 12px;
+    right: 12px;
+    background: #fff;
+    color: #222;
+    width: 40px;
+    height: 40px;
     padding: 0;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
-opacity: 0;
-visibility: hidden;
-transform: scale(0.8);
-
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
     flex: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .products-page .wish-btn:hover {
-    background: #000;
-    transform: scale(1.15);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    /* Removed hover effect */
 }
 
 /* Product Info */
 .products-page .product-info {
     padding: 14px 14px 16px;
     transition: all 0.3s ease;
+    background: #f9f9f9;
 }
 
 .products-page .product-card:hover .product-info {
-    padding: 14px 14px 16px;
+    /* No hover effect */
+}
+
+/* Product Category */
+.products-page .product-category {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 8px;
+    font-weight: 400;
+    line-height: 1.4;
 }
 
 .products-page .product-name {
@@ -529,7 +597,7 @@ transform: scale(0.8);
 }
 
 .products-page .product-card:hover .product-name {
-    font-size: 0.93rem;
+    /* No hover effect */
 }
 
 .products-page .product-price {
@@ -541,7 +609,8 @@ transform: scale(0.8);
 }
 
 .products-page .product-card:hover .product-price {
-    font-size: 1.03rem;
+    /* No hover effect */
+}    /* Removed hover effect */
 }
 
 .products-page .product-price-original {
@@ -571,8 +640,8 @@ transform: scale(0.8);
 }
 
 .products-page .no-products a:hover {
-    color: #666;
-    border-color: #666;
+    
+    
 }
 
 /* Close Filter Overlay */
@@ -652,7 +721,7 @@ transform: scale(0.8);
 @endpush
 
 @section('content')
-<div class="products-page">
+<div class="products-page" id="productsPage">
     <!-- Filter Overlay -->
     <div class="filter-overlay" id="filterOverlay"></div>
 
@@ -716,13 +785,33 @@ transform: scale(0.8);
             </div>
 
             <!-- Clear Filters Button -->
-            <button type="button" class="clear-filter-btn" onclick="clearAllFilters()">Clear Filters</button>
+            <button type="button" class="clear-filter-btn" onclick="clearAllFilters()">Clear</button>
         </div>
     </aside>
 
     <!-- Main Content -->
     <div class="main-content">
         <div class="products-container">
+            @php
+                $genderTitles = [
+                    'men' => 'CURATED MENSWEAR',
+                    'women' => 'CURATED WOMENSWEAR',
+                    'footwear' => 'CURATED FOOTWEAR',
+                    'accessories' => 'CURATED ACCESSORIES'
+                ];
+                $genderFromUrl = request()->input('gender');
+                $categoryTitle = $genderTitles[$genderFromUrl] ?? null;
+            @endphp
+
+            @if($categoryTitle)
+                <h1 class="category-curated-title {{ $genderFromUrl }}">{{ $categoryTitle }}</h1>
+            @endif
+
+            <!-- Product Count Display -->
+            <div class="product-count-display">
+                Showing <strong id="productCountDisplay">{{ $products->count() }}</strong> products
+            </div>
+            
             <!-- Products Grid -->
             <div class="products-grid">
                 @forelse($products as $product)
@@ -741,6 +830,17 @@ transform: scale(0.8);
                             </div>
 
                             <div class="product-info">
+                                <div class="product-category">
+                                    @if($product->categoryModel)
+                                        @if($product->categoryModel->parent)
+                                            {{ $product->categoryModel->parent->name }} - {{ $product->categoryModel->name }}
+                                        @else
+                                            {{ $product->categoryModel->name }}
+                                        @endif
+                                    @else
+                                        Product
+                                    @endif
+                                </div>
                                 <div class="product-name">{{ $product->name }}</div>
                                 <div class="product-price">₹{{ number_format($product->price, 0) }}</div>
                             </div>
@@ -793,47 +893,8 @@ const minPriceInput = document.getElementById('minPriceInput');
 const maxPriceInput = document.getElementById('maxPriceInput');
 const priceRangeFill = document.getElementById('priceRangeFill');
 
-// Category data structure
-const categoryData = {
-    men: [
-        { name: 'Shirts', count: 268 },
-        { name: 'Jeans', count: 209 },
-        { name: 'Tops', count: 150 },
-        { name: 'Casual Shoes', count: 75 },
-        { name: 'Jackets', count: 97 },
-        { name: 'T-Shirts', count: 320 },
-        { name: 'Formal Shirts', count: 145 },
-        { name: 'Shorts', count: 89 }
-    ],
-    women: [
-        { name: 'Dresses', count: 105 },
-        { name: 'Tops', count: 180 },
-        { name: 'Jeans', count: 165 },
-        { name: 'Casual Shoes', count: 92 },
-        { name: 'Handbags', count: 99 },
-        { name: 'Sarees', count: 78 },
-        { name: 'Kurtis', count: 156 },
-        { name: 'Leggings', count: 134 }
-    ],
-    accessories: [
-        { name: 'Watches', count: 89 },
-        { name: 'Sunglasses', count: 67 },
-        { name: 'Belts', count: 45 },
-        { name: 'Scarves', count: 56 },
-        { name: 'Hats', count: 34 },
-        { name: 'Bags', count: 123 },
-        { name: 'Jewelry', count: 178 }
-    ],
-    footwear: [
-        { name: 'Casual Shoes', count: 234 },
-        { name: 'Sports Shoes', count: 156 },
-        { name: 'Formal Shoes', count: 98 },
-        { name: 'Sandals', count: 87 },
-        { name: 'Heels', count: 65 },
-        { name: 'Boots', count: 79 },
-        { name: 'Flip Flops', count: 45 }
-    ]
-};
+// Dynamic category data from database
+const categoryData = @json($categoryGroups ?? []);
 
 function updateRangeSlider() {
     let minVal = parseInt(minRange.value);
@@ -898,63 +959,64 @@ function updateCategories() {
     const categories = categoryData[selectedType] || [];
     let html = '';
     
-    categories.slice(0, 5).forEach(cat => {
-        html += `
-            <div class="category-item">
-                <input type="checkbox" id="cat_${cat.name.replace(/\s/g, '_')}" 
-                       value="${cat.name}" onchange="applyFilters()">
-                <label for="cat_${cat.name.replace(/\s/g, '_')}">
-                    <span>${cat.name}</span>
-                    <span class="category-count">(${cat.count})</span>
-                </label>
-            </div>
-        `;
-    });
-    
-    if (categories.length > 5) {
-        html += `<button type="button" class="show-more-btn" onclick="showMoreCategories('${selectedType}')">+ ${categories.length - 5} more</button>`;
+    if (categories.length === 0) {
+        container.innerHTML = '<p style="color: #999; font-size: 0.9rem;">No categories available</p>';
+        applyFilters();
+        return;
     }
+    
+    // Show categories with hierarchical structure
+    categories.forEach(cat => {
+        if (cat.isHeader) {
+            // Header category - no checkbox, just a label
+            html += `
+                <div style="margin: 15px 0 10px 0; font-weight: 700; color: #555; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                    ${cat.name}
+                </div>
+            `;
+            
+            // Add children under this header
+            cat.children.forEach(child => {
+                html += `
+                    <div class="category-item" style="margin-left: 10px;">
+                        <input type="checkbox" id="cat_${child.name.replace(/\s/g, '_')}" 
+                               value="${child.name}" onchange="applyFilters()">
+                        <label for="cat_${child.name.replace(/\s/g, '_')}">
+                            <span>${child.name}</span>
+                            <span class="category-count">(${child.count})</span>
+                        </label>
+                    </div>
+                `;
+            });
+        } else {
+            // Direct category - regular checkbox
+            html += `
+                <div class="category-item">
+                    <input type="checkbox" id="cat_${cat.name.replace(/\s/g, '_')}" 
+                           value="${cat.name}" onchange="applyFilters()">
+                    <label for="cat_${cat.name.replace(/\s/g, '_')}">
+                        <span>${cat.name}</span>
+                        <span class="category-count">(${cat.count})</span>
+                    </label>
+                </div>
+            `;
+        }
+    });
     
     container.innerHTML = html;
     applyFilters();
 }
 
-// Show more categories
-function showMoreCategories(type) {
-    const categories = categoryData[type] || [];
-    const container = document.getElementById('categoriesContainer');
-    let html = '';
-    
-    categories.forEach(cat => {
-        const isChecked = document.getElementById(`cat_${cat.name.replace(/\s/g, '_')}`)?.checked || false;
-        html += `
-            <div class="category-item">
-                <input type="checkbox" id="cat_${cat.name.replace(/\s/g, '_')}" 
-                       value="${cat.name}" ${isChecked ? 'checked' : ''} onchange="applyFilters()">
-                <label for="cat_${cat.name.replace(/\s/g, '_')}">
-                    <span>${cat.name}</span>
-                    <span class="category-count">(${cat.count})</span>
-                </label>
-            </div>
-        `;
-    });
-    
-    html += `<button type="button" class="show-more-btn" onclick="showLessCategories('${type}')">- Show Less</button>`;
-    container.innerHTML = html;
-}
-
-// Show less categories
-function showLessCategories(type) {
-    updateCategories();
-}
-
 // Apply filters with real-time updates
 function applyFilters() {
     const selectedType = document.querySelector('input[name="gender_type"]:checked')?.value || '';
-    const selectedCategories = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+    const selectedCategories = Array.from(document.querySelectorAll('#categoriesContainer input[type="checkbox"]:checked'))
         .map(cb => cb.value);
     const minPrice = parseInt(minPriceInput.value) || 0;
     const maxPrice = parseInt(maxPriceInput.value) || 100000;
+    
+    // Save current scroll position
+    const scrollPosition = window.scrollY;
     
     // Build query string
     let params = new URLSearchParams();
@@ -964,27 +1026,51 @@ function applyFilters() {
     params.append('max_price', maxPrice);
     
     // Update products via AJAX
-    const url = `{{ route('products.index') }}?${params.toString()}`;
+    const url = `/products?${params.toString()}`;
     
     fetch(url, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
     })
-    .then(response => response.text())
-    .then(html => {
-        // Extract products grid from response
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const newGrid = doc.querySelector('.products-grid');
+    .then(response => response.json())
+    .then(data => {
         const currentGrid = document.querySelector('.products-grid');
+        currentGrid.innerHTML = '';
         
-        if (newGrid && currentGrid) {
-            currentGrid.innerHTML = newGrid.innerHTML;
+        if (!data.products || data.products.length === 0) {
+            currentGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;"><h3 style="color: #999;">No products found</h3></div>';
+        } else {
+            data.products.forEach(product => {
+                const productCard = `
+                    <div class="product-card">
+                        <a href="/products/${product.id}">
+                            <div class="product-image">
+                                <img src="${product.image}" alt="${product.name}">
+                            </div>
+                            <div class="product-info" style="padding: 12px 0;">
+                                <h4 style="margin: 0 0 4px 0; font-size: 0.95rem; font-weight: 600; color: #222; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${product.name}</h4>
+                                <p style="margin: 0 0 6px 0; color: #888; font-size: 0.8rem;">${product.category}</p>
+                                <p style="margin: 0; color: #666; font-size: 0.85rem;">₹${parseFloat(product.price).toLocaleString('en-IN')}</p>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                currentGrid.innerHTML += productCard;
+            });
+        }
+        
+        // Update product count display
+        const countDisplay = document.getElementById('productCountDisplay');
+        if (countDisplay) {
+            countDisplay.textContent = data.products ? data.products.length : 0;
         }
         
         // Update URL without full reload
         window.history.replaceState({}, '', url);
+        
+        // Restore scroll position after content is updated
+        window.scrollTo(0, scrollPosition);
     })
     .catch(error => console.error('Error:', error));
 }
@@ -1010,6 +1096,129 @@ function clearAllFilters() {
     
     // Reload all products
     window.location.href = '{{ route("products.index") }}';
+}
+
+// Auto-apply filters from URL parameters on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const genderFromURL = params.get('gender');
+    const categorySlugFromURL = params.get('category');
+    const categoriesFromURL = params.getAll('categories[]');
+    
+    // If gender is provided, select it first
+    if (genderFromURL) {
+        const genderRadio = document.querySelector(`input[name="gender_type"][value="${genderFromURL}"]`);
+        if (genderRadio) {
+            genderRadio.checked = true;
+            
+            // Call updateCategories to load the category list for this gender
+            if (typeof updateCategories === 'function') {
+                updateCategories();
+            }
+            
+            // If categories array is provided, apply them after categories load
+            if (categoriesFromURL && categoriesFromURL.length > 0) {
+                // Small delay to allow updateCategories to render
+                setTimeout(() => {
+                    applyFiltersFromURL(categoriesFromURL);
+                }, 200);
+            } else if (categorySlugFromURL) {
+                // If category slug is also provided, apply it after categories load
+                setTimeout(() => {
+                    applyFilterFromURL(categorySlugFromURL);
+                }, 200);
+            }
+        }
+    } else if (categorySlugFromURL) {
+        // If only category is provided (no gender), try to find it from categoryData
+        applyFilterFromURL(categorySlugFromURL);
+    } else if (categoriesFromURL && categoriesFromURL.length > 0) {
+        // If only categories array is provided (no gender)
+        applyFiltersFromURL(categoriesFromURL);
+    }
+});
+
+// Helper function to apply multiple filters from categories[] array
+function applyFiltersFromURL(categoryNamesToCheck) {
+    const categoryCheckboxes = document.querySelectorAll('#categoriesContainer input[type="checkbox"]');
+    
+    if (categoryCheckboxes.length === 0) {
+        // Categories not yet loaded, retry
+        setTimeout(() => {
+            applyFiltersFromURL(categoryNamesToCheck);
+        }, 100);
+        return;
+    }
+    
+    let anyFound = false;
+    
+    // Check all checkboxes that match the category names from URL
+    categoryCheckboxes.forEach(cb => {
+        if (categoryNamesToCheck.includes(cb.value)) {
+            cb.checked = true;
+            anyFound = true;
+        }
+    });
+    
+    // Apply filters if any categories were found
+    if (anyFound && typeof applyFilters === 'function') {
+        applyFilters();
+    }
+}
+
+// Helper function to apply filter by category slug
+function applyFilterFromURL(categorySlugFromURL) {
+    const categoryCheckboxes = document.querySelectorAll('#categoriesContainer input[type="checkbox"]');
+    
+    if (categoryCheckboxes.length === 0) {
+        // Categories not yet loaded, retry
+        setTimeout(() => {
+            applyFilterFromURL(categorySlugFromURL);
+        }, 100);
+        return;
+    }
+    
+    // Find category name from categoryData using the slug
+    let categoryNameToFind = null;
+    
+    // Search through all category groups to find the matching slug
+    for (const genderType in categoryData) {
+        const categories = categoryData[genderType] || [];
+        for (const cat of categories) {
+            if (cat.slug === categorySlugFromURL) {
+                categoryNameToFind = cat.name;
+                break;
+            }
+            // Also check children
+            if (cat.children && cat.children.length > 0) {
+                for (const child of cat.children) {
+                    if (child.slug === categorySlugFromURL) {
+                        categoryNameToFind = child.name;
+                        break;
+                    }
+                }
+            }
+            if (categoryNameToFind) break;
+        }
+        if (categoryNameToFind) break;
+    }
+    
+    // Find and check the category checkbox
+    if (categoryNameToFind) {
+        let found = false;
+        categoryCheckboxes.forEach(cb => {
+            // Match by value (category name)
+            if (cb.value === categoryNameToFind) {
+                cb.checked = true;
+                found = true;
+            }
+        });
+        
+        // Apply filters if category was found
+        if (found && typeof applyFilters === 'function') {
+            applyFilters();
+        }
+    }
 }
 
 // Add to Cart Function
