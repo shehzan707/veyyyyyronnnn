@@ -13,6 +13,10 @@ class OrderItem extends Model
         'price',
         'quantity',
         'size',
+        'item_status',
+        'cancel_reason',
+        'cancelled_at',
+        'cancelled_by_admin',
     ];
 
     protected $casts = [
@@ -28,5 +32,13 @@ class OrderItem extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function scopeNotCancelled($query)
+    {
+        return $query->where(function ($query) {
+            $query->whereNull('item_status')
+                ->orWhere('item_status', '!=', 'Cancelled');
+        });
     }
 }

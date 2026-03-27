@@ -24,6 +24,9 @@ class Order extends Model
         'payment_details',
         'order_status',
         'total_amount',
+        'refund_status',
+        'refund_amount',
+        'refund_initiated_at',
     ];
 
     protected $casts = [

@@ -21,6 +21,9 @@ class User extends Authenticatable
         'password',
         'role',
         'profile_picture',
+        'otp_code',
+        'otp_expiry',
+        'is_active',
     ];
 
     /**

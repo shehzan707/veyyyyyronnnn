@@ -34,7 +34,7 @@ class AnalyticsController extends Controller
             'kpis' => $this->getKPIs($dateFrom, $dateTo),
             'topProducts' => $this->getTopProducts($dateFrom, $dateTo),
             'topCategories' => $this->getTopCategories($dateFrom, $dateTo),
-            'dailySales' => $this->getDailySales(),
+            'sevenDaySales' => $this->getSevenDaySales(),
             'monthlySales' => $this->getMonthlySales(),
             'yearlySales' => $this->getYearlySales(),
             'revenueVsOrders' => $this->getRevenueVsOrders($dateFrom, $dateTo),
@@ -105,27 +105,23 @@ class AnalyticsController extends Controller
         return $data;
     }
 
-    private function getDailySales()
+    private function getSevenDaySales()
     {
-        $today = Carbon::now()->startOfDay();
-        $yesterday = Carbon::now()->subDay()->startOfDay();
+        $startDate = Carbon::now()->subDays(6)->startOfDay();
+        $data = [];
 
-        $todayData = [];
-        $yesterdayData = [];
+        for ($i = 0; $i < 7; $i++) {
+            $date = $startDate->copy()->addDays($i);
+            $revenue = Order::whereDate('created_at', $date)->sum('total_amount');
 
-        for ($i = 0; $i < 24; $i++) {
-            $hour = $i;
-            $start = $today->copy()->addHours($i);
-            $end = $start->copy()->addHour();
-
-            $todayRevenue = Order::whereBetween('created_at', [$start, $end])->sum('total_amount');
-            $yesterdayRevenue = Order::whereBetween('created_at', [$yesterday->copy()->addHours($i), $yesterday->copy()->addHours($i + 1)])->sum('total_amount');
-
-            $todayData[] = ['hour' => $hour . ':00', 'revenue' => round($todayRevenue, 2)];
-            $yesterdayData[] = ['hour' => $hour . ':00', 'revenue' => round($yesterdayRevenue, 2)];
+            $data[] = [
+                'date' => $date->format('M d'),
+                'day' => $date->format('D'),
+                'revenue' => round($revenue, 2),
+            ];
         }
 
-        return ['today' => $todayData, 'yesterday' => $yesterdayData];
+        return $data;
     }
 
     private function getMonthlySales()

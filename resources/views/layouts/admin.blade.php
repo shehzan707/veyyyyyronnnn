@@ -1,3 +1,4 @@
+<?php ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -327,13 +328,13 @@
             color: #ffffff !important;
             border: 1px solid rgba(255, 255, 255, 0.3) !important;
         }
-    </style>
+   </style>
 </head>
 <body>
     <header class="header">
         <div class="logo">
             <img src="{{ asset('images/adminlogo.png') }}" alt="VEYRON Logo">
-            <span>   pADMIN CONSOLE</span>
+            <span>   ADMIN CONSOLE</span>
         </div>
         <nav class="nav">
             <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">

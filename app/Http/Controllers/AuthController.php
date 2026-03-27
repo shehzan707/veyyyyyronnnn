@@ -49,6 +49,11 @@ class AuthController extends Controller
                 ->first();
 
             if ($user && Hash::check($request->password, $user->password)) {
+                // Check if user is active
+                if (!$user->is_active) {
+                    return back()->withErrors(['identifier' => 'Your account is currently inactive. Please contact support.']);
+                }
+
                 Auth::login($user);
 
                 if (session()->has('redirect_after_login')) {

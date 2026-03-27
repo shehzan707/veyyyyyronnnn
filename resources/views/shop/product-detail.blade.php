@@ -14,6 +14,7 @@
 .product-description{color:#555;line-height:1.8}
 
 .size-selector{display:flex;gap:10px;flex-wrap:wrap}
+.size-selector.hidden{display:none !important;}
 .size-option{
     padding:10px 20px;
     border:2px solid #ddd;
@@ -260,7 +261,7 @@
     <br>
 @endif
 
-<div class="size-selector"{{ $isSingleSizeB ? ' style="display:none;"' : '' }}>
+<div class="size-selector{{ $isSingleSizeB ? ' hidden' : '' }}">
     @foreach($sizes as $size)
         @php
             $classStr = $stockData[$size] == 0 ? 'disabled' : '';
@@ -528,8 +529,30 @@ function showAddToBagMiniCard(){
     setTimeout(() => card.remove(), 3000);
 }
 
-
-
+// Initialize size and quantity from URL query parameters
+window.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sizeParam = urlParams.get('size');
+    const qtyParam = urlParams.get('qty');
+    
+    // Set size from query parameter if provided
+    if (sizeParam) {
+        const sizeElement = document.querySelector(`[data-size="${sizeParam}"]`);
+        if (sizeElement && !sizeElement.classList.contains('disabled')) {
+            sizeElement.click();
+        }
+    }
+    
+    // Set quantity from query parameter if provided
+    if (qtyParam) {
+        const qtyInput = document.getElementById('qtyInput');
+        if (qtyInput) {
+            const qty = Math.max(1, parseInt(qtyParam));
+            qtyInput.value = qty;
+            validateQuantity();
+        }
+    }
+});
 
 </script>
 @endpush

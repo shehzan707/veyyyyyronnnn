@@ -5,11 +5,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\OrderCancellationController;
 use App\Http\Controllers\BulkImportController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
@@ -36,6 +39,9 @@ Route::get('/gallery', [GalleryController::class, 'allImages'])->name('gallery.a
 Route::get('/gallery/{category}', [GalleryController::class, 'imagesByCategory'])->name('gallery.category');
 Route::get('/api/gallery/images', [GalleryController::class, 'getImagesJson'])->name('gallery.api.images');
 
+// Categories API - For mega menu navigation
+Route::get('/api/categories/{parent}', [CategoryController::class, 'getByParent'])->name('api.categories.parent');
+
 // Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
@@ -56,19 +62,50 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Password Reset Routes
+Route::prefix('auth')->name('password.')->group(function () {
+    // Forgot Password Entry
+    Route::get('/forgot-password', [PasswordResetController::class, 'showForgotPasswordForm'])->name('forgot');
+    Route::post('/check-user', [PasswordResetController::class, 'checkUser'])->name('check-user');
+    
+    // Reset Method Selection
+    Route::get('/reset-method/{userId}', [PasswordResetController::class, 'showResetMethodForm'])->name('reset-method');
+    
+    // Option 1: Reset with Old Password
+    Route::get('/reset-old-password/{userId}', [PasswordResetController::class, 'showOldPasswordForm'])->name('reset-old-password');
+    Route::post('/verify-old-password', [PasswordResetController::class, 'verifyOldPassword'])->name('verify-old-password');
+    
+    // Option 2: Reset with OTP
+    Route::get('/verify-identity/{userId}', [PasswordResetController::class, 'showVerifyIdentityForm'])->name('verify-identity');
+    Route::post('/verify-identity', [PasswordResetController::class, 'verifyIdentity'])->name('verify-identity-post');
+    Route::post('/generate-otp', [PasswordResetController::class, 'generateOtp'])->name('generate-otp');
+    Route::post('/resend-otp', [PasswordResetController::class, 'resendOtp'])->name('resend-otp');
+    Route::get('/verify-otp/{userId}', [PasswordResetController::class, 'showOtpInputForm'])->name('verify-otp');
+    Route::post('/verify-otp', [PasswordResetController::class, 'verifyOtp'])->name('verify-otp-post');
+    Route::get('/reset-otp-password/{userId}', [PasswordResetController::class, 'showNewPasswordForm'])->name('reset-otp-password');
+    Route::post('/reset-otp-password', [PasswordResetController::class, 'resetPasswordWithOtp'])->name('reset-otp-password-post');
+});
+
 // Checkout
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/checkout', [CheckoutController::class, 'index'])->middleware('check-active')->name('checkout.index');
+Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('check-active')->name('checkout.store');
 Route::get('/order-success/{id}', [CheckoutController::class, 'success'])->name('order.success');
 
 // Account
-Route::get('/account', [AccountController::class, 'index'])->name('account.index');
-Route::post('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
-Route::post('/account/address', [AccountController::class, 'addAddress'])->name('account.addAddress');
-Route::put('/account/address/{id}', [AccountController::class, 'updateAddress'])->name('account.updateAddress');
-Route::delete('/account/address/{id}', [AccountController::class, 'deleteAddress'])->name('account.deleteAddress');
-Route::get('/account/orders', [AccountController::class, 'orders'])->name('account.orders');
-Route::get('/account/orders/{id}', [AccountController::class, 'orderView'])->name('account.order.view');
+Route::get('/account', [AccountController::class, 'index'])->middleware('check-active')->name('account.index');
+Route::post('/account/profile', [AccountController::class, 'updateProfile'])->middleware('check-active')->name('account.updateProfile');
+Route::post('/account/address', [AccountController::class, 'addAddress'])->middleware('check-active')->name('account.addAddress');
+Route::put('/account/address/{id}', [AccountController::class, 'updateAddress'])->middleware('check-active')->name('account.updateAddress');
+Route::delete('/account/address/{id}', [AccountController::class, 'deleteAddress'])->middleware('check-active')->name('account.deleteAddress');
+Route::get('/account/orders', [AccountController::class, 'orders'])->middleware('check-active')->name('account.orders');
+Route::get('/account/orders/{id}', [AccountController::class, 'orderView'])->middleware('check-active')->name('account.order.view');
+
+// Order Cancellation Routes
+Route::prefix('order')->name('order.')->middleware('check-active')->group(function () {
+    Route::get('/cancellation-reasons', [OrderCancellationController::class, 'getReasons'])->name('cancellation.reasons');
+    Route::post('/item/{itemId}/cancel', [OrderCancellationController::class, 'cancelItem'])->name('item.cancel');
+    Route::post('/{orderId}/cancel', [OrderCancellationController::class, 'cancelOrder'])->name('cancel');
+});
 
 // Coupon
 Route::post('/coupon/validate', [\App\Http\Controllers\CouponController::class, 'validateCoupon'])->name('coupon.validate');
@@ -103,10 +140,11 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{id}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+    Route::post('/orders/item/{itemId}/cancel', [OrderCancellationController::class, 'cancelItemByAdmin'])->name('orders.item.cancel');
     
     // Users
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-    Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    Route::post('/users/{id}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggleStatus');
     
     // Categories
     Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');

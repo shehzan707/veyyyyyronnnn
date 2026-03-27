@@ -1,0 +1,469 @@
+<?php $__env->startSection('title', 'Banners — Admin'); ?>
+
+<?php $__env->startPush('styles'); ?>
+<style>
+.banners-container { display: grid; grid-template-columns: 7fr 3.5fr; gap: 25px; align-items: start; width: 100%; }
+
+/* Banners Section */
+.banners-section h2 { margin-bottom: 20px; color: #fff; }
+
+.section-filters { 
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 20px; 
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    background: #3a3a3a;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: #424242;
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}
+
+.banners-grid { display: grid; gap: 20px; }
+
+.banner-card { 
+    background: #3a3a3a;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    position: relative;
+}
+
+.banner-card:hover {
+    background: #424242;
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateX(5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.banner-thumbnail {
+    width: 120px;
+    height: 90px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid rgba(0, 212, 255, 0.2);
+}
+
+.banner-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+
+.banner-type {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: fit-content;
+    margin-bottom: 5px;
+}
+
+.banner-type.image { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+.banner-type.video { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+
+.banner-section-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: fit-content;
+    background: rgba(168, 85, 247, 0.2);
+    color: #d8b4fe;
+    margin-left: 8px;
+}
+
+.banner-name { color: #fff; font-weight: 600; margin-bottom: 3px; }
+
+.banner-details {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin: 8px 0;
+}
+
+.banner-link-preview {
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 0.8rem;
+    word-break: break-all;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 24px;
+    margin: 0 8px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #4b5563;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: #22c55e;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(16px);
+}
+
+.banner-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+.btn-delete {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-delete:hover {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: rgba(239, 68, 68, 0.6);
+}
+
+.btn-icon .material-icons { font-size: 1.1rem; }
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #cbd5e1;
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.empty-state .material-icons { font-size: 3rem; opacity: 0.5; margin-bottom: 10px; }
+.empty-state p { margin: 0; font-size: 1rem; }
+
+/* Upload Form */
+.form-card { 
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px; 
+    padding: 25px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+    position: sticky; 
+    top: 100px;
+}
+
+.form-card h3 { margin-bottom: 20px; color: #fff; font-size: 1.2rem; }
+
+.form-group { margin-bottom: 16px; }
+
+.form-group label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-weight: 600; 
+    font-size: 0.9rem; 
+    color: #cbd5e1;
+}
+
+.form-group input, .form-group select, .form-group textarea { 
+    width: 100%; 
+    padding: 10px 12px; 
+    border: 1px solid rgba(255, 255, 255, 0.15); 
+    border-radius: 6px; 
+    font-size: 0.9rem; 
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.03);
+    color: #e2e8f0;
+    font-family: inherit;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { 
+    border-color: rgba(0, 212, 255, 0.6); 
+    outline: none; 
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.file-input-wrapper {
+    position: relative;
+    cursor: pointer;
+    display: block;
+}
+
+.file-input-label {
+    display: block;
+    padding: 20px;
+    border: 2px dashed rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    text-align: center;
+    background: rgba(0, 212, 255, 0.05);
+    transition: all 0.3s ease;
+    color: #cbd5e1;
+}
+
+.file-input-wrapper input[type="file"] {
+    display: none;
+}
+
+.file-input-label:hover {
+    border-color: rgba(0, 212, 255, 0.6);
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.file-input-label .material-icons { font-size: 2rem; display: block; margin-bottom: 5px; }
+
+.btn-submit { 
+    background: #000000; 
+    color: #fff; 
+    padding: 12px 20px; 
+    border: none; 
+    border-radius: 6px; 
+    font-size: 0.95rem; 
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-submit:hover { 
+    background: #333333;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 1024px) {
+    .banners-container { grid-template-columns: 1fr; }
+    .form-card { position: static; }
+}
+</style>
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startSection('content'); ?>
+<div class="banners-container">
+    <!-- Banners List (7 parts) -->
+    <div class="banners-section">
+        <h2>📸 Banner Management</h2>
+        
+        <!-- Section Filters -->
+        <div class="section-filters">
+            <button class="filter-btn active" data-section="all">All Sections</button>
+            <button class="filter-btn" data-section="default">Default</button>
+            <button class="filter-btn" data-section="men">Men</button>
+            <button class="filter-btn" data-section="women">Women</button>
+            <button class="filter-btn" data-section="accessories">Accessories</button>
+            <button class="filter-btn" data-section="footwear">Footwear</button>
+        </div>
+
+        <div class="banners-grid" id="bannersGrid">
+            <?php $__empty_1 = true; $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $banner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <div class="banner-card" data-section="<?php echo e($banner->section ?? 'default'); ?>">
+                    <div>
+                        <?php if($banner->media_type === 'image'): ?>
+                            <img src="<?php echo e(asset($banner->file_path)); ?>" alt="<?php echo e($banner->file_name); ?>" class="banner-thumbnail">
+                        <?php else: ?>
+                            <video class="banner-thumbnail" controls>
+                                <source src="<?php echo e(asset($banner->file_path)); ?>" type="video/mp4">
+                            </video>
+                        <?php endif; ?>
+                    </div>
+                    <div class="banner-info">
+                        <div>
+                            <span class="banner-type <?php echo e($banner->media_type); ?>"><?php echo e($banner->media_type); ?></span>
+                            <span class="banner-section-badge"><?php echo e($banner->section ?? 'default'); ?></span>
+                            <div class="banner-name"><?php echo e($banner->file_name); ?></div>
+                            <?php if($banner->banner_link): ?>
+                                <a href="<?php echo e($banner->banner_link); ?>" target="_blank" class="banner-link-preview">📍 Link: <?php echo e(substr($banner->banner_link, 0, 40)); ?>...</a>
+                            <?php endif; ?>
+                        </div>
+                        <div class="banner-details">
+                            <span>📅 <?php echo e($banner->created_at->format('M d, Y')); ?></span>
+                            <span>📊 Order: <?php echo e($banner->display_order); ?></span>
+                            <span>Status: 
+                                <form action="<?php echo e(route('admin.banners.toggle', $banner->id)); ?>" method="POST" style="display:inline;" onchange="this.submit()">
+                                    <?php echo csrf_field(); ?>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" <?php echo e($banner->is_enabled ? 'checked' : ''); ?> onchange="this.form.submit()">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </form>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="banner-actions">
+                        <a href="<?php echo e(route('admin.banners.edit', $banner->id)); ?>" class="btn-icon" title="Edit" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3);">
+                            <span class="material-icons">edit</span>
+                        </a>
+                        <form action="<?php echo e(route('admin.banners.destroy', $banner->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Delete this banner?')">
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('DELETE'); ?>
+                            <button type="submit" class="btn-icon btn-delete" title="Delete">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <div class="empty-state">
+                    <span class="material-icons">image_not_supported</span>
+                    <p>No banners uploaded yet. Add one using the form →</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Upload Form (3.5 parts) -->
+    <div class="form-card">
+        <h3>➕ Upload Banner</h3>
+        <form action="<?php echo e(route('admin.banners.store')); ?>" method="POST" enctype="multipart/form-data">
+            <?php echo csrf_field(); ?>
+            
+            <div class="form-group">
+                <label>Section *</label>
+                <select name="section" required>
+                    <option value="">Select Section</option>
+                    <option value="default">Default Home</option>
+                    <option value="men">Men</option>
+                    <option value="women">Women</option>
+                    <option value="accessories">Accessories</option>
+                    <option value="footwear">Footwear</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Banner Link (Product/Category URL)</label>
+                <input type="url" name="banner_link" placeholder="https://example.com/products" title="Full URL to product or category page">
+            </div>
+
+            <div class="form-group">
+                <label>Display Order</label>
+                <input type="number" name="display_order" value="0" min="0" step="1" title="Lower numbers appear first">
+            </div>
+            
+            <div class="form-group">
+                <label>Select File (Image or Video) *</label>
+                <label class="file-input-label">
+                    <span class="material-icons">cloud_upload</span>
+                    <span>Click to upload or drag & drop</span>
+                    <input type="file" name="file" accept="image/*,video/*" required onchange="updateFileName(this)">
+                </label>
+            </div>
+
+            <div class="form-group" id="fileNameDisplay" style="display:none;">
+                <label>File Name</label>
+                <input type="text" id="selectedFileName" readonly disabled style="background: rgba(255,255,255,0.05); cursor: not-allowed;">
+            </div>
+
+            <button type="submit" class="btn-submit">Upload Banner</button>
+        </form>
+    </div>
+</div>
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('scripts'); ?>
+<script>
+function updateFileName(input) {
+    const fileName = input.files[0]?.name || '';
+    const display = document.getElementById('fileNameDisplay');
+    const nameInput = document.getElementById('selectedFileName');
+    
+    if (fileName) {
+        display.style.display = 'block';
+        nameInput.value = fileName;
+    } else {
+        display.style.display = 'none';
+    }
+}
+
+// Section filtering
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const section = this.dataset.section;
+        const grid = document.getElementById('bannersGrid');
+        
+        // Update active filter
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Filter cards
+        grid.querySelectorAll('.banner-card').forEach(card => {
+            if (section === 'all' || card.dataset.section === section) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Veyronnnnnnnnnn\resources\views/admin/banners/index.blade.php ENDPATH**/ ?>

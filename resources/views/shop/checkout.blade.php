@@ -168,8 +168,9 @@
 
                 <button type="submit" class="place-order-btn">Place Order</button>
             </div>
+         
         </div>
     </form>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+       <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 </div>
 @endsection

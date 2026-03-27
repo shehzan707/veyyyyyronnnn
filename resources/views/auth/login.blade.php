@@ -146,6 +146,7 @@
         </form>
 
         <p>Don't have an account? <span onclick="window.location.href='{{ route('register') }}'">Register</span></p>
+        <p style="margin-top: 0.5rem;"><span onclick="window.location.href='{{ route('password.forgot') }}'" style="cursor: pointer; color: #2c2f4a; text-decoration: underline;">Forgot Password?</span></p>
     </div>
 </body>
 </html>

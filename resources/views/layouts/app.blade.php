@@ -23,13 +23,12 @@
         /* Navigation Menu */
         .nav-menu { display: flex; gap: 40px; flex: 1; margin-left: 60px; }
         .nav-item { position: relative; cursor: pointer; }
-        .nav-link { font-size: 13px; font-weight: 600; color: #222; text-decoration: none; padding: 15px 0; display: flex; align-items: center; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; }
-        .nav-link::before { content: ''; position: absolute; left: 0; bottom: 0; width: 0%; height: 3px; background: linear-gradient(90deg, #222, #666); transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .nav-link { font-size: 13px; font-weight: 600; color: #222; text-decoration: none; padding: 15px 0; display: flex; align-items: center; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; z-index: 101; cursor: pointer; }
+        .nav-link::before { content: ''; position: absolute; left: 0; bottom: 0; width: 0%; height: 3px; background: linear-gradient(90deg, #222, #666); transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); display: none; }
         .nav-link:hover { color: #333; font-weight: 700; letter-spacing: 0.5px; }
-        .nav-item:hover .nav-link::before { width: 100%; }
         
         /* Search Bar */
-        .search-container { flex: 0.50; margin: 0 2px 0 0; }
+        .search-container { flex: 0.55; margin: 0 1px 0 3px; }
         .search-wrapper { position: relative; }
         .search-input { width: 100%; padding: 10px 15px; border: 1px solid #ddd; border-radius: 2px; font-size: 13px; outline: none; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); background: #f5f5f5; }
         .search-input:focus { border-color: #666; background: #fff; box-shadow: 0 2px 8px rgba(102,102,102,0.1); transform: scaleY(1.02); }
@@ -56,9 +55,34 @@
         .mega-menu.active { display: grid; grid-template-columns: repeat(5, 1fr); gap: 50px; opacity: 1; transform: translateY(0); }
         .mega-menu-column h4 { font-size: 13px; font-weight: 700; color: #666; margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.8px; transition: all 0.3s ease; }
         .mega-menu-column a { display: block; font-size: 13px; color: #333; text-decoration: none; padding: 10px 0; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); line-height: 1.8; position: relative; }
-        .mega-menu-column a::before { content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px; background: #222; transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .mega-menu-column a::before { content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px; background: #222; transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); display: none; }
         .mega-menu-column a:hover { color: #222; font-weight: 600; }
-        .mega-menu-column a:hover::before { width: 100%; }
+        
+        /* Navigation Images - Individual Sizes (Edit Each Category Separately) */
+        [data-category="men"] img { 
+            height: 40px; 
+            width: auto; 
+            max-width: 75px; 
+            object-fit: contain;
+        }
+        [data-category="women"] img { 
+            height: 39px; 
+            width: auto; 
+            max-width: 85px; 
+            object-fit: contain;
+        }
+        [data-category="accessories"] img { 
+            height: 39px; 
+            width: auto; 
+            max-width: 125px; 
+            object-fit: contain;
+        }
+        [data-category="footwear"] img { 
+            height: 40px; 
+            width: auto; 
+            max-width: 119px; 
+            object-fit: contain;
+        }
         
         /* Responsive */
         @media (max-width: 1200px) {
@@ -118,35 +142,39 @@
                 @if(isset($nav_categories))
                     @foreach($nav_categories as $category)
                         @php
+                            // Normalize category name for mapping
+                            $categoryLower = strtolower($category->name);
+                            
                             // Map category names to gender parameter values
                             $genderMap = [
-                                'Men' => 'men',
-                                'Women' => 'women',
-                                'Accessories' => 'accessories',
-                                'Footwear' => 'footwear'
+                                'men' => 'men',
+                                'women' => 'women',
+                                'accessories' => 'accessories',
+                                'footwear' => 'footwear'
                             ];
-                            $genderParam = $genderMap[$category->name] ?? null;
+                            $genderParam = $genderMap[$categoryLower] ?? null;
                             
                             // Map category names to home route names
                             $homeRouteMap = [
-                                'Men' => 'home.men',
-                                'Women' => 'home.women',
-                                'Accessories' => 'home.accessories',
-                                'Footwear' => 'home.footwear'
+                                'men' => 'home.men',
+                                'women' => 'home.women',
+                                'accessories' => 'home.accessories',
+                                'footwear' => 'home.footwear'
                             ];
                             
-                            // Check if current route is a home page
-                            $currentRoute = Route::currentRouteName();
-                            $homeRoutes = ['home', 'home.men', 'home.women', 'home.accessories', 'home.footwear'];
-                            $isOnHomePage = in_array($currentRoute, $homeRoutes);
-                            
-                            // Determine navigation link URL based on current context
-                            if ($isOnHomePage && isset($homeRouteMap[$category->name])) {
-                                $navLink = route($homeRouteMap[$category->name]);
+                            // Navigate to the home page for this category with fallback to products page
+                            $navLink = '#';
+                            if (isset($homeRouteMap[$categoryLower])) {
+                                try {
+                                    $navLink = route($homeRouteMap[$categoryLower]);
+                                } catch (\Exception $e) {
+                                    // Fallback if route doesn't exist
+                                    if ($genderParam) {
+                                        $navLink = route('products.index', ['gender' => $genderParam]);
+                                    }
+                                }
                             } elseif ($genderParam) {
                                 $navLink = route('products.index', ['gender' => $genderParam]);
-                            } else {
-                                $navLink = '#';
                             }
                         @endphp
                         <div class="nav-item" data-category="{{ strtolower($category->slug) }}">
@@ -154,17 +182,17 @@
                                 @php
                                     $imageMap = [
                                         'Men' => 'men.jpeg',
+                                        'MEN' => 'men.jpeg',
                                         'Women' => 'women.jpeg',
+                                        'WOMEN' => 'women.jpeg',
                                         'Accessories' => 'acc.jpeg',
-                                        'Footwear' => 'foot.jpeg'
+                                        'ACCESSORIES' => 'acc.jpeg',
+                                        'Footwear' => 'foot.jpeg',
+                                        'FOOTWEAR' => 'foot.jpeg'
                                     ];
-                                    $imageName = $imageMap[$category->name] ?? null;
+                                    $imageName = $imageMap[$category->name] ?? 'men.jpeg';
                                 @endphp
-                                @if($imageName)
-                                    <img src="{{ asset('images/' . $imageName) }}" alt="{{ $category->name }}" style="height: 25px; width: auto; object-fit: contain;">
-                                @else
-                                    {{ strtoupper($category->name) }}
-                                @endif
+                                <img src="{{ asset('images/' . $imageName) }}" alt="{{ $category->name }}" style="object-fit: contain;">
                             </a>
                             @if($category->children && count($category->children) > 0)
                                 <div class="mega-menu" id="menu-{{ strtolower($category->slug) }}">
@@ -291,6 +319,7 @@
             const menu = item.querySelector('.mega-menu');
             const category = item.dataset.category;
             
+            // Show mega menu on hover
             item.addEventListener('mouseenter', () => {
                 document.querySelectorAll('.mega-menu.active').forEach(m => {
                     if (m !== menu) m.classList.remove('active');
@@ -301,9 +330,6 @@
             item.addEventListener('mouseleave', () => {
                 menu.classList.remove('active');
             });
-            
-            // Navigation links will use their href attributes set by Blade logic
-            // No need for JavaScript click handler - let natural link behavior work
         });
         
         // Close mega menu when clicking elsewhere
@@ -572,6 +598,7 @@
 
         <div class="footer-container">
             <!-- Main Footer Sections -->
+             
             <div class="footer-main">
                 <!-- Online Shopping -->
                 <div class="footer-section">

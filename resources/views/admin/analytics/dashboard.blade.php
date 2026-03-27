@@ -158,6 +158,498 @@ html, body {
     border-color: rgba(59, 130, 246, 0.3);
 }
 
+.sales-pulse-card {
+    background:
+        radial-gradient(circle at top, rgba(52, 245, 176, 0.18) 0%, rgba(5, 12, 20, 0.96) 44%, rgba(3, 7, 12, 0.98) 100%);
+    border-color: rgba(52, 245, 176, 0.28);
+    box-shadow:
+        inset 0 0 0 1px rgba(52, 245, 176, 0.08),
+        0 18px 40px rgba(0, 0, 0, 0.32),
+        0 0 28px rgba(52, 245, 176, 0.08);
+    overflow: hidden;
+    position: relative;
+}
+
+.sales-pulse-card::before {
+    content: '';
+    inset: 0;
+    opacity: 0.5;
+    pointer-events: none;
+    position: absolute;
+    background-image:
+        linear-gradient(rgba(52, 245, 176, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 245, 176, 0.08) 1px, transparent 1px);
+    background-size: 26px 26px;
+}
+
+.sales-pulse-card .chart-title {
+    position: relative;
+    z-index: 1;
+}
+
+.sales-pulse-card .chart-title small {
+    color: #86efac;
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    margin-top: 4px;
+    text-transform: none;
+}
+
+.sales-pulse-card .chart-icon {
+    background: linear-gradient(135deg, #34f5b0, #10b981);
+    box-shadow: 0 0 18px rgba(52, 245, 176, 0.35);
+}
+
+.sales-pulse-container {
+    background: linear-gradient(180deg, rgba(6, 14, 22, 0.78), rgba(3, 8, 14, 0.96));
+    border: 1px solid rgba(52, 245, 176, 0.16);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 390px;
+    padding: 12px;
+}
+
+.sales-pulse-container canvas {
+    position: relative;
+    z-index: 1;
+}
+
+.sales-pulse-visual {
+    min-height: 300px;
+    position: relative;
+}
+
+.sales-pulse-svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.sales-pulse-axis-labels {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    margin-top: 14px;
+    position: relative;
+    z-index: 1;
+}
+
+.sales-pulse-axis-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(52, 245, 176, 0.1);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+}
+
+.sales-pulse-axis-day {
+    color: #86efac;
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.sales-pulse-axis-value {
+    color: #e2fdf3;
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.neon-chart-card {
+    background:
+        radial-gradient(circle at top, rgba(52, 245, 176, 0.12) 0%, rgba(7, 14, 24, 0.95) 42%, rgba(3, 7, 12, 0.98) 100%);
+    border-color: rgba(52, 245, 176, 0.16);
+    box-shadow:
+        inset 0 0 0 1px rgba(52, 245, 176, 0.06),
+        0 18px 40px rgba(0, 0, 0, 0.26);
+    overflow: hidden;
+    position: relative;
+}
+
+.neon-chart-card::before {
+    content: '';
+    inset: 0;
+    opacity: 0.3;
+    pointer-events: none;
+    position: absolute;
+    background-image:
+        linear-gradient(rgba(52, 245, 176, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 245, 176, 0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+.neon-chart-card .chart-title {
+    position: relative;
+    z-index: 1;
+}
+
+.neon-chart-card .chart-title small {
+    color: #86efac;
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 4px;
+    text-transform: none;
+}
+
+.neon-chart-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 300px;
+    position: relative;
+    z-index: 1;
+}
+
+.neon-chart-card .chart-container {
+    height: auto;
+    min-height: 300px;
+    position: relative;
+    z-index: 1;
+}
+
+#topProductsChart,
+#topCategoriesChart,
+#monthlySalesChart,
+#yearlySalesChart,
+#revenueVsOrdersChart,
+#customerAnalyticsChart {
+    display: none !important;
+}
+
+.metric-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.metric-row {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(52, 245, 176, 0.1);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.metric-row-top {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.metric-product {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    min-width: 0;
+}
+
+.metric-thumb {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(52, 245, 176, 0.12);
+    border-radius: 10px;
+    display: flex;
+    flex: 0 0 48px;
+    height: 48px;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    width: 48px;
+}
+
+.metric-thumb img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.metric-thumb-fallback {
+    align-items: center;
+    color: #86efac;
+    display: none;
+    font-size: 0.68rem;
+    font-weight: 700;
+    height: 100%;
+    justify-content: center;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.metric-thumb.no-image .metric-thumb-fallback {
+    display: flex;
+}
+
+.metric-text {
+    min-width: 0;
+}
+
+.metric-name {
+    color: #f8fafc;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.metric-sub {
+    color: #86efac;
+    font-size: 0.76rem;
+    margin-top: 4px;
+}
+
+.metric-value {
+    color: #d1fae5;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.metric-track {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    height: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.metric-fill {
+    background: linear-gradient(90deg, #34f5b0, #6ee7b7);
+    border-radius: 999px;
+    box-shadow: 0 0 14px rgba(52, 245, 176, 0.3);
+    height: 100%;
+}
+
+.mini-chart-surface {
+    background: linear-gradient(180deg, rgba(6, 14, 22, 0.68), rgba(3, 8, 14, 0.94));
+    border: 1px solid rgba(52, 245, 176, 0.1);
+    border-radius: 14px;
+    min-height: 230px;
+    padding: 10px;
+}
+
+.mini-chart-svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.chart-summary-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.chart-summary-chip {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(52, 245, 176, 0.08);
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.chart-summary-chip span {
+    color: #86efac;
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.chart-summary-chip strong {
+    color: #f8fafc;
+    display: block;
+    font-size: 0.92rem;
+}
+
+.chart-summary-chip em {
+    color: #cbd5e1;
+    display: block;
+    font-size: 0.75rem;
+    font-style: normal;
+    margin-top: 3px;
+}
+
+.year-bars {
+    align-items: end;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    min-height: 230px;
+}
+
+.year-bar-item {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+}
+
+.year-bar-track {
+    align-items: end;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px 999px 12px 12px;
+    display: flex;
+    height: 190px;
+    justify-content: center;
+    padding: 8px 0;
+    width: 100%;
+}
+
+.year-bar-fill {
+    background: linear-gradient(180deg, #6ee7b7, #34f5b0);
+    border-radius: 999px;
+    box-shadow: 0 0 18px rgba(52, 245, 176, 0.24);
+    min-height: 8px;
+    width: 70%;
+}
+
+.year-bar-label {
+    color: #cbd5e1;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.compare-grid {
+    align-items: end;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    min-height: 230px;
+}
+
+.compare-group {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+}
+
+.compare-bars {
+    align-items: end;
+    display: flex;
+    gap: 5px;
+    height: 180px;
+    width: 100%;
+}
+
+.compare-bar {
+    border-radius: 999px 999px 10px 10px;
+    min-height: 8px;
+    width: 50%;
+}
+
+.compare-bar.revenue {
+    background: linear-gradient(180deg, #34f5b0, #10b981);
+    box-shadow: 0 0 16px rgba(52, 245, 176, 0.22);
+}
+
+.compare-bar.orders {
+    background: linear-gradient(180deg, #60a5fa, #2563eb);
+}
+
+.compare-label {
+    color: #cbd5e1;
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.compare-legend {
+    display: flex;
+    gap: 18px;
+    margin-top: auto;
+}
+
+.compare-legend span {
+    align-items: center;
+    color: #cbd5e1;
+    display: inline-flex;
+    font-size: 0.78rem;
+    gap: 7px;
+}
+
+.compare-legend i {
+    border-radius: 999px;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
+
+.compare-legend .legend-revenue {
+    background: #34f5b0;
+}
+
+.compare-legend .legend-orders {
+    background: #60a5fa;
+}
+
+.customer-stack {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 999px;
+    display: flex;
+    height: 18px;
+    overflow: hidden;
+}
+
+.customer-stack-fill {
+    height: 100%;
+}
+
+.customer-stack-fill.returning {
+    background: linear-gradient(90deg, #34f5b0, #10b981);
+}
+
+.customer-stack-fill.new {
+    background: linear-gradient(90deg, #60a5fa, #2563eb);
+}
+
+.customer-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.customer-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(52, 245, 176, 0.08);
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.customer-card span {
+    color: #86efac;
+    display: block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.customer-card strong {
+    color: #f8fafc;
+    display: block;
+    font-size: 1.35rem;
+}
+
+.customer-card em {
+    color: #cbd5e1;
+    display: block;
+    font-size: 0.78rem;
+    font-style: normal;
+    margin-top: 4px;
+}
+
 .chart-title {
     color: #fff;
     font-size: 1.2rem;
@@ -353,80 +845,409 @@ html, body {
 
     <!-- Charts Grid -->
     <div class="charts-grid">
-        <!-- Daily Sales -->
-        <div class="chart-card full-width-chart">
+        <!-- Last 7 Days Sales -->
+        <div class="chart-card full-width-chart sales-pulse-card">
             <div class="chart-title">
                 <div class="chart-icon">📅</div>
-                Daily Sales: Today vs Yesterday
+                Last 7 Days Sales Movement
+                <small>Always shows the latest 7 days, independent of date filters</small>
             </div>
-            <div class="chart-container">
-                <canvas id="dailySalesChart"></canvas>
+            <div class="chart-container sales-pulse-container">
+                @php
+                    $chartWidth = 760;
+                    $chartHeight = 320;
+                    $leftPad = 34;
+                    $rightPad = 16;
+                    $topPad = 20;
+                    $bottomPad = 26;
+                    $plotWidth = $chartWidth - $leftPad - $rightPad;
+                    $plotHeight = $chartHeight - $topPad - $bottomPad;
+                    $baseY = $topPad + $plotHeight;
+                    $maxRevenue = max(collect($sevenDaySales)->max('revenue') ?? 0, 1);
+                    $pointGap = count($sevenDaySales) > 1 ? $plotWidth / (count($sevenDaySales) - 1) : 0;
+                    $chartPoints = [];
+
+                    foreach ($sevenDaySales as $index => $saleDay) {
+                        $x = $leftPad + ($pointGap * $index);
+                        $y = $baseY - (($saleDay['revenue'] / $maxRevenue) * $plotHeight);
+                        $chartPoints[] = [
+                            'x' => round($x, 2),
+                            'y' => round($y, 2),
+                            'day' => $saleDay['day'],
+                            'date' => $saleDay['date'],
+                            'revenue' => $saleDay['revenue'],
+                        ];
+                    }
+
+                    $linePoints = collect($chartPoints)
+                        ->map(fn ($point) => $point['x'] . ',' . $point['y'])
+                        ->implode(' ');
+
+                    $areaPoints = $leftPad . ',' . $baseY . ' ' . $linePoints . ' ' . last($chartPoints)['x'] . ',' . $baseY;
+                    $yMarkers = [0.25, 0.5, 0.75, 1];
+                @endphp
+                <div class="sales-pulse-visual">
+                    <svg class="sales-pulse-svg" viewBox="0 0 {{ $chartWidth }} {{ $chartHeight }}" preserveAspectRatio="none" role="img" aria-label="Last 7 days sales chart">
+                        <defs>
+                            <pattern id="salesGridSmall" width="18" height="18" patternUnits="userSpaceOnUse">
+                                <path d="M 18 0 L 0 0 0 18" fill="none" stroke="rgba(52,245,176,0.05)" stroke-width="1"></path>
+                            </pattern>
+                            <pattern id="salesGridLarge" width="72" height="72" patternUnits="userSpaceOnUse">
+                                <rect width="72" height="72" fill="url(#salesGridSmall)"></rect>
+                                <path d="M 72 0 L 0 0 0 72" fill="none" stroke="rgba(52,245,176,0.09)" stroke-width="1.2"></path>
+                            </pattern>
+                            <linearGradient id="salesAreaFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#34f5b0" stop-opacity="0.42"></stop>
+                                <stop offset="55%" stop-color="#34f5b0" stop-opacity="0.16"></stop>
+                                <stop offset="100%" stop-color="#34f5b0" stop-opacity="0.02"></stop>
+                            </linearGradient>
+                            <filter id="salesLineGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#34f5b0" flood-opacity="0.65"></feDropShadow>
+                            </filter>
+                        </defs>
+
+                        <rect x="{{ $leftPad }}" y="{{ $topPad }}" width="{{ $plotWidth }}" height="{{ $plotHeight }}" fill="url(#salesGridLarge)" rx="10"></rect>
+
+                        @foreach ($yMarkers as $marker)
+                            @php
+                                $gridY = round($baseY - ($plotHeight * $marker), 2);
+                            @endphp
+                            <line x1="{{ $leftPad }}" y1="{{ $gridY }}" x2="{{ $chartWidth - $rightPad }}" y2="{{ $gridY }}" stroke="rgba(52,245,176,0.10)" stroke-width="1"></line>
+                        @endforeach
+
+                        <line x1="{{ $leftPad }}" y1="{{ $baseY }}" x2="{{ $chartWidth - $rightPad }}" y2="{{ $baseY }}" stroke="rgba(203,213,225,0.55)" stroke-width="2"></line>
+
+                        <polygon points="{{ $areaPoints }}" fill="url(#salesAreaFill)"></polygon>
+                        <polyline points="{{ $linePoints }}" fill="none" stroke="#34f5b0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#salesLineGlow)"></polyline>
+
+                        @foreach ($chartPoints as $index => $point)
+                            @php
+                                $isLastPoint = $index === count($chartPoints) - 1;
+                            @endphp
+                            <circle cx="{{ $point['x'] }}" cy="{{ $point['y'] }}" r="{{ $isLastPoint ? 5.5 : 3.2 }}" fill="{{ $isLastPoint ? '#d1fae5' : '#34f5b0' }}" stroke="#34f5b0" stroke-width="{{ $isLastPoint ? 2.5 : 0 }}"></circle>
+                        @endforeach
+                    </svg>
+                </div>
+
+                <div class="sales-pulse-axis-labels">
+                    @foreach ($sevenDaySales as $saleDay)
+                        <div class="sales-pulse-axis-item">
+                            <span class="sales-pulse-axis-day">{{ $saleDay['day'] }}</span>
+                            <span class="sales-pulse-axis-value">₹{{ number_format($saleDay['revenue'], 0) }}</span>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
         <!-- Top Products -->
-        <div class="chart-card">
+        <div class="chart-card neon-chart-card">
             <div class="chart-title">
                 <div class="chart-icon">🏆</div>
                 Top Selling Products
+                @php
+                    $topProductLeader = $topProducts[0] ?? null;
+                    $maxProductRevenue = max(collect($topProducts)->max('revenue') ?? 0, 1);
+                @endphp
+                <small>
+                    @if($topProductLeader)
+                        Leader: {{ \Illuminate\Support\Str::limit($topProductLeader['name'], 30) }} • {{ $topProductLeader['quantity'] }} units • ₹{{ number_format($topProductLeader['revenue'], 0) }}
+                    @else
+                        No product sales tracked yet
+                    @endif
+                </small>
             </div>
             <div class="chart-container">
                 <canvas id="topProductsChart"></canvas>
+                <div class="neon-chart-body">
+                    <div class="metric-list">
+                        @forelse(array_slice($topProducts, 0, 5) as $product)
+                            @php
+                                $productBarWidth = max(8, ($product['revenue'] / $maxProductRevenue) * 100);
+                                $productImage = !empty($product['image']) ? asset($product['image']) : null;
+                            @endphp
+                            <div class="metric-row">
+                                <div class="metric-row-top">
+                                    <div class="metric-product">
+                                        <div class="metric-thumb {{ $productImage ? '' : 'no-image' }}">
+                                            @if($productImage)
+                                                <img src="{{ $productImage }}" alt="{{ $product['name'] }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                            @endif
+                                            <span class="metric-thumb-fallback">IMG</span>
+                                        </div>
+                                        <div class="metric-text">
+                                            <div class="metric-name">{{ \Illuminate\Support\Str::limit($product['name'], 34) }}</div>
+                                            <div class="metric-sub">{{ $product['quantity'] }} units sold</div>
+                                        </div>
+                                    </div>
+                                    <div class="metric-value">₹{{ number_format($product['revenue'], 0) }}</div>
+                                </div>
+                                <div class="metric-track">
+                                    <div class="metric-fill" style="width: {{ min(100, $productBarWidth) }}%"></div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="metric-row">
+                                <div class="metric-name">No product sales data available for this period.</div>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Top Categories -->
-        <div class="chart-card">
+        <div class="chart-card neon-chart-card">
             <div class="chart-title">
                 <div class="chart-icon">🎯</div>
                 Category Distribution
+                @php
+                    $sortedCategories = collect($topCategories)->sortByDesc('revenue')->values();
+                    $topCategoryLeader = $sortedCategories->first();
+                    $categoryRevenueTotal = max($sortedCategories->sum('revenue'), 1);
+                @endphp
+                <small>
+                    @if($topCategoryLeader)
+                        Top share: {{ $topCategoryLeader['name'] }} • {{ number_format(($topCategoryLeader['revenue'] / $categoryRevenueTotal) * 100, 1) }}% of tracked revenue
+                    @else
+                        No category distribution available yet
+                    @endif
+                </small>
             </div>
             <div class="chart-container">
                 <canvas id="topCategoriesChart"></canvas>
+                <div class="neon-chart-body">
+                    <div class="metric-list">
+                        @forelse($sortedCategories->take(5) as $category)
+                            @php
+                                $categoryPercent = ($category['revenue'] / $categoryRevenueTotal) * 100;
+                            @endphp
+                            <div class="metric-row">
+                                <div class="metric-row-top">
+                                    <div>
+                                        <div class="metric-name">{{ $category['name'] }}</div>
+                                        <div class="metric-sub">{{ number_format($categoryPercent, 1) }}% share • {{ $category['quantity'] }} items</div>
+                                    </div>
+                                    <div class="metric-value">₹{{ number_format($category['revenue'], 0) }}</div>
+                                </div>
+                                <div class="metric-track">
+                                    <div class="metric-fill" style="width: {{ min(100, max(8, $categoryPercent)) }}%"></div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="metric-row">
+                                <div class="metric-name">No category sales data available for this period.</div>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Monthly Sales -->
-        <div class="chart-card">
+        <div class="chart-card neon-chart-card">
             <div class="chart-title">
                 <div class="chart-icon">📊</div>
                 Monthly Sales Trend
+                @php
+                    $monthWidth = 620;
+                    $monthHeight = 230;
+                    $monthLeftPad = 24;
+                    $monthRightPad = 10;
+                    $monthTopPad = 16;
+                    $monthBottomPad = 24;
+                    $monthPlotWidth = $monthWidth - $monthLeftPad - $monthRightPad;
+                    $monthPlotHeight = $monthHeight - $monthTopPad - $monthBottomPad;
+                    $monthBaseY = $monthTopPad + $monthPlotHeight;
+                    $monthMaxRevenue = max(collect($monthlySales)->max('revenue') ?? 0, 1);
+                    $monthGap = count($monthlySales) > 1 ? $monthPlotWidth / (count($monthlySales) - 1) : 0;
+                    $monthPoints = [];
+
+                    foreach ($monthlySales as $index => $saleDay) {
+                        $monthX = $monthLeftPad + ($monthGap * $index);
+                        $monthY = $monthBaseY - (($saleDay['revenue'] / $monthMaxRevenue) * $monthPlotHeight);
+                        $monthPoints[] = ['x' => round($monthX, 2), 'y' => round($monthY, 2)];
+                    }
+
+                    $monthLinePoints = collect($monthPoints)->map(fn ($point) => $point['x'] . ',' . $point['y'])->implode(' ');
+                    $monthAreaPoints = $monthLeftPad . ',' . $monthBaseY . ' ' . $monthLinePoints . ' ' . last($monthPoints)['x'] . ',' . $monthBaseY;
+                    $peakMonthDay = collect($monthlySales)->sortByDesc('revenue')->first();
+                    $latestMonthDay = collect($monthlySales)->last();
+                    $averageMonthRevenue = collect($monthlySales)->avg('revenue');
+                @endphp
+                <small>
+                    Peak day: {{ $peakMonthDay['date'] ?? 'N/A' }} • ₹{{ number_format($peakMonthDay['revenue'] ?? 0, 0) }}
+                </small>
             </div>
             <div class="chart-container">
                 <canvas id="monthlySalesChart"></canvas>
+                <div class="neon-chart-body">
+                    <div class="mini-chart-surface">
+                        <svg class="mini-chart-svg" viewBox="0 0 {{ $monthWidth }} {{ $monthHeight }}" preserveAspectRatio="none" role="img" aria-label="Monthly sales trend chart">
+                            <defs>
+                                <pattern id="monthGrid" width="22" height="22" patternUnits="userSpaceOnUse">
+                                    <path d="M 22 0 L 0 0 0 22" fill="none" stroke="rgba(52,245,176,0.05)" stroke-width="1"></path>
+                                </pattern>
+                                <linearGradient id="monthAreaFill" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#34f5b0" stop-opacity="0.35"></stop>
+                                    <stop offset="100%" stop-color="#34f5b0" stop-opacity="0.02"></stop>
+                                </linearGradient>
+                            </defs>
+                            <rect x="{{ $monthLeftPad }}" y="{{ $monthTopPad }}" width="{{ $monthPlotWidth }}" height="{{ $monthPlotHeight }}" fill="url(#monthGrid)" rx="10"></rect>
+                            <line x1="{{ $monthLeftPad }}" y1="{{ $monthBaseY }}" x2="{{ $monthWidth - $monthRightPad }}" y2="{{ $monthBaseY }}" stroke="rgba(203,213,225,0.45)" stroke-width="2"></line>
+                            <polygon points="{{ $monthAreaPoints }}" fill="url(#monthAreaFill)"></polygon>
+                            <polyline points="{{ $monthLinePoints }}" fill="none" stroke="#34f5b0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                        </svg>
+                    </div>
+                    <div class="chart-summary-grid">
+                        <div class="chart-summary-chip">
+                            <span>Peak</span>
+                            <strong>{{ $peakMonthDay['date'] ?? 'N/A' }}</strong>
+                            <em>₹{{ number_format($peakMonthDay['revenue'] ?? 0, 0) }}</em>
+                        </div>
+                        <div class="chart-summary-chip">
+                            <span>Latest</span>
+                            <strong>{{ $latestMonthDay['date'] ?? 'N/A' }}</strong>
+                            <em>₹{{ number_format($latestMonthDay['revenue'] ?? 0, 0) }}</em>
+                        </div>
+                        <div class="chart-summary-chip">
+                            <span>Average</span>
+                            <strong>Month Pace</strong>
+                            <em>₹{{ number_format($averageMonthRevenue ?? 0, 0) }}</em>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Yearly Sales -->
-        <div class="chart-card">
+        <div class="chart-card neon-chart-card">
             <div class="chart-title">
                 <div class="chart-icon">📈</div>
                 Yearly Revenue
+                @php
+                    $bestYearMonth = collect($yearlySales)->sortByDesc('revenue')->first();
+                    $maxYearRevenue = max(collect($yearlySales)->max('revenue') ?? 0, 1);
+                @endphp
+                <small>
+                    Best month: {{ $bestYearMonth['month'] ?? 'N/A' }} • ₹{{ number_format($bestYearMonth['revenue'] ?? 0, 0) }}
+                </small>
             </div>
             <div class="chart-container">
                 <canvas id="yearlySalesChart"></canvas>
+                <div class="neon-chart-body">
+                    <div class="year-bars">
+                        @forelse($yearlySales as $yearSale)
+                            @php
+                                $yearBarHeight = $yearSale['revenue'] > 0
+                                    ? max(6, ($yearSale['revenue'] / $maxYearRevenue) * 100)
+                                    : 0;
+                            @endphp
+                            <div class="year-bar-item">
+                                <div class="year-bar-track">
+                                    <div class="year-bar-fill" style="height: {{ min(100, $yearBarHeight) }}%"></div>
+                                </div>
+                                <div class="year-bar-label">{{ $yearSale['month'] }}</div>
+                            </div>
+                        @empty
+                            <div class="metric-row">
+                                <div class="metric-name">No yearly revenue data available yet.</div>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Revenue vs Orders -->
-        <div class="chart-card">
+        <div class="chart-card neon-chart-card">
             <div class="chart-title">
                 <div class="chart-icon">💹</div>
                 Revenue vs Orders
+                @php
+                    $revenueVsOrdersTotalRevenue = collect($revenueVsOrders)->sum('revenue');
+                    $revenueVsOrdersTotalOrders = collect($revenueVsOrders)->sum('orders');
+                    $maxRevenueComparison = max(collect($revenueVsOrders)->max('revenue') ?? 0, 1);
+                    $maxOrderComparison = max(collect($revenueVsOrders)->max('orders') ?? 0, 1);
+                @endphp
+                <small>
+                    Last 7 points • ₹{{ number_format($revenueVsOrdersTotalRevenue, 0) }} revenue • {{ $revenueVsOrdersTotalOrders }} orders
+                </small>
             </div>
             <div class="chart-container">
                 <canvas id="revenueVsOrdersChart"></canvas>
+                <div class="neon-chart-body">
+                    <div class="compare-grid">
+                        @forelse($revenueVsOrders as $comparisonDay)
+                            @php
+                                $revenueBarHeight = $comparisonDay['revenue'] > 0
+                                    ? max(8, ($comparisonDay['revenue'] / $maxRevenueComparison) * 100)
+                                    : 0;
+                                $orderBarHeight = $comparisonDay['orders'] > 0
+                                    ? max(8, ($comparisonDay['orders'] / $maxOrderComparison) * 100)
+                                    : 0;
+                            @endphp
+                            <div class="compare-group">
+                                <div class="compare-bars">
+                                    <div class="compare-bar revenue" style="height: {{ min(100, $revenueBarHeight) }}%"></div>
+                                    <div class="compare-bar orders" style="height: {{ min(100, $orderBarHeight) }}%"></div>
+                                </div>
+                                <div class="compare-label">{{ $comparisonDay['date'] }}</div>
+                            </div>
+                        @empty
+                            <div class="metric-row">
+                                <div class="metric-name">No revenue or order comparisons available for this range.</div>
+                            </div>
+                        @endforelse
+                    </div>
+                    <div class="compare-legend">
+                        <span><i class="legend-revenue"></i>Revenue</span>
+                        <span><i class="legend-orders"></i>Orders</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Customer Analytics -->
-        <div class="chart-card">
+        <div class="chart-card neon-chart-card">
             <div class="chart-title">
                 <div class="chart-icon">👥</div>
                 Customer Breakdown
+                @php
+                    $customerTotal = max($customerAnalytics['total'] ?? 0, 1);
+                    $returningPercent = (($customerAnalytics['returning'] ?? 0) / $customerTotal) * 100;
+                    $newPercent = (($customerAnalytics['new'] ?? 0) / $customerTotal) * 100;
+                    $dominantCustomerType = ($customerAnalytics['returning'] ?? 0) >= ($customerAnalytics['new'] ?? 0) ? 'Returning customers lead' : 'New customers lead';
+                @endphp
+                <small>
+                    {{ $dominantCustomerType }} • {{ number_format(max($returningPercent, $newPercent), 1) }}% share
+                </small>
             </div>
             <div class="chart-container">
                 <canvas id="customerAnalyticsChart"></canvas>
+                <div class="neon-chart-body">
+                    <div class="customer-stack" aria-label="Customer split">
+                        <div class="customer-stack-fill returning" style="width: {{ $returningPercent }}%"></div>
+                        <div class="customer-stack-fill new" style="width: {{ $newPercent }}%"></div>
+                    </div>
+                    <div class="customer-grid">
+                        <div class="customer-card">
+                            <span>Total</span>
+                            <strong>{{ $customerAnalytics['total'] ?? 0 }}</strong>
+                            <em>Tracked customers in selected range</em>
+                        </div>
+                        <div class="customer-card">
+                            <span>Returning</span>
+                            <strong>{{ $customerAnalytics['returning'] ?? 0 }}</strong>
+                            <em>{{ number_format($returningPercent, 1) }}% of total customers</em>
+                        </div>
+                        <div class="customer-card">
+                            <span>New</span>
+                            <strong>{{ $customerAnalytics['new'] ?? 0 }}</strong>
+                            <em>{{ number_format($newPercent, 1) }}% of total customers</em>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -466,14 +1287,14 @@ html, body {
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
 <script src="https://html2pdf.github.io/html2pdf.bundle.min.js"></script>
 
 <script>
+if (false) {
 const analyticsData = {
     topProducts: @json($topProducts),
     topCategories: @json($topCategories),
-    dailySales: @json($dailySales),
+    sevenDaySales: @json($sevenDaySales),
     monthlySales: @json($monthlySales),
     yearlySales: @json($yearlySales),
     revenueVsOrders: @json($revenueVsOrders),
@@ -490,6 +1311,8 @@ const colors = {
     dangerLight: 'rgba(239, 68, 68, 0.2)',
     warning: 'rgba(245, 158, 11, 0.8)',
     success: 'rgba(59, 130, 246, 0.8)',
+    neon: '#34f5b0',
+    neonSoft: 'rgba(52, 245, 176, 0.18)',
 };
 
 const chartOptions = {
@@ -512,34 +1335,106 @@ const chartOptions = {
     }
 };
 
-// Daily Sales Chart
-new Chart(document.getElementById('dailySalesChart'), {
+const salesGlowPlugin = {
+    id: 'salesGlowPlugin',
+    beforeDatasetDraw(chart, args) {
+        if (args.index !== 0) {
+            return;
+        }
+
+        const { ctx } = chart;
+        ctx.save();
+        ctx.shadowColor = 'rgba(52, 245, 176, 0.65)';
+        ctx.shadowBlur = 18;
+    },
+    afterDatasetDraw(chart, args) {
+        if (args.index !== 0) {
+            return;
+        }
+
+        chart.ctx.restore();
+    }
+};
+
+const sevenDaySalesCanvas = document.getElementById('sevenDaySalesChart');
+
+if (sevenDaySalesCanvas && sevenDaySalesCanvas.getContext) {
+const sevenDaySalesCtx = sevenDaySalesCanvas.getContext('2d');
+const sevenDaySalesGradient = sevenDaySalesCtx.createLinearGradient(0, 0, 0, 380);
+sevenDaySalesGradient.addColorStop(0, 'rgba(52, 245, 176, 0.45)');
+sevenDaySalesGradient.addColorStop(0.55, 'rgba(52, 245, 176, 0.16)');
+sevenDaySalesGradient.addColorStop(1, 'rgba(52, 245, 176, 0.02)');
+
+// Last 7 Days Sales Chart
+new Chart(sevenDaySalesCtx, {
     type: 'line',
     data: {
-        labels: analyticsData.dailySales.today.map(d => d.hour),
-        datasets: [
-            {
-                label: 'Today',
-                data: analyticsData.dailySales.today.map(d => d.revenue),
-                borderColor: colors.primary,
-                backgroundColor: colors.primaryLight,
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4
-            },
-            {
-                label: 'Yesterday',
-                data: analyticsData.dailySales.yesterday.map(d => d.revenue),
-                borderColor: colors.secondary,
-                backgroundColor: colors.secondaryLight,
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4
-            }
-        ]
+        labels: analyticsData.sevenDaySales.map(d => d.date),
+        datasets: [{
+            label: 'Sales (₹)',
+            data: analyticsData.sevenDaySales.map(d => d.revenue),
+            borderColor: colors.neon,
+            backgroundColor: sevenDaySalesGradient,
+            borderWidth: 3,
+            fill: true,
+            tension: 0.35,
+            pointRadius: analyticsData.sevenDaySales.map((_, index, items) => index === items.length - 1 ? 4 : 0),
+            pointHoverRadius: 6,
+            pointBorderWidth: analyticsData.sevenDaySales.map((_, index, items) => index === items.length - 1 ? 2 : 0),
+            pointBackgroundColor: analyticsData.sevenDaySales.map((_, index, items) => index === items.length - 1 ? '#d1fae5' : colors.neon),
+            pointBorderColor: analyticsData.sevenDaySales.map((_, index, items) => index === items.length - 1 ? colors.neon : 'transparent'),
+        }]
     },
-    options: { ...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, ticks: { ...chartOptions.scales.y.ticks, callback: v => '₹' + v } } } }
+    options: {
+        ...chartOptions,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: 'rgba(3, 7, 12, 0.94)',
+                borderColor: 'rgba(52, 245, 176, 0.25)',
+                borderWidth: 1,
+                callbacks: {
+                    title: items => analyticsData.sevenDaySales[items[0].dataIndex]?.day + ' • ' + items[0].label,
+                    label: context => ' Sales: ₹' + Number(context.raw).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }),
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: 'rgba(197, 255, 229, 0.92)',
+                    font: { size: 11, weight: '600' }
+                },
+                grid: {
+                    color: 'rgba(52, 245, 176, 0.08)',
+                    drawBorder: false
+                },
+                border: {
+                    color: 'rgba(148, 163, 184, 0.35)'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'rgba(197, 255, 229, 0.86)',
+                    callback: value => '₹' + value
+                },
+                grid: {
+                    color: 'rgba(52, 245, 176, 0.08)',
+                    drawBorder: false
+                },
+                border: {
+                    color: 'rgba(148, 163, 184, 0.35)'
+                }
+            }
+        }
+    },
+    plugins: [salesGlowPlugin]
 });
+}
 
 // Top Products Chart
 new Chart(document.getElementById('topProductsChart'), {
@@ -649,6 +1544,8 @@ new Chart(document.getElementById('customerAnalyticsChart'), {
     },
     options: { ...chartOptions, plugins: { ...chartOptions.plugins, legend: { ...chartOptions.plugins.legend, position: 'bottom' } } }
 });
+
+}
 
 // Apply Filters
 function applyFilters() {

@@ -72,11 +72,15 @@ class ProductController extends Controller
             }
         }
 
-        // Search filter - word boundary matching to prevent substring false positives
+        // Search filter - word boundary matching using LIKE
         if ($request->filled('search')) {
-            $searchTerm = $request->search;
-            // Use REGEXP to match word boundaries: start of string OR after whitespace
-            $query->whereRaw("name REGEXP '^{$searchTerm}|\\s{$searchTerm}'");
+            $searchTerm = trim($request->search);
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', $searchTerm . ' %')           // "MEN ..."
+                  ->orWhere('name', 'LIKE', '% ' . $searchTerm . ' %') // "... MEN ..."
+                  ->orWhere('name', 'LIKE', '% ' . $searchTerm)        // "... MEN"
+                  ->orWhere('name', '=', $searchTerm);                 // exact match "MEN"
+            });
         }
 
         // Price filters

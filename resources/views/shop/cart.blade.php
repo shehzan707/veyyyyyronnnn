@@ -35,6 +35,92 @@
 
 .summary-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; }
 .summary-total { font-size:1.3rem; font-weight:700; border-bottom:none; }
+.summary-row [title="This fee helps us maintain our platform."] { color:#ff3f6c !important; font-weight:600; }
+
+.platform-fee-trigger {
+    background: none;
+    border: none;
+    color: #ff3f6c;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-left: 4px;
+    padding: 0;
+}
+
+.platform-fee-trigger:hover {
+    text-decoration: underline;
+}
+
+.platform-fee-modal-overlay {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.28);
+    display: none;
+    inset: 0;
+    justify-content: center;
+    padding: 20px;
+    position: fixed;
+    z-index: 1000;
+}
+
+.platform-fee-modal-overlay.is-open {
+    display: flex;
+}
+
+.platform-fee-modal {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    max-width: 420px;
+    padding: 22px 18px 18px;
+    position: relative;
+    width: 100%;
+}
+
+.platform-fee-modal-title {
+    color: #282c3f;
+    font-size: 1.75rem;
+    font-weight: 500;
+    margin: 0 0 14px;
+}
+
+.platform-fee-modal-copy {
+    color: #535766;
+    font-size: 0.98rem;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.platform-fee-modal-footer {
+    border-top: 1px solid #f1f1f1;
+    color: #535766;
+    font-size: 0.98rem;
+    line-height: 1.45;
+    margin-top: 20px;
+    padding-top: 18px;
+}
+
+.platform-fee-highlight {
+    color: #ff3f6c;
+    font-weight: 700;
+}
+
+.platform-fee-close {
+    align-items: center;
+    background: none;
+    border: none;
+    color: #282c3f;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 2rem;
+    height: 32px;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    width: 32px;
+}
 
 .checkout-btn {
     width:100%; padding:15px; background:#222; color:#fff; border:none;
@@ -356,9 +442,63 @@
                     <button type="submit" class="checkout-btn" style="width:100%; background:#000; color:#fff; font-weight:700; font-size:1.08rem; border-radius:8px; margin-top:18px; padding:15px 0; border:none;">PLACE ORDER</button>
                 </form>
             </div>
+            <div class="platform-fee-modal-overlay" id="platformFeeModal" aria-hidden="true">
+                <div class="platform-fee-modal" role="dialog" aria-modal="true" aria-labelledby="platformFeeModalTitle">
+                    <button type="button" class="platform-fee-close" id="platformFeeClose" aria-label="Close platform fee details">×</button>
+                    <h2 class="platform-fee-modal-title" id="platformFeeModalTitle">Platform Fee</h2>
+                    <p class="platform-fee-modal-copy">
+                        Fee levied by Veyron to sustain the efficient operations and continuous improvement of the platform, for a hassle-free app experience.
+                    </p>
+                    <div class="platform-fee-modal-footer">
+                        Have any question? Contact <span class="platform-fee-highlight">Team Veyron</span> for help.
+                    </div>
+                </div>
+            </div>
         @push('scripts')
         <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const platformFeeModal = document.getElementById('platformFeeModal');
+            const platformFeeClose = document.getElementById('platformFeeClose');
+            const platformFeeRow = Array.from(document.querySelectorAll('.summary-row')).find(function(row) {
+                return row.textContent.includes('Platform Fee');
+            });
+
+            if (platformFeeRow && platformFeeModal && platformFeeClose) {
+                const platformFeeLabel = platformFeeRow.querySelector('span');
+
+                if (platformFeeLabel) {
+                    platformFeeLabel.innerHTML = 'Platform Fee <button type="button" class="platform-fee-trigger" id="platformFeeTrigger">Know More</button>';
+                }
+
+                const platformFeeTrigger = document.getElementById('platformFeeTrigger');
+
+                if (platformFeeTrigger) {
+                    const openPlatformFeeModal = function() {
+                        platformFeeModal.classList.add('is-open');
+                        platformFeeModal.setAttribute('aria-hidden', 'false');
+                    };
+
+                    const closePlatformFeeModal = function() {
+                        platformFeeModal.classList.remove('is-open');
+                        platformFeeModal.setAttribute('aria-hidden', 'true');
+                    };
+
+                    platformFeeTrigger.addEventListener('click', openPlatformFeeModal);
+                    platformFeeClose.addEventListener('click', closePlatformFeeModal);
+                    platformFeeModal.addEventListener('click', function(e) {
+                        if (e.target === platformFeeModal) {
+                            closePlatformFeeModal();
+                        }
+                    });
+
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape' && platformFeeModal.classList.contains('is-open')) {
+                            closePlatformFeeModal();
+                        }
+                    });
+                }
+            }
+
             // Coupon input show/hide
             const showCoupon = document.getElementById('show-coupon-input');
             if (showCoupon) {

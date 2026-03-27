@@ -64,9 +64,24 @@ class AccountController extends Controller
         }
 
         $user->update($validated);
+        $user->refresh();
 
-        if ($request->expectsJson() || $request->header('Accept') === 'application/json') {
-            return response()->json(['success' => true, 'message' => 'Profile updated successfully!']);
+        if ($request->expectsJson() || $request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => $request->hasFile('profile_picture')
+                    ? 'Profile picture updated successfully!'
+                    : 'Profile updated successfully!',
+                'profile_picture_url' => $user->profile_picture
+                    ? asset('uploads/profiles/' . $user->profile_picture)
+                    : null,
+                'user' => [
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'email' => $user->email,
+                    'mobile' => $user->mobile,
+                ],
+            ]);
         }
 
         return redirect()->route('account.index')->with('success', 'Profile updated successfully!');
@@ -181,4 +196,3 @@ class AccountController extends Controller
         return view('shop.order-view', compact('order'));
     }
 }
-

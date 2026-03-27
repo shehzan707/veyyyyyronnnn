@@ -12,6 +12,7 @@
 .status-pending { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
 .status-processing { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
 .status-shipped { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+.status-out_for_delivery { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
 .status-delivered { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
 .status-cancelled { background: #000000; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
 .view-btn { color: #ffffff; text-decoration: none; font-weight: 600; transition: all 0.3s ease; }

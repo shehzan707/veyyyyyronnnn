@@ -319,7 +319,7 @@
 /* Filter Toggle Button */
 .filter-toggle {
     position: fixed;
-    top: 90px;
+    top: 103px;
     left: 30px;
     z-index: 60;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -1295,22 +1295,49 @@ function addToWishlist(productId) {
 // Notification Function
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
+    const isAddedToBag = message.includes('Added to bag');
+    notification.className = `notification notification-${type}${isAddedToBag ? ' notification-bag' : ''}`;
     notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        padding: 14px 20px;
-        background: #222;
-        color: white;
-        border-radius: 6px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 1000;
-        font-size: 0.9rem;
-        font-weight: 500;
-        animation: slideIn 0.3s ease;
-    `;
+    
+    if (isAddedToBag) {
+        // For "Added to bag" - larger card
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 0px;
+            padding: 19.6px 28px;
+            background: #222;
+            color: white;
+            border-radius: 6px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            z-index: 1000;
+            font-size: 1.26rem;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+            min-width: 280px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 55.2px;
+        `;
+    } else {
+        // For other notifications - normal size
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 14px 20px;
+            background: #222;
+            color: white;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 0.9rem;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        `;
+    }
     
     document.body.appendChild(notification);
     
