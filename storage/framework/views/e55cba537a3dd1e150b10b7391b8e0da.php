@@ -126,11 +126,319 @@
 }
 .checkout-btn:hover { background:#444; }
 
+/* Coupon Modal Styles */
+.coupon-modal-overlay {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    inset: 0;
+    justify-content: center;
+    padding: 20px;
+    position: fixed;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.coupon-modal-overlay.is-open {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.coupon-modal {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 550px;
+    max-height: 90vh;
+    padding: 30px;
+    position: relative;
+    width: 100%;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+}
+
+.coupon-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 16px;
+}
+
+.coupon-modal-title {
+    color: #222;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.coupon-modal-close {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 1.8rem;
+    height: 32px;
+    justify-content: center;
+    padding: 0;
+    width: 32px;
+    transition: color 0.2s;
+}
+
+.coupon-modal-close:hover {
+    color: #222;
+}
+
+.coupons-grid {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.coupon-card {
+    background: #f9f9f9;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.coupon-card:hover {
+    border-color: #222;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.coupon-card.selected {
+    background: #f0f0f0;
+    border-color: #222;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.coupon-card.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background: #fafafa;
+}
+
+.coupon-card.disabled:hover {
+    border-color: #ddd;
+    box-shadow: none;
+}
+
+.coupon-radio {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.coupon-card.selected .coupon-radio {
+    background: #222;
+    border-color: #222;
+}
+
+.coupon-radio::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.coupon-card.selected .coupon-radio::after {
+    opacity: 1;
+}
+
+.coupon-card.disabled .coupon-radio {
+    cursor: not-allowed;
+}
+
+.coupon-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.coupon-code {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #222;
+    letter-spacing: 1px;
+}
+
+.coupon-discount {
+    background: #ff3f6c;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.coupon-description {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.coupon-condition {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 4px;
+}
+
+.coupon-badge {
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    background: #ff3f6c;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.coupon-ineligible-tooltip {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background: #222;
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    margin-bottom: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.coupon-card.disabled:hover .coupon-ineligible-tooltip {
+    opacity: 1;
+}
+
+.coupon-modal-footer {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.coupon-modal-btn {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.coupon-modal-btn.apply {
+    background: #222;
+    color: #fff;
+}
+
+.coupon-modal-btn.apply:hover:not(:disabled) {
+    background: #444;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.coupon-modal-btn.apply:disabled {
+    background: #ddd;
+    cursor: not-allowed;
+}
+
+.coupon-modal-btn.cancel {
+    background: #f0f0f0;
+    color: #222;
+}
+
+.coupon-modal-btn.cancel:hover {
+    background: #e0e0e0;
+}
+
+.coupon-applied-badge {
+    background: #388e3c;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-left: auto;
+}
+
+.coupon-error-message {
+    background: #ffebee;
+    border-left: 4px solid #ff3f6c;
+    color: #c62828;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    display: none;
+    margin-bottom: 16px;
+}
+
+.coupon-error-message.show {
+    display: block;
+}
+
 .empty-cart { text-align:center; padding:50px; }
 .empty-cart a { color:#222; text-decoration:underline; }
 
 @media (max-width: 768px) {
     .cart-layout { grid-template-columns:1fr; }
+    .coupon-modal {
+        max-width: 90vw;
+        padding: 20px;
+    }
+    .coupon-modal-title {
+        font-size: 1.3rem;
+    }
+    .coupon-card {
+        padding: 14px;
+        gap: 12px;
+    }
 }
 </style>
 <?php $__env->stopPush(); ?>
@@ -378,26 +686,25 @@
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
+            <?php
+                $cartPricing = \App\Support\CouponPricing::calculateTotal($subtotal, $shipping, 27, session('applied_coupon'));
+            ?>
             <div class="cart-summary" style="background:#fff; border-radius:12px; padding:24px 20px; box-shadow:0 2px 10px rgba(233,30,99,0.08);">
                 <div style="font-size:0.95rem; color:#222; font-weight:700; letter-spacing:0.5px; margin-bottom:18px;">PRICE DETAILS (<span id="cart-item-count"><?php echo e(array_sum(array_column($cart, 'quantity'))); ?></span> Items)</div>
                 <div class="summary-row"><span>Total MRP</span><span>₹<?php echo e(number_format($subtotal, 0)); ?></span></div>
                 <div class="summary-row">
                     <span>Coupon Discount</span>
                     <span>
-                        <span id="coupon-discount-value" style="color:#222; font-weight:600;">
-                            <?php if(session('applied_coupon')): ?>
-                                <span style="color:#222;">Applied</span>
-                            <?php else: ?>
-                                <a href="#" id="show-coupon-input" style="color:#222; text-decoration:underline; cursor:pointer; font-size:0.97em;">Apply Coupon</a>
-                                <span id="coupon-input-container" style="display:none;">
-                                    <input type="text" id="coupon-input" placeholder="Enter code" style="width:90px; font-size:0.95em; padding:2px 6px; border:1px solid #222; border-radius:4px; margin-left:6px;">
-                                    <button id="apply-coupon-btn" style="background:#222; color:#fff; border:none; border-radius:4px; padding:3px 10px; font-size:0.95em; cursor:pointer; margin-left:4px;">Apply</button>
-                                </span>
-                            <?php endif; ?>
-                        </span>
+                        <?php if(session('applied_coupon')): ?>
+                            <span style="color:#388e3c; font-weight:600; display: flex; align-items: center; gap: 8px;">
+                                <span>✓ <?php echo e(session('applied_coupon')); ?></span>
+                                <button id="remove-coupon-btn" style="background:none; border:none; color:#999; cursor:pointer; font-size:0.9rem;">Remove</button>
+                            </span>
+                        <?php else: ?>
+                            <button id="show-coupon-modal-btn" style="background:none; border:none; color:#222; text-decoration:underline; cursor:pointer; font-size:0.97em; padding:0;">Apply Coupon</button>
+                        <?php endif; ?>
                     </span>
                 </div>
-                <div id="coupon-feedback" style="font-size:0.95em; color:#e53935; margin:2px 0 8px 0; display:none;"></div>
                 <div class="summary-row"><span>Platform Fee <span style="color:#888; font-size:0.9em; cursor:pointer;" title="This fee helps us maintain our platform.">Know More</span></span><span style="color:#222;">₹27</span></div>
                 <div class="summary-row"><span>Shipping</span><span style="color:#222;"><?php echo e($shipping > 0 ? '₹' . number_format($shipping, 0) : 'FREE'); ?></span></div>
                 <div style="border-top:1px solid #222; margin:18px 0 12px 0;"></div>
@@ -412,7 +719,14 @@
                             $discount = round($subtotal * 0.1); // 10% discount
                             $discountLabel = '10% off';
                             $appliedCoupon = (object)['code' => 'VEYRON10'];
-                        } else {
+                        } 
+                        // Special handling for VEY70 coupon
+                        elseif($couponCode === 'VEY70') {
+                            $discount = round($subtotal * 0.15); // 15% discount
+                            $discountLabel = '15% off';
+                            $appliedCoupon = (object)['code' => 'VEY70'];
+                        } 
+                        else {
                             $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
                             if($appliedCoupon) {
                                 if($appliedCoupon->type === 'percent') {
@@ -425,11 +739,14 @@
                             }
                         }
                     }
-                    $totalAmount = $subtotal + 27 + $shipping - $discount;
+                    $discount = $cartPricing['discount'];
+                    $discountLabel = $cartPricing['discountLabel'];
+                    $appliedCoupon = $discount > 0;
+                    $totalAmount = $cartPricing['total'];
                 ?>
-                <?php if($appliedCoupon): ?>
+                <?php if($cartPricing['discount'] > 0): ?>
                 <div class="summary-row" id="coupon-discount-row">
-                    <span style="color:#222;">Coupon Discount (<?php echo e($discountLabel); ?>)</span>
+                    <span style="color:#222;">Coupon Discount (<?php echo e($cartPricing['discountLabel']); ?>)</span>
                     <span style="color:#222;">- ₹<?php echo e(number_format($discount, 0)); ?></span>
                 </div>
                 <?php endif; ?>
@@ -450,6 +767,23 @@
                     </p>
                     <div class="platform-fee-modal-footer">
                         Have any question? Contact <span class="platform-fee-highlight">Team Veyron</span> for help.
+                    </div>
+                </div>
+            </div>
+            <!-- Coupon Modal -->
+            <div class="coupon-modal-overlay" id="couponModalOverlay" aria-hidden="true">
+                <div class="coupon-modal" role="dialog" aria-modal="true" aria-labelledby="couponModalTitle">
+                    <div class="coupon-modal-header">
+                        <h2 class="coupon-modal-title" id="couponModalTitle">Available Coupons</h2>
+                        <button type="button" class="coupon-modal-close" id="couponModalClose" aria-label="Close coupons">×</button>
+                    </div>
+                    <div class="coupon-error-message" id="couponErrorMessage"></div>
+                    <div class="coupons-grid" id="couponsGrid">
+                        <!-- Coupons will be loaded here via JavaScript -->
+                    </div>
+                    <div class="coupon-modal-footer">
+                        <button type="button" class="coupon-modal-btn cancel" id="couponCancelBtn">Cancel</button>
+                        <button type="button" class="coupon-modal-btn apply" id="couponApplyBtn" disabled>Apply Coupon</button>
                     </div>
                 </div>
             </div>
@@ -498,47 +832,164 @@
                 }
             }
 
-            // Coupon input show/hide
-            const showCoupon = document.getElementById('show-coupon-input');
-            if (showCoupon) {
-                showCoupon.addEventListener('click', function(e) {
+            // ===== NEW COUPON MODAL LOGIC =====
+            const couponModalOverlay = document.getElementById('couponModalOverlay');
+            const couponModalClose = document.getElementById('couponModalClose');
+            const couponCancelBtn = document.getElementById('couponCancelBtn');
+            const couponApplyBtn = document.getElementById('couponApplyBtn');
+            const showCouponModalBtn = document.getElementById('show-coupon-modal-btn');
+            const removeCouponBtn = document.getElementById('remove-coupon-btn');
+            const couponsGrid = document.getElementById('couponsGrid');
+            const couponErrorMessage = document.getElementById('couponErrorMessage');
+            let selectedCoupon = null;
+
+            // Open coupon modal
+            if (showCouponModalBtn) {
+                showCouponModalBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    document.getElementById('coupon-input-container').style.display = 'inline-block';
-                    showCoupon.style.display = 'none';
-                    document.getElementById('coupon-input').focus();
+                    openCouponModal();
                 });
             }
-            // Coupon apply logic
-            const couponBtn = document.getElementById('apply-coupon-btn');
-            if (couponBtn) {
-                couponBtn.addEventListener('click', function(e) {
+
+            // Close coupon modal
+            function closeCouponModal() {
+                couponModalOverlay.classList.remove('is-open');
+                couponModalOverlay.setAttribute('aria-hidden', 'true');
+                selectedCoupon = null;
+                couponErrorMessage.classList.remove('show');
+            }
+
+            // Open coupon modal
+            function openCouponModal() {
+                couponModalOverlay.classList.add('is-open');
+                couponModalOverlay.setAttribute('aria-hidden', 'false');
+                loadAvailableCoupons();
+            }
+
+            // Load coupons from server
+            function loadAvailableCoupons() {
+                fetch("<?php echo e(route('coupon.available')); ?>")
+                    .then(res => res.json())
+                    .then(coupons => {
+                        renderCoupons(coupons);
+                    })
+                    .catch(err => console.error('Failed to load coupons:', err));
+            }
+
+            // Render coupon cards
+            function renderCoupons(coupons) {
+                couponsGrid.innerHTML = '';
+                coupons.forEach(coupon => {
+                    const card = document.createElement('div');
+                    card.className = `coupon-card ${!coupon.eligible ? 'disabled' : ''}`;
+                    card.dataset.code = coupon.code;
+                    card.innerHTML = `
+                        <div class="coupon-radio"></div>
+                        <div class="coupon-info" style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 10px; justify-content: space-between;">
+                                <span class="coupon-code">${coupon.code}</span>
+                                <span class="coupon-discount">${coupon.discount} OFF</span>
+                            </div>
+                            <span class="coupon-description">${coupon.description}</span>
+                            <span class="coupon-condition">📍 ${coupon.condition}</span>
+                            ${coupon.restriction ? `<span class="coupon-condition">⚡ ${coupon.restriction}</span>` : ''}
+                        </div>
+                        ${!coupon.eligible && coupon.ineligibleReason ? `<div class="coupon-ineligible-tooltip">${coupon.ineligibleReason}</div>` : ''}
+                    `;
+
+                    if (!coupon.eligible) {
+                        card.style.cursor = 'not-allowed';
+                    } else {
+                        card.addEventListener('click', function() {
+                            selectCoupon(coupon.code, card);
+                        });
+                    }
+
+                    couponsGrid.appendChild(card);
+                });
+            }
+
+            // Select coupon
+            function selectCoupon(code, cardElement) {
+                // Remove selection from all cards
+                document.querySelectorAll('.coupon-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                // Add selection to clicked card
+                cardElement.classList.add('selected');
+                selectedCoupon = code;
+                couponApplyBtn.disabled = false;
+            }
+
+            // Apply coupon
+            couponApplyBtn.addEventListener('click', function() {
+                if (!selectedCoupon) return;
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                fetch("<?php echo e(route('coupon.apply')); ?>", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({ code: selectedCoupon })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        closeCouponModal();
+                        couponErrorMessage.classList.remove('show');
+                        setTimeout(() => window.location.reload(), 500);
+                    } else {
+                        couponErrorMessage.textContent = data.message || 'Unable to apply coupon.';
+                        couponErrorMessage.classList.add('show');
+                    }
+                })
+                .catch(err => {
+                    couponErrorMessage.textContent = 'An error occurred while applying the coupon.';
+                    couponErrorMessage.classList.add('show');
+                });
+            });
+
+            // Remove coupon
+            if (removeCouponBtn) {
+                removeCouponBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const code = document.getElementById('coupon-input').value.trim();
-                    const feedback = document.getElementById('coupon-feedback');
-                    feedback.style.display = 'none';
-                    fetch("<?php echo e(route('coupon.validate')); ?>", {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    fetch("<?php echo e(route('coupon.remove')); ?>", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
-                        },
-                        body: JSON.stringify({ code })
+                            'X-CSRF-TOKEN': csrfToken,
+                        }
                     })
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
-                            feedback.style.display = 'block';
-                            feedback.style.color = '#388e3c';
-                            feedback.textContent = 'Coupon applied successfully!';
-                            setTimeout(() => window.location.reload(), 700);
-                        } else {
-                            feedback.style.display = 'block';
-                            feedback.style.color = '#e53935';
-                            feedback.textContent = data.message || 'Invalid or expired coupon.';
+                            window.location.reload();
                         }
                     });
                 });
             }
+
+            // Modal controls
+            couponModalClose.addEventListener('click', closeCouponModal);
+            couponCancelBtn.addEventListener('click', closeCouponModal);
+            
+            couponModalOverlay.addEventListener('click', function(e) {
+                if (e.target === couponModalOverlay) {
+                    closeCouponModal();
+                }
+            });
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && couponModalOverlay.classList.contains('is-open')) {
+                    closeCouponModal();
+                }
+            });
+
             // Update item count in summary live
             function updateCartItemCount() {
                 const count = Array.from(document.querySelectorAll('.qty-value')).reduce((sum, el) => sum + parseInt(el.textContent), 0);

@@ -162,13 +162,21 @@
                 <span>{{ $shippingCost == 0 ? 'FREE' : '₹' . number_format($shippingCost, 2) }}</span>
             </div>
 
+            <!-- Coupon Discount (if applied) -->
+            @if($order->coupon_code && $order->discount_amount > 0)
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 14px; color: #666;">
+                    <span>Coupon Discount ({{ $order->coupon_code }})</span>
+                    <span>- ₹{{ number_format($order->discount_amount, 0) }}</span>
+                </div>
+            @endif
+
             <!-- Separator -->
             <div style="border-top: 1px solid #ddd; margin: 12px 0;"></div>
 
             <!-- Total Amount (Based on active items) -->
             <div style="display: flex; justify-content: space-between; padding-top: 8px;">
                 <span style="font-size: 16px; font-weight: 700;">Total Amount</span>
-                <span style="font-size: 18px; font-weight: 700;">₹{{ number_format($activeSubtotal + $platformFee + $shippingCost, 2) }}</span>
+                <span style="font-size: 18px; font-weight: 700;">₹{{ number_format($activeSubtotal + $platformFee + $shippingCost - ($order->discount_amount ?? 0), 2) }}</span>
             </div>
         </div>
 

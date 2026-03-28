@@ -830,27 +830,12 @@
                             <span class="billing-value" id="shippingAmount"><?php echo e($shipping > 0 ? '₹' . number_format($shipping, 2) : 'FREE'); ?></span>
                         </div>
                         <?php
-                            $discount = 0;
-                            if(session('applied_coupon')) {
-                                $couponCode = session('applied_coupon');
-                                // Special handling for VEYRON10 coupon
-                                if($couponCode === 'VEYRON10') {
-                                    $discount = round($subtotal * 0.1); // 10% discount
-                                } else {
-                                    $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
-                                    if($appliedCoupon) {
-                                        if($appliedCoupon->type === 'percent') {
-                                            $discount = round($subtotal * ($appliedCoupon->value / 100));
-                                        } else {
-                                            $discount = $appliedCoupon->value;
-                                        }
-                                    }
-                                }
-                            }
+                            $checkoutPricing = \App\Support\CouponPricing::calculateTotal($subtotal, $shipping, 27, session('applied_coupon'));
+                            $discount = $checkoutPricing['discount'];
                         ?>
                         <?php if($discount > 0): ?>
                             <div class="billing-row discount">
-                                <span class="billing-label">Coupon Discount</span>
+                                <span class="billing-label">Coupon Discount (<?php echo e($checkoutPricing['discountLabel']); ?>)</span>
                                 <span class="billing-value">-₹<?php echo e(number_format($discount, 0)); ?></span>
                             </div>
                         <?php endif; ?>
@@ -1217,27 +1202,11 @@
                             <span><?php echo e($shipping > 0 ? '₹' . number_format($shipping, 2) : 'FREE'); ?></span>
                         </div>
                         <?php
-                            $discount = 0;
-                            if(session('applied_coupon')) {
-                                $couponCode = session('applied_coupon');
-                                // Special handling for VEYRON10 coupon
-                                if($couponCode === 'VEYRON10') {
-                                    $discount = round($subtotal * 0.1); // 10% discount
-                                } else {
-                                    $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
-                                    if($appliedCoupon) {
-                                        if($appliedCoupon->type === 'percent') {
-                                            $discount = round($subtotal * ($appliedCoupon->value / 100));
-                                        } else {
-                                            $discount = $appliedCoupon->value;
-                                        }
-                                    }
-                                }
-                            }
+                            $discount = $checkoutPricing['discount'] ?? \App\Support\CouponPricing::calculateTotal($subtotal, $shipping, 27, session('applied_coupon'))['discount'];
                         ?>
                         <?php if($discount > 0): ?>
                             <div class="summary-row discount">
-                                <span>Coupon Discount</span>
+                                <span>Coupon Discount (<?php echo e($checkoutPricing['discountLabel'] ?? \App\Support\CouponPricing::calculateTotal($subtotal, $shipping, 27, session('applied_coupon'))['discountLabel']); ?>)</span>
                                 <span class="value">-₹<?php echo e(number_format($discount, 0)); ?></span>
                             </div>
                         <?php endif; ?>

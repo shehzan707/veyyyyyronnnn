@@ -46,9 +46,9 @@ class AnalyticsController extends Controller
     private function getKPIs($dateFrom, $dateTo)
     {
         $orders = Order::whereBetween('created_at', [$dateFrom, $dateTo])->get();
-        $totalRevenue = $orders->sum('total_amount');
+        $totalRevenue = $orders->sum('total_amount') * 0.40; // 40% of sales as revenue
         $totalOrders = $orders->count();
-        $previousRevenue = Order::whereBetween('created_at', [$dateFrom->copy()->subDays(30), $dateFrom])->sum('total_amount');
+        $previousRevenue = Order::whereBetween('created_at', [$dateFrom->copy()->subDays(30), $dateFrom])->sum('total_amount') * 0.40; // 40% of sales
         $revenueGrowth = $previousRevenue > 0 ? (($totalRevenue - $previousRevenue) / $previousRevenue * 100) : 0;
 
         return [
@@ -74,7 +74,7 @@ class AnalyticsController extends Controller
             return [
                 'name' => $item->product->name ?? 'Unknown Product',
                 'quantity' => $item->total_quantity,
-                'revenue' => round($item->total_revenue, 2),
+                'revenue' => round($item->total_revenue * 0.40, 2), // 40% of sales as revenue
                 'image' => $item->product->image ?? null,
             ];
         })->toArray();
@@ -98,7 +98,7 @@ class AnalyticsController extends Controller
                 $data[] = [
                     'name' => $category->name,
                     'quantity' => $cat->total_quantity,
-                    'revenue' => round($cat->total_revenue, 2),
+                    'revenue' => round($cat->total_revenue * 0.40, 2), // 40% of sales as revenue
                 ];
             }
         }
@@ -112,7 +112,7 @@ class AnalyticsController extends Controller
 
         for ($i = 0; $i < 7; $i++) {
             $date = $startDate->copy()->addDays($i);
-            $revenue = Order::whereDate('created_at', $date)->sum('total_amount');
+            $revenue = Order::whereDate('created_at', $date)->sum('total_amount') * 0.40; // 40% of sales as revenue
 
             $data[] = [
                 'date' => $date->format('M d'),
@@ -131,7 +131,7 @@ class AnalyticsController extends Controller
 
         for ($i = 1; $i <= $now->daysInMonth; $i++) {
             $date = $now->copy()->day($i);
-            $revenue = Order::whereDate('created_at', $date)->sum('total_amount');
+            $revenue = Order::whereDate('created_at', $date)->sum('total_amount') * 0.40; // 40% of sales as revenue
             $data[] = ['day' => $i, 'revenue' => round($revenue, 2), 'date' => $date->format('M d')];
         }
 
@@ -143,7 +143,7 @@ class AnalyticsController extends Controller
         $data = [];
 
         for ($i = 1; $i <= 12; $i++) {
-            $revenue = Order::whereMonth('created_at', $i)->whereYear('created_at', Carbon::now()->year)->sum('total_amount');
+            $revenue = Order::whereMonth('created_at', $i)->whereYear('created_at', Carbon::now()->year)->sum('total_amount') * 0.40; // 40% of sales as revenue
             $data[] = [
                 'month' => Carbon::createFromDate(null, $i, 1)->format('M'),
                 'revenue' => round($revenue, 2),
@@ -156,9 +156,11 @@ class AnalyticsController extends Controller
     private function getRevenueVsOrders($dateFrom, $dateTo)
     {
         $days = [];
+        $startDate = Carbon::now()->subDays(6)->startOfDay(); // Last 7 days
+        
         for ($i = 0; $i < 7; $i++) {
-            $date = $dateFrom->copy()->addDays($i);
-            $revenue = Order::whereDate('created_at', $date)->sum('total_amount');
+            $date = $startDate->copy()->addDays($i);
+            $revenue = Order::whereDate('created_at', $date)->sum('total_amount') * 0.40; // 40% of sales as revenue
             $orders = Order::whereDate('created_at', $date)->count();
 
             $days[] = [

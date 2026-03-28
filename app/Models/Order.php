@@ -23,6 +23,8 @@ class Order extends Model
         'payment_status',
         'payment_details',
         'order_status',
+        'coupon_code',
+        'discount_amount',
         'total_amount',
         'refund_status',
         'refund_amount',

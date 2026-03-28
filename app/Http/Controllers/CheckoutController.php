@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Size;
 use App\Models\Address;
+use App\Support\CouponPricing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,7 @@ class CheckoutController extends Controller
 
         $platformFee = 27;
         $shipping = $subtotal > 999 ? 0 : 50;
-        $total = $subtotal + $platformFee + $shipping;
+        $total = CouponPricing::calculateTotal($subtotal, $shipping, $platformFee, session('applied_coupon'))['total'];
 
         // Get user addresses if logged in
         $addresses = collect();
@@ -220,25 +221,9 @@ class CheckoutController extends Controller
         $shipping = $subtotal > 999 ? 0 : 50;
         
         // Calculate coupon discount if applied
-        $discount = 0;
-        if(session('applied_coupon')) {
-            $couponCode = session('applied_coupon');
-            // Special handling for VEYRON10 coupon
-            if($couponCode === 'VEYRON10') {
-                $discount = round($subtotal * 0.1); // 10% discount
-            } else {
-                $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
-                if($appliedCoupon) {
-                    if($appliedCoupon->type === 'percent') {
-                        $discount = round($subtotal * ($appliedCoupon->value / 100));
-                    } else {
-                        $discount = $appliedCoupon->value;
-                    }
-                }
-            }
-        }
-        
-        $total = $subtotal + $platformFee + $shipping - $discount;
+        $pricing = CouponPricing::calculateTotal($subtotal, $shipping, $platformFee, session('applied_coupon'));
+        $discount = $pricing['discount'];
+        $total = $pricing['total'];
 
         $userId = Auth::check() ? Auth::id() : null;
 
@@ -259,6 +244,8 @@ class CheckoutController extends Controller
                 'payment_method' => $paymentMethod,
                 'payment_status' => 'pending',
                 'order_status' => 'pending',
+                'coupon_code' => session('applied_coupon'),
+                'discount_amount' => $discount,
                 'total_amount' => $total,
             ];
 

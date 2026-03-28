@@ -95,6 +95,7 @@ Route::get('/order-success/{id}', [CheckoutController::class, 'success'])->name(
 Route::get('/account', [AccountController::class, 'index'])->middleware('check-active')->name('account.index');
 Route::post('/account/profile', [AccountController::class, 'updateProfile'])->middleware('check-active')->name('account.updateProfile');
 Route::post('/account/address', [AccountController::class, 'addAddress'])->middleware('check-active')->name('account.addAddress');
+Route::get('/account/address/{id}', [AccountController::class, 'getAddress'])->middleware('check-active')->name('account.getAddress');
 Route::put('/account/address/{id}', [AccountController::class, 'updateAddress'])->middleware('check-active')->name('account.updateAddress');
 Route::delete('/account/address/{id}', [AccountController::class, 'deleteAddress'])->middleware('check-active')->name('account.deleteAddress');
 Route::get('/account/orders', [AccountController::class, 'orders'])->middleware('check-active')->name('account.orders');
@@ -109,6 +110,9 @@ Route::prefix('order')->name('order.')->middleware('check-active')->group(functi
 
 // Coupon
 Route::post('/coupon/validate', [\App\Http\Controllers\CouponController::class, 'validateCoupon'])->name('coupon.validate');
+Route::get('/coupon/available', [\App\Http\Controllers\CouponController::class, 'getAvailableCoupons'])->name('coupon.available');
+Route::post('/coupon/apply', [\App\Http\Controllers\CouponController::class, 'applyCoupon'])->name('coupon.apply');
+Route::post('/coupon/remove', [\App\Http\Controllers\CouponController::class, 'removeCoupon'])->name('coupon.remove');
 
 // Bulk Import Routes
 Route::prefix('bulk-import')->group(function () {

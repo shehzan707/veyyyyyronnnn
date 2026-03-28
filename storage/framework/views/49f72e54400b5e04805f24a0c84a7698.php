@@ -808,7 +808,7 @@ html, body {
             <input type="date" id="dateFrom" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 10px; border-radius: 8px;">
             <input type="date" id="dateTo" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 10px; border-radius: 8px;">
             <button class="filter-btn" onclick="applyFilters()">🔍 Apply</button>
-            <button class="export-btn" onclick="exportToPDF()">📥 Export PDF</button>
+            <button class="export-btn" onclick="exportToCSV()">📥 Export CSV</button>
         </div>
     </div>
 
@@ -1289,8 +1289,6 @@ html, body {
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-<script src="https://html2pdf.github.io/html2pdf.bundle.min.js"></script>
-
 <script>
 if (false) {
 const analyticsData = {
@@ -1559,17 +1557,148 @@ function applyFilters() {
     }
 }
 
-// Export to PDF
-function exportToPDF() {
-    const element = document.querySelector('.analytics-container');
-    const opt = {
-        margin: 10,
-        filename: 'sales-analytics-' + new Date().toISOString().split('T')[0] + '.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' }
-    };
-    html2pdf().set(opt).save().from(element).save();
+// Export to CSV
+function exportToCSV() {
+    const csvContent = generateCSVContent();
+    downloadCSV(csvContent, 'sales-analytics-' + new Date().toISOString().split('T')[0] + '.csv');
+}
+
+function generateCSVContent() {
+    // Get current date and time
+    const now = new Date();
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    const dayName = days[now.getDay()];
+    const date = now.getDate();
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    const generatedDateTime = `${dayName}, ${date} ${month} ${year} at ${hours}:${minutes}:${seconds}`;
+    
+    let csv = [];
+    
+    // Header Section
+    csv.push('SALES ANALYTICS REPORT');
+    csv.push('Generated: ' + generatedDateTime);
+    csv.push('');
+    csv.push('');
+    
+    // KPI Section
+    csv.push('KEY PERFORMANCE INDICATORS');
+    csv.push('');
+    csv.push('Metric,Value');
+    
+    const totalRevenue = document.getElementById('totalRevenue').textContent.trim();
+    csv.push('Total Revenue,' + totalRevenue);
+    
+    const totalOrders = document.querySelector('.kpi-card:nth-child(2) .kpi-value').textContent.trim();
+    csv.push('Total Orders,' + totalOrders);
+    
+    const avgOrderValue = document.querySelector('.kpi-card:nth-child(3) .kpi-value').textContent.trim();
+    csv.push('Average Order Value,' + avgOrderValue);
+    
+    const growthRate = document.querySelector('.kpi-card:nth-child(4) .kpi-value').textContent.trim();
+    csv.push('Growth Rate,' + growthRate);
+    
+    csv.push('');
+    csv.push('');
+    
+    // Last 7 Days Sales Section
+    csv.push('LAST 7 DAYS SALES BREAKDOWN');
+    csv.push('');
+    csv.push('Day of Week,Revenue');
+    
+    const sevenDayItems = document.querySelectorAll('.sales-pulse-axis-item');
+    sevenDayItems.forEach(item => {
+        const day = item.querySelector('.sales-pulse-axis-day').textContent.trim();
+        const revenue = item.querySelector('.sales-pulse-axis-value').textContent.trim();
+        csv.push(day + ',' + revenue);
+    });
+    
+    csv.push('');
+    csv.push('');
+    
+    // Top Products Section
+    csv.push('TOP 5 SELLING PRODUCTS');
+    csv.push('');
+    csv.push('Rank,Product Name,Units Sold,Revenue');
+    
+    const productRows = document.querySelectorAll('.metric-row');
+    let productRank = 1;
+    productRows.forEach((row) => {
+        const nameElem = row.querySelector('.metric-name');
+        const subElem = row.querySelector('.metric-sub');
+        const valueElem = row.querySelector('.metric-value');
+        
+        if (nameElem && subElem && valueElem && nameElem.textContent.trim() !== 'No product sales data available for this period.') {
+            const name = nameElem.textContent.trim();
+            const units = subElem.textContent.replace(' units sold', '').trim();
+            const revenue = valueElem.textContent.trim();
+            
+            csv.push(productRank + ',"' + name + '",' + units + ',' + revenue);
+            productRank++;
+            
+            if (productRank > 5) return;
+        }
+    });
+    
+    csv.push('');
+    csv.push('');
+    
+    // Low Stock Products Section
+    csv.push('LOW STOCK PRODUCTS - HIGH PRIORITY');
+    csv.push('');
+    csv.push('Product Name,Current Stock,Price,Status');
+    
+    const tableRows = document.querySelectorAll('.products-table tbody tr');
+    tableRows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 4) {
+            const name = cells[0].textContent.trim();
+            const stock = cells[1].textContent.trim();
+            const price = cells[2].textContent.trim();
+            const status = cells[3].textContent.trim();
+            
+            csv.push('"' + name + '",' + stock + ',' + price + ',"' + status + '"');
+        }
+    });
+    
+    csv.push('');
+    csv.push('');
+    
+    // Monthly Sales Summary Section
+    csv.push('MONTHLY SALES SUMMARY');
+    csv.push('');
+    csv.push('Period,Revenue');
+    
+    const chartSummaryChips = document.querySelectorAll('.chart-summary-chip');
+    if (chartSummaryChips.length > 0) {
+        chartSummaryChips.forEach(chip => {
+            const label = chip.querySelector('span').textContent.trim();
+            const value = chip.querySelector('em').textContent.trim();
+            csv.push(label + ',' + value);
+        });
+    }
+    
+    csv.push('');
+    csv.push('');
+    csv.push('--- End of Report ---');
+    
+    return csv.join('\n');
+}
+
+function downloadCSV(content, filename) {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(content));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
 }
 </script>
 <?php $__env->stopPush(); ?>

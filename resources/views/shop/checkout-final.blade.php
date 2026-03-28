@@ -829,27 +829,12 @@
                             <span class="billing-value" id="shippingAmount">{{ $shipping > 0 ? '₹' . number_format($shipping, 2) : 'FREE' }}</span>
                         </div>
                         @php
-                            $discount = 0;
-                            if(session('applied_coupon')) {
-                                $couponCode = session('applied_coupon');
-                                // Special handling for VEYRON10 coupon
-                                if($couponCode === 'VEYRON10') {
-                                    $discount = round($subtotal * 0.1); // 10% discount
-                                } else {
-                                    $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
-                                    if($appliedCoupon) {
-                                        if($appliedCoupon->type === 'percent') {
-                                            $discount = round($subtotal * ($appliedCoupon->value / 100));
-                                        } else {
-                                            $discount = $appliedCoupon->value;
-                                        }
-                                    }
-                                }
-                            }
+                            $checkoutPricing = \App\Support\CouponPricing::calculateTotal($subtotal, $shipping, 27, session('applied_coupon'));
+                            $discount = $checkoutPricing['discount'];
                         @endphp
                         @if($discount > 0)
                             <div class="billing-row discount">
-                                <span class="billing-label">Coupon Discount</span>
+                                <span class="billing-label">Coupon Discount ({{ $checkoutPricing['discountLabel'] }})</span>
                                 <span class="billing-value">-₹{{ number_format($discount, 0) }}</span>
                             </div>
                         @endif
@@ -1216,27 +1201,11 @@
                             <span>{{ $shipping > 0 ? '₹' . number_format($shipping, 2) : 'FREE' }}</span>
                         </div>
                         @php
-                            $discount = 0;
-                            if(session('applied_coupon')) {
-                                $couponCode = session('applied_coupon');
-                                // Special handling for VEYRON10 coupon
-                                if($couponCode === 'VEYRON10') {
-                                    $discount = round($subtotal * 0.1); // 10% discount
-                                } else {
-                                    $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
-                                    if($appliedCoupon) {
-                                        if($appliedCoupon->type === 'percent') {
-                                            $discount = round($subtotal * ($appliedCoupon->value / 100));
-                                        } else {
-                                            $discount = $appliedCoupon->value;
-                                        }
-                                    }
-                                }
-                            }
+                            $discount = $checkoutPricing['discount'] ?? \App\Support\CouponPricing::calculateTotal($subtotal, $shipping, 27, session('applied_coupon'))['discount'];
                         @endphp
                         @if($discount > 0)
                             <div class="summary-row discount">
-                                <span>Coupon Discount</span>
+                                <span>Coupon Discount ({{ $checkoutPricing['discountLabel'] ?? \App\Support\CouponPricing::calculateTotal($subtotal, $shipping, 27, session('applied_coupon'))['discountLabel'] }})</span>
                                 <span class="value">-₹{{ number_format($discount, 0) }}</span>
                             </div>
                         @endif

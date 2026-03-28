@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Support\CouponPricing;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -17,7 +18,7 @@ class CartController extends Controller
         }
 
         $shipping = $subtotal > 999 ? 0 : 50;
-        $total = $subtotal + $shipping;
+        $total = CouponPricing::calculateTotal($subtotal, $shipping, 27, session('applied_coupon'))['total'];
 
         // Update cart count in session
         $cartCount = array_sum(array_column($cart, 'quantity'));
@@ -182,25 +183,9 @@ class CartController extends Controller
         $shipping = $subtotal > 999 ? 0 : 50;
         
         // Calculate coupon discount if applied
-        $discount = 0;
-        if(session('applied_coupon')) {
-            $couponCode = session('applied_coupon');
-            // Special handling for VEYRON10 coupon
-            if($couponCode === 'VEYRON10') {
-                $discount = round($subtotal * 0.1); // 10% discount
-            } else {
-                $appliedCoupon = \App\Models\Coupon::where('code', $couponCode)->first();
-                if($appliedCoupon) {
-                    if($appliedCoupon->type === 'percent') {
-                        $discount = round($subtotal * ($appliedCoupon->value / 100));
-                    } else {
-                        $discount = $appliedCoupon->value;
-                    }
-                }
-            }
-        }
-        
-        $total = $subtotal + $shipping + 27 - $discount;
+        $pricing = CouponPricing::calculateTotal($subtotal, $shipping, 27, session('applied_coupon'));
+        $discount = $pricing['discount'];
+        $total = $pricing['total'];
         if ($request->expectsJson() || $request->isJson() || $request->wantsJson()) {
             return response()->json([
                 'success' => true,

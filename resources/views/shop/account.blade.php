@@ -78,6 +78,17 @@
     #accountPage .crop-container h3 { margin: 0 0 16px !important; }
     #accountPage .crop-image { max-width: 100% !important; max-height: 400px !important; }
     #accountPage .crop-controls { display: flex !important; gap: 8px !important; margin-top: 16px !important; justify-content: flex-end !important; }
+    
+    #accountPage .edit-address-modal { display: none !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0,0,0,0.5) !important; z-index: 999 !important; align-items: center !important; justify-content: center !important; padding: 20px !important; }
+    #accountPage .edit-address-modal.active { display: flex !important; }
+    #accountPage .edit-address-content { background: #fff !important; border-radius: 12px !important; padding: 30px !important; max-width: 500px !important; width: 100% !important; max-height: 80vh !important; overflow-y: auto !important; box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important; }
+    #accountPage .edit-address-header { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 20px !important; border-bottom: 2px solid #f0f0f0 !important; padding-bottom: 16px !important; }
+    #accountPage .edit-address-header h3 { margin: 0 !important; color: #222 !important; font-size: 1.3rem !important; }
+    #accountPage .edit-address-close { background: none !important; border: none !important; font-size: 1.8rem !important; cursor: pointer !important; color: #999 !important; padding: 0 !important; width: 32px !important; height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: color 0.2s !important; }
+    #accountPage .edit-address-close:hover { color: #222 !important; }
+    #accountPage .edit-address-actions { display: flex !important; gap: 12px !important; margin-top: 24px !important; }
+    #accountPage .edit-address-actions .btn-secondary { flex: 1 !important; }
+    #accountPage .edit-address-actions .btn-submit { flex: 1 !important; }
     #accountPage .crop-controls button { padding: 8px 16px !important; border: none !important; border-radius: 6px !important; cursor: pointer !important; font-weight: 600 !important; transition: 0.3s !important; }
     #accountPage .crop-controls .crop-save { background: #222 !important; color: #fff !important; }
     #accountPage .crop-controls .crop-save:hover { background: #444 !important; }
@@ -266,7 +277,8 @@
                                 }
                                 $platformFee = $order->platform_fee ?? 27;
                                 $shippingCost = $order->shipping_cost ?? ($orderSubtotal > 999 ? 0 : 50);
-                                $actualTotal = $activeItemsTotal + $platformFee + $shippingCost;
+                                $discount = $order->discount_amount ?? 0;
+                                $actualTotal = $activeItemsTotal + $platformFee + $shippingCost - $discount;
                             @endphp
                             <div class="order-card">
                                 <div class="order-header">
@@ -289,6 +301,62 @@
                 @endif
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Edit Address Modal -->
+<div class="edit-address-modal" id="editAddressModal">
+    <div class="edit-address-content">
+        <div class="edit-address-header">
+            <h3>Edit Address</h3>
+            <button type="button" class="edit-address-close" onclick="closeEditAddressModal()">×</button>
+        </div>
+        <form method="POST" id="editAddressForm">
+            @csrf
+            @method('PUT')
+            <input type="hidden" id="editAddressId">
+            
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>Address Line 1</label>
+                    <input type="text" id="editAddressLine1" name="address_line_1" required>
+                </div>
+            </div>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>Address Line 2 (Optional)</label>
+                    <input type="text" id="editAddressLine2" name="address_line_2">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" id="editCity" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label>State</label>
+                    <input type="text" id="editState" name="state" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" id="editPostalCode" name="postal_code" required>
+                </div>
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" id="editCountry" name="country" value="India" required>
+                </div>
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="editIsDefault" name="is_default" value="1">
+                <label for="editIsDefault" style="margin: 0;">Set as default address</label>
+            </div>
+            <div class="edit-address-actions">
+                <button type="button" class="btn-secondary" onclick="closeEditAddressModal()">Cancel</button>
+                <button type="submit" class="btn-submit">Update Address</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -466,8 +534,107 @@ function saveCropImage() {
 }
 
 function editAddressForm(id) {
-    alert('Edit functionality - delete and add a new address');
+    // Fetch address data via AJAX
+    fetch(`/account/address/${id}`, {
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch address');
+        return response.json();
+    })
+    .then(address => {
+        // Populate edit form with address data
+        document.getElementById('editAddressId').value = address.id;
+        document.getElementById('editAddressLine1').value = address.address_line_1;
+        document.getElementById('editAddressLine2').value = address.address_line_2 || '';
+        document.getElementById('editCity').value = address.city;
+        document.getElementById('editState').value = address.state;
+        document.getElementById('editPostalCode').value = address.postal_code;
+        document.getElementById('editCountry').value = address.country;
+        document.getElementById('editIsDefault').checked = address.is_default;
+        
+        // Show the modal
+        document.getElementById('editAddressModal').classList.add('active');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showProfileToast('Failed to load address', 'error');
+    });
 }
+
+function closeEditAddressModal() {
+    document.getElementById('editAddressModal').classList.remove('active');
+}
+
+// Handle address form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const editAddressForm = document.getElementById('editAddressForm');
+    if (editAddressForm) {
+        editAddressForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const addressId = document.getElementById('editAddressId').value;
+            
+            // Collect form data manually
+            const addressData = {
+                address_line_1: document.getElementById('editAddressLine1').value,
+                address_line_2: document.getElementById('editAddressLine2').value,
+                city: document.getElementById('editCity').value,
+                state: document.getElementById('editState').value,
+                postal_code: document.getElementById('editPostalCode').value,
+                country: document.getElementById('editCountry').value,
+                is_default: document.getElementById('editIsDefault').checked ? 1 : 0
+            };
+            
+            console.log('Submitting address data:', addressData, 'ID:', addressId);
+            
+            fetch(`/account/address/${addressId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify(addressData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw data;
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                showProfileToast('Address updated successfully!', 'success');
+                closeEditAddressModal();
+                // Reload addresses section to show updated data
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            })
+            .catch(error => {
+                console.error('Error details:', error);
+                if (error.errors) {
+                    // Show all validation errors
+                    const errorMessages = [];
+                    for (const [field, messages] of Object.entries(error.errors)) {
+                        errorMessages.push(`${field}: ${Array.isArray(messages) ? messages[0] : messages}`);
+                    }
+                    showProfileToast(errorMessages.join('\n'), 'error');
+                } else if (error.message) {
+                    showProfileToast(error.message, 'error');
+                } else {
+                    showProfileToast('Failed to update address', 'error');
+                }
+            });
+        });
+    }
+});
 </script>
 </div><!-- Close #accountPage -->
 @endsection

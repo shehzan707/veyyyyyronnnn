@@ -118,28 +118,41 @@ class AccountController extends Controller
         return redirect()->route('account.index')->with('success', 'Address added successfully!');
     }
 
-    public function updateAddress(Request $request, $id)
+    public function getAddress($id)
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         $address = Address::findOrFail($id);
         
         if ($address->user_id !== Auth::id()) {
-            abort(403);
+            return response()->json(['error' => 'Forbidden'], 403);
+        }
+
+        return response()->json($address);
+    }
+
+    public function updateAddress(Request $request, $id)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $address = Address::findOrFail($id);
+        
+        if ($address->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Forbidden'], 403);
         }
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|digits:10',
             'address_line_1' => 'required|string|max:255',
             'address_line_2' => 'nullable|string|max:255',
             'city' => 'required|string|max:100',
             'state' => 'required|string|max:100',
             'postal_code' => 'required|string|max:10',
             'country' => 'required|string|max:100',
-            'is_default' => 'boolean',
+            'is_default' => 'nullable|boolean',
         ]);
 
         if ($validated['is_default'] ?? false) {
@@ -147,6 +160,10 @@ class AccountController extends Controller
         }
 
         $address->update($validated);
+
+        if ($request->expectsJson() || $request->header('Accept') === 'application/json') {
+            return response()->json(['message' => 'Address updated successfully!', 'address' => $address]);
+        }
 
         return redirect()->route('account.index')->with('success', 'Address updated successfully!');
     }
