@@ -124,6 +124,19 @@
     <!-- Products Section (6 parts) -->
     <div class="products-section">
         <h2>All Products</h2>
+        
+        <!-- Search Bar -->
+        <div style="margin-bottom: 16px; display: flex; gap: 10px;">
+            <form method="GET" action="{{ route('admin.products.index') }}" style="display: flex; gap: 10px; width: 100%;">
+                <input type="text" name="search" placeholder="Search by product name..." value="{{ $search }}" 
+                    style="flex: 1; padding: 10px; background: #424242; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; font-size: 0.9rem; color: #ffffff;">
+                <button type="submit" style="padding: 10px 16px; background: #000000; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 6px; color: #fff; cursor: pointer; font-weight: 600; font-size: 0.9rem;">Search</button>
+                @if($search)
+                    <a href="{{ route('admin.products.index') }}" style="padding: 10px 16px; background: #424242; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 6px; color: #fff; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center;">Clear</a>
+                @endif
+            </form>
+        </div>
+        
         <table class="products-table">
             <thead>
                 <tr>

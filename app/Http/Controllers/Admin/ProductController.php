@@ -10,13 +10,20 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['categoryModel', 'sizeVariants'])
-            ->orderBy('id', 'desc')
-            ->get();
+        $search = $request->query('search', '');
+        
+        $query = Product::with(['categoryModel', 'sizeVariants'])
+            ->orderBy('id', 'desc');
+        
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+        
+        $products = $query->get();
         $categories = Category::orderBy('name')->get();
-        return view('admin.products.index', compact('products', 'categories'));
+        return view('admin.products.index', compact('products', 'categories', 'search'));
     }
 
     public function create()

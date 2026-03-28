@@ -732,7 +732,11 @@ function proceedToOrderConfirmation() {
     const shippingMatch = billText.match(/Shipping\s*(FREE|₹([\d,.]+))/);
     const shippingCost = shippingMatch?.[1] === 'FREE' ? 0 : (shippingMatch?.[2] ? parseFloat(shippingMatch[2].replace(/,/g, '')) : 0);
     
-    const finalTotal = subtotal + platformFee + shippingCost;
+    // Extract discount (look for "- ₹" pattern)
+    const discountMatch = billText.match(/Coupon Discount[^-]*-\s*₹([\d,.]+)/);
+    const discount = discountMatch ? parseFloat(discountMatch[1].replace(/,/g, '')) : 0;
+    
+    const finalTotal = subtotal + platformFee + shippingCost - discount;
     
     const itemCount = document.querySelectorAll('tbody tr').length - (document.querySelectorAll('.reason-row').length);
     document.getElementById('confirmOrderItemCount').textContent = itemCount + ' item' + (itemCount !== 1 ? 's' : '');
