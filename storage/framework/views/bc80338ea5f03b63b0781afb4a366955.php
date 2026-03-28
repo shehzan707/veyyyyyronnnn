@@ -151,20 +151,24 @@
                 <span>₹<?php echo e(number_format($activeSubtotal, 2)); ?></span>
             </div>
 
-            <!-- Platform Fee -->
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #666;">
-                <span>Platform Fee</span>
-                <span>₹<?php echo e(number_format($platformFee, 0)); ?></span>
-            </div>
+            <!-- Platform Fee (Only if there are active items) -->
+            <?php if($activeSubtotal > 0): ?>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #666;">
+                    <span>Platform Fee</span>
+                    <span>₹<?php echo e(number_format($platformFee, 0)); ?></span>
+                </div>
+            <?php endif; ?>
 
-            <!-- Shipping -->
-            <div style="display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 14px; color: #666;">
-                <span>Shipping</span>
-                <span><?php echo e($shippingCost == 0 ? 'FREE' : '₹' . number_format($shippingCost, 2)); ?></span>
-            </div>
+            <!-- Shipping (Only if there are active items) -->
+            <?php if($activeSubtotal > 0): ?>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 14px; color: #666;">
+                    <span>Shipping</span>
+                    <span><?php echo e($shippingCost == 0 ? 'FREE' : '₹' . number_format($shippingCost, 2)); ?></span>
+                </div>
+            <?php endif; ?>
 
-            <!-- Coupon Discount (if applied) -->
-            <?php if($order->coupon_code && $order->discount_amount > 0): ?>
+            <!-- Coupon Discount (if applied and there are active items) -->
+            <?php if($activeSubtotal > 0 && $order->coupon_code && $order->discount_amount > 0): ?>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 14px; color: #666;">
                     <span>Coupon Discount (<?php echo e($order->coupon_code); ?>)</span>
                     <span>- ₹<?php echo e(number_format($order->discount_amount, 0)); ?></span>
@@ -177,7 +181,7 @@
             <!-- Total Amount (Based on active items) -->
             <div style="display: flex; justify-content: space-between; padding-top: 8px;">
                 <span style="font-size: 16px; font-weight: 700;">Total Amount</span>
-                <span style="font-size: 18px; font-weight: 700;">₹<?php echo e(number_format($activeSubtotal + $platformFee + $shippingCost - ($order->discount_amount ?? 0), 2)); ?></span>
+                <span style="font-size: 18px; font-weight: 700;">₹<?php echo e(number_format($activeSubtotal + ($activeSubtotal > 0 ? $platformFee : 0) + ($activeSubtotal > 0 ? $shippingCost : 0) - ($activeSubtotal > 0 ? ($order->discount_amount ?? 0) : 0), 2)); ?></span>
             </div>
         </div>
 
