@@ -278,7 +278,8 @@
                                 $platformFee = $order->platform_fee ?? 27;
                                 $shippingCost = $order->shipping_cost ?? ($orderSubtotal > 999 ? 0 : 50);
                                 $discount = $order->discount_amount ?? 0;
-                                $actualTotal = $activeItemsTotal + $platformFee + $shippingCost - $discount;
+                                // Only add fees and discount if there are active items
+                                $actualTotal = $activeItemsTotal + ($activeItemsTotal > 0 ? $platformFee : 0) + ($activeItemsTotal > 0 ? $shippingCost : 0) - ($activeItemsTotal > 0 ? $discount : 0);
                             @endphp
                             <div class="order-card">
                                 <div class="order-header">
