@@ -94,12 +94,12 @@ class OrderCancellationController extends Controller
                 'cancelled_at' => now(),
             ]);
 
-            // Restore product stock
+            // Restore product stock for the specific size
             try {
-                if ($orderItem->product_id) {
+                if ($orderItem->product_id && $orderItem->size) {
                     $product = Product::find($orderItem->product_id);
                     if ($product) {
-                        $product->increment('stock', $orderItem->quantity);
+                        $product->restoreStock($orderItem->size, $orderItem->quantity);
                     }
                 }
             } catch (\Exception $stockErr) {
@@ -203,11 +203,11 @@ class OrderCancellationController extends Controller
                         'cancelled_at' => now(),
                     ]);
 
-                    // Restore stock
-                    if ($item->product_id) {
+                    // Restore stock for the specific size
+                    if ($item->product_id && $item->size) {
                         $product = Product::find($item->product_id);
                         if ($product) {
-                            $product->increment('stock', $item->quantity);
+                            $product->restoreStock($item->size, $item->quantity);
                         }
                     }
 
@@ -281,12 +281,12 @@ class OrderCancellationController extends Controller
                 'cancelled_by_admin' => true,
             ]);
 
-            // Restore product stock
+            // Restore product stock for the specific size
             try {
-                if ($orderItem->product_id) {
+                if ($orderItem->product_id && $orderItem->size) {
                     $product = Product::find($orderItem->product_id);
                     if ($product) {
-                        $product->increment('stock', $orderItem->quantity);
+                        $product->restoreStock($orderItem->size, $orderItem->quantity);
                     }
                 }
             } catch (\Exception $stockErr) {

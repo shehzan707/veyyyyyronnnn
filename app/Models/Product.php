@@ -75,4 +75,14 @@ class Product extends Model
         }
         return false;
     }
+
+    public function restoreStock($size, $quantity = 1)
+    {
+        $sizeModel = $this->sizeVariants()->where('size', $size)->first();
+        if ($sizeModel) {
+            $sizeModel->increment('stock', $quantity);
+            return true;
+        }
+        return false;
+    }
 }
